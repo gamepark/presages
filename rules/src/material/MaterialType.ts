@@ -1,1 +1,4 @@
-export enum MaterialType {}
+export enum MaterialType {
+  Arcane = 1,
+  Help
+}

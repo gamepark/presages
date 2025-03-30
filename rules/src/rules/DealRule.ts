@@ -1,0 +1,39 @@
+import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { PlayerId } from '../PlayerId'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
+
+export class DealRule extends MaterialRulesPart {
+  onRuleStart() {
+    const moves: MaterialMove[] = []
+    const deck = this.deck
+    for (const player of this.game.players) {
+      const hand = this.getPlayerHand(player)
+      const drawCount = this.cardPerPlayer - hand.length
+      moves.push(
+        ...deck.deal({
+          type: LocationType.Hand,
+          player: player
+        }, drawCount)
+      )
+    }
+
+    return moves
+  }
+
+  get cardPerPlayer() {
+    return 9 - this.game.players.length
+  }
+
+  getPlayerHand(player: PlayerId) {
+    return this.material(MaterialType.Arcane)
+      .location(LocationType.Hand)
+      .player(player)
+  }
+
+  get deck() {
+    return this.material(MaterialType.Arcane)
+      .location(LocationType.Deck)
+      .deck()
+  }
+}

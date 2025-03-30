@@ -1,3 +1,17 @@
 export enum RuleId {
-  TheFirstStep = 1
+  Deal = 1,
+  Place,
+  RoundResolution,
+  EndOfTurn,
+  RoundEnd,
+
+  // Arcane effect
+  TheLaw,
+  TheLuck,
+  TheDream,
+  TheJalousie,
+  TheSecret,
+  TheAnger,
+  TheBetrayal,
+  TheAbsolute
 }

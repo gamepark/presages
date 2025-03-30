@@ -112,18 +112,18 @@ When you add a new LocationType in the rules, you have to create a new "Locator"
 Example:
 
 ```
-export const Locators: Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>> = {
+export const Locators: Record<LocationType, Locator<PlayerId, MaterialType, LocationType>> = {
   [LocationType.Hand]: new PlayerHandLocator(),
 }
 
-export class PlayerHandLocator extends HandLocator<PlayerColor, MaterialType, LocationType> {
+export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, LocationType> {
   coordinates = { x: 5, y: 20 }
 }
 ```
 
 ### 3.3 The setup
 
-Once you have one Material type and one Location type, you can start to setup a new game in [GameTemplateRules.ts](/rules/src/GameTemplateRules.ts)
+Once you have one Material type and one Location type, you can start to setup a new game in [PresagesRules.ts](/rules/src/PresagesRules.ts)
 
 You can easily create and manipulate the material in the setup:
 

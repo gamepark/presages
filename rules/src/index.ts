@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { PresagesRules } from './PresagesRules'
+export { GameTemplateOptionsSpec } from './PresagesOptions'
+export { PresageSetup } from './PresageSetup'

@@ -1,1 +1,6 @@
-export enum LocationType {}
+export enum LocationType {
+  Hand = 1,
+  Deck,
+  Table,
+  Discard
+}

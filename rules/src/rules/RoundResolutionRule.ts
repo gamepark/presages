@@ -3,44 +3,64 @@ import maxBy from 'lodash/maxBy'
 import { ArcaneCard } from '../material/ArcaneCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Memory } from '../Memory'
 import { PlayerId } from '../PlayerId'
 import { RoundEffects } from './arcane/RoundEffects'
+import { CustomMoveType } from './CustomMoveType'
 import { RuleId } from './RuleId'
 
-export class RoundResolution extends MaterialRulesPart {
+export class RoundResolutionRule extends MaterialRulesPart {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const cards = this.table
 
-    const discardedIndexes: number[] = []
     const cardWinningTheTrick = this.cardWinningTheTrick
-    discardedIndexes.push(cardWinningTheTrick)
-    discardedIndexes.push(...this.discardedCards.filter((card) => card !== cardWinningTheTrick))
+    this.memorize(Memory.FirstPlayer, cardWinningTheTrick.getItem()!.location.player)
 
-    const discardedCards = cards.index(discardedIndexes)
+    moves.push(this.customMove(CustomMoveType.TempoDiscard))
+    //console.log(moves)
     moves.push(
-      ...discardedCards.moveItems({
+      cardWinningTheTrick.moveItem({
           type: LocationType.Discard
         }
       )
     )
 
-    moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
-    moves.push(...this.afterEverythingSolved(discardedCards))
+    const discardedCards = this.discardedCards.filter((_, index) => index !== cardWinningTheTrick.getIndex())
+    moves.push(
+      ...discardedCards
+        .moveItems({
+          type: LocationType.Discard
+        }
+      )
+    )
 
+    const discardedIndexes = [...discardedCards.getIndexes(), cardWinningTheTrick.getIndex()]
+    moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
+    moves.push(...this.afterEverythingSolved(discardedIndexes))
+
+    console.log(moves)
     return moves
   }
 
-  private afterEverythingSolved(discardedCards: Material) {
-    const onDiscardMoves = this.onDiscardMoves(discardedCards)
-    const discardedIndexes = discardedCards.getIndexes()
+  private afterEverythingSolved(discardedIndexes: number[]): MaterialMove[] {
+    const onDiscardMoves = this.onDiscardMoves(discardedIndexes)
+
+    this.afterResolution()
     if (onDiscardMoves.length) {
       return onDiscardMoves
     } else if (this.willTriggerEndOfRound(discardedIndexes)) {
       return [this.startRule(RuleId.RoundEnd)]
     } else {
-      return [this.startRule(RuleId.Deal)]
+      return [this.startPlayerTurn(RuleId.Place, this.firstPlayer)]
     }
+  }
+
+  get firstPlayer() {
+    const player = this.remind(Memory.ForcedFirstPlayer) ?? this.remind(Memory.FirstPlayer)
+    this.memorize(Memory.FirstPlayer, player)
+    this.forget(Memory.ForcedFirstPlayer)
+    return player
   }
 
   willTriggerEndOfRound(discardedCardIndexes: number[]) {
@@ -49,6 +69,7 @@ export class RoundResolution extends MaterialRulesPart {
         .material(MaterialType.Arcane)
         .player(player)
         .index((i) => !discardedCardIndexes.includes(i))
+      console.log(player, playerCards.length)
       if (playerCards.length === 1) return true
     }
 
@@ -72,48 +93,56 @@ export class RoundResolution extends MaterialRulesPart {
   sendCardBackInHandMoves(cards: Material) {
     return cards.moveItems((item) => ({
       type: LocationType.Hand,
-      player: item.location.player,
+      player: item.location.player
     }))
   }
 
-  onDiscardMoves(cards: Material) {
-    const effect = cards.getItems()
-      .map((item) => new RoundEffects[item.id as ArcaneCard]!(this.game))
-      .find((effect) => effect.onDiscard !== undefined)
-    if (effect) return effect.onDiscard()
-    return []
+  onDiscardMoves(discardedIndexes: number[]) {
+    const cards = this.table.index(discardedIndexes)
+    return cards.getItems()
+      .flatMap((item) => new RoundEffects[item.id as ArcaneCard]!(this.game).onDiscard())
   }
 
-  get cardWinningTheTrick() {
+  afterResolution() {
+    return this.table.getItems()
+      .forEach((item) => new RoundEffects[item.id as ArcaneCard]!(this.game).afterResolution(item.id))
+  }
+
+  get cardWinningTheTrick(): Material {
     const cards = this.table
     const effects = cards.getItems().map((item) => new RoundEffects[item.id as ArcaneCard]!(this.game))
     const winTheTrickCondition = effects.find((e) => e.winTheTrickCondition !== undefined)?.winTheTrickCondition
-    if (winTheTrickCondition === undefined) return maxBy(cards.getIndexes(), (index) => cards.index(index).getItem()!.id)!
-    return cards.filter((item) => winTheTrickCondition(item.id)).getIndex()
+    if (winTheTrickCondition === undefined) return cards.index(maxBy(cards.getIndexes(), (index) => cards.index(index).getItem()!.id)!)
+    return cards.filter((item) => winTheTrickCondition(item.id))
   }
 
-  get discardedCards() {
+  get discardedCards(): Material {
     const cards = this.table
     const effects = cards.getItems().map((item) => new RoundEffects[item.id as ArcaneCard]!(this.game))
     const discardedIndexes: number[] = []
     const indexes = cards.getIndexes()
+    const cardItems = cards.getItems()
     for (let i = 0; i < indexes.length; i++) {
       const card = indexes[i]
+      const id = cardItems[i].id as ArcaneCard
       const itsEffect = effects[i]
       if (itsEffect.immuneToDiscard) continue
-      const isDiscarded = effects.some((effect) => effect.canDiscard(card))
+      const isDiscarded = effects.some((effect) => effect.canDiscard(id))
       if (isDiscarded) discardedIndexes.push(card)
     }
 
-    return discardedIndexes
+    return cards.index(discardedIndexes)
   }
 
   get table() {
     return this
       .material(MaterialType.Arcane)
       .location(LocationType.Table)
-   getPlayerHand(playerId: PlayerId) {
+  }
+
+  getPlayerHand(playerId: PlayerId) {
     return this.material(MaterialType.Arcane)
       .location(LocationType.Hand)
-      .player(playerId)}
+      .player(playerId)
+  }
 }

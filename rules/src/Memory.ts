@@ -1,6 +1,8 @@
 export enum Memory {
   Teams = 1,
-  TrickWinCard,
+  TrickWinner,
+  ForcedFirstPlayer,
   FirstPlayer,
-  Round
+  Round,
+
 }

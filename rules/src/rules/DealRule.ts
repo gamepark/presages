@@ -1,7 +1,9 @@
 import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { PlayerId } from '../PlayerId'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Memory } from '../Memory'
+import { PlayerId } from '../PlayerId'
+import { RuleId } from './RuleId'
 
 export class DealRule extends MaterialRulesPart {
   onRuleStart() {
@@ -18,7 +20,15 @@ export class DealRule extends MaterialRulesPart {
       )
     }
 
+    moves.push(this.startPlayerTurn(RuleId.Place, this.firstPlayer))
     return moves
+  }
+
+  get firstPlayer() {
+    const player = this.remind(Memory.ForcedFirstPlayer) ?? this.remind(Memory.FirstPlayer)
+    this.memorize(Memory.FirstPlayer, player)
+    this.forget(Memory.ForcedFirstPlayer)
+    return player
   }
 
   get cardPerPlayer() {

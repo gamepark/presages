@@ -11,7 +11,7 @@ module.exports = (config, env) => {
           type: "asset",
           implementation: ImageMinimizerPlugin.imageminGenerate,
           options: {
-            plugins: ["imagemin-webp"],
+              plugins: [["imagemin-webp", { quality: 100 }]],
           }
         }
       ]

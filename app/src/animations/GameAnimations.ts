@@ -1,3 +1,12 @@
-import { MaterialGameAnimations } from '@gamepark/react-game'
+import { CustomMoveType } from '@gamepark/game-template/rules/CustomMoveType'
+import { MaterialGameAnimationContext, MaterialGameAnimations } from '@gamepark/react-game'
+import { isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 
-export const gameAnimations = new MaterialGameAnimations()
+class PresageGameAnimation extends MaterialGameAnimations {
+  getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
+    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 2 * context.game.players.length
+    return super.getDuration(move, context)
+  }
+}
+
+export const gameAnimations = new PresageGameAnimation()

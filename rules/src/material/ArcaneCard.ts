@@ -1,3 +1,4 @@
+import { getEnumValues } from '@gamepark/rules-api'
 import { Color } from './Color'
 
 export enum ArcaneCard {
@@ -37,6 +38,8 @@ export enum ArcaneCard {
   TheAbsolute34,
   TheAbsolute35   ,
 }
+
+export const arcanes = getEnumValues(ArcaneCard)
 
 export const getColors = (card: ArcaneCard) => {
   if (card <= 8) return [Color.Green]

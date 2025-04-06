@@ -4,7 +4,7 @@ import { ArcaneEffect } from '../ArcaneEffect'
 
 export class ThePrideDescription extends ArcaneEffect {
   afterResolution(card: ArcaneCard) {
-    this.memorize(Memory.FirstPlayer, this.leftPlayerFor(card))
+    this.memorize(Memory.ForcedFirstPlayer, this.leftPlayerFor(card))
   }
 
   leftPlayerFor(card: ArcaneCard) {

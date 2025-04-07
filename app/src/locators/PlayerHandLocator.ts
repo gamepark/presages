@@ -12,7 +12,7 @@ export class PlayerHandLocator extends HandLocator {
     const rotated = !!item?.location.rotation
     const bigCircle = rules.players.length > 4
     const radiusX = rotated? 32 : 37
-    const radiusY = (rotated? 15: 20) + (bigCircle ? 5 : 0)
+    const radiusY = (rotated? 15: 20) + (bigCircle ? 3 : 0)
     const x = Math.cos(angle * Math.PI / 180) * radiusX
     const y = -Math.sin(angle * Math.PI / 180) * radiusY
     return { x, y,  }

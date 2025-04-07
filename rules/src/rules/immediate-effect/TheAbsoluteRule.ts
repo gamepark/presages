@@ -22,7 +22,6 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
   }
 
   getPlayerMoves() {
-    console.log(this.effectPlayer, this.player)
     if (this.effectPlayer === this.player) {
       const moves: MaterialMove[] = []
       for (const player of this.otherPlayers) {

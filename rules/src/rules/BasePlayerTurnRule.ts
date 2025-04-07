@@ -28,6 +28,6 @@ export class BasePlayerTurnRule extends PlayerTurnRule {
     return this
       .material(MaterialType.Arcane)
       .location(LocationType.Table)
-      .player(player).length === 1
+      .player(player).length > 0
   }
 }

@@ -64,7 +64,4 @@ export class PresagesRules
 
 export const hideItemIdToOthersWhenNoZ = (
   item: MaterialItem, player?: PlayerId
-): string[] => {
-  console.log(item.location.rotation)
-  return item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || (item.location.player === player && item.location.rotation === Visibility.VISIBLE_FOR_ME) ? [] : ['id']
-}
+): string[] => item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || (item.location.player === player && item.location.rotation === Visibility.VISIBLE_FOR_ME) ? [] : ['id']

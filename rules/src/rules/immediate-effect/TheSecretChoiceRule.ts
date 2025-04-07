@@ -84,4 +84,9 @@ export class TheSecretChoiceRule extends BasePlayerTurnRule {
 
     return moves
   }
+
+  onRuleEnd() {
+    this.forget(Memory.ShowCardTo)
+    return []
+  }
 }

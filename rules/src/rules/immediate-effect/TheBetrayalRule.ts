@@ -30,6 +30,7 @@ export class TheBetrayalRule extends PlaceRule {
     return this
       .material(MaterialType.Arcane)
       .location(LocationType.Table)
+      .player((p) => p !== this.player)
   }
 
   get hand() {

@@ -1,10 +1,10 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import { ArcaneCard } from '../../../material/ArcaneCard'
 import { RuleId } from '../../RuleId'
 import { ArcaneEffect } from '../ArcaneEffect'
 
 export class TheAngerDescription extends ArcaneEffect {
-  onPlace(_card: ArcaneCard): MaterialMove[] {
+  onPlaceTo(): MaterialMove[] {
+    if (this.table.length === 1) return []
     return [this.startRule(RuleId.TheAnger)]
   }
 }

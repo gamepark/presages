@@ -4,7 +4,7 @@ import { isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 
 class PresageGameAnimation extends MaterialGameAnimations {
   getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
-    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 2 * context.game.players.length
+    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return context.game.players.length
     return super.getDuration(move, context)
   }
 }

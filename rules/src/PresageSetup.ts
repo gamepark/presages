@@ -11,6 +11,7 @@ import { PlayerId } from './PlayerId'
 import { PresagesOptions } from './PresagesOptions'
 import { PresagesRules } from './PresagesRules'
 import { RuleId } from './rules/RuleId'
+import { Visibility } from './rules/Visibility'
 
 /**
  * This class creates a new Game based on the game options
@@ -52,7 +53,8 @@ export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, Loca
         id: absolutes[i],
         location: {
           type: LocationType.Hand,
-          player
+          player,
+          rotation: Visibility.VISIBLE_FOR_ME
         }
       })
     })

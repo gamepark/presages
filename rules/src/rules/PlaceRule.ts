@@ -1,17 +1,44 @@
-import { isMoveItemType, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Material, MaterialMove } from '@gamepark/rules-api'
 import { ArcaneCard } from '../material/ArcaneCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
 import { RoundEffects } from './arcane/RoundEffects'
-import { RuleId } from './RuleId'
+import { BasePlayerTurnRule } from './BasePlayerTurnRule'
 
-export class PlaceRule extends PlayerTurnRule {
+export class PlaceRule extends BasePlayerTurnRule {
   getPlayerMoves() {
-    return this.hand.moveItems({
+    const hand = this.hand
+    const moves: MaterialMove[] = []
+    for (const index of hand.getIndexes()) {
+      const card = hand.index(index)
+      const item = card.getItem()!
+
+      const Effect = RoundEffects[item.id as ArcaneCard]
+      if (Effect && new Effect(this.game).canBePlacedInFrontOfOtherPlayers) {
+        moves.push(...this.placeCardInFrontOfAnyone(card))
+      } else {
+        moves.push(this.placeCardInFrontOfMe(card))
+      }
+    }
+
+    return moves
+  }
+
+  placeCardInFrontOfMe(card: Material) {
+    return card.moveItem({
       type: LocationType.Table,
       player: this.player,
     })
+  }
+
+  placeCardInFrontOfAnyone(card: Material) {
+    return this.game.players
+      .filter((p) => !this.hasCardOnTable(p))
+      .map((p) => card.moveItem({
+      type: LocationType.Table,
+      player: p,
+    }))
   }
 
   get hand() {
@@ -19,16 +46,27 @@ export class PlaceRule extends PlayerTurnRule {
       .material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
+      .filter((item) => this.blockedCard !== item.id)
+  }
+
+  get blockedCard() {
+    return this.remind(Memory.BlockedCard)
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Arcane)(move)) return []
+    if (!isMoveItemType(MaterialType.Arcane)(move) || move.location.type !== LocationType.Table) return []
     const card = this.material(MaterialType.Arcane).getItem(move.itemIndex)!
-    const effect = RoundEffects[card.id as ArcaneCard]
-    if (effect) {
-      const
+    const Effect = RoundEffects[card.id as ArcaneCard]
+    if (Effect) {
+      const moves: MaterialMove[] = new Effect(this.game).onPlaceTo(card.id, move.location.player!)
+      if (moves.length) return moves
     }
-    if (this.nextPlayer === this.remind(Memory.FirstPlayer)) return [this.startRule(RuleId.RoundResolution)]
-    return [this.startPlayerTurn(RuleId.Place, this.nextPlayer)]
+
+    return this.nextRuleMove
+  }
+
+  onRuleEnd() {
+    this.forget(Memory.BlockedCard)
+    return []
   }
 }

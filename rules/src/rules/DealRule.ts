@@ -4,6 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
 import { PlayerId } from '../PlayerId'
 import { RuleId } from './RuleId'
+import { Visibility } from './Visibility'
 
 export class DealRule extends MaterialRulesPart {
   onRuleStart() {
@@ -15,12 +16,15 @@ export class DealRule extends MaterialRulesPart {
       moves.push(
         ...deck.deal({
           type: LocationType.Hand,
-          player: player
+          player: player,
+          rotation: Visibility.VISIBLE_FOR_ME
         }, drawCount)
       )
     }
 
-    moves.push(this.startPlayerTurn(RuleId.Place, this.firstPlayer))
+    const firstPlayer = this.firstPlayer
+    this.memorize(Memory.FirstPlayer, firstPlayer)
+    moves.push(this.startPlayerTurn(RuleId.Place, firstPlayer))
     return moves
   }
 

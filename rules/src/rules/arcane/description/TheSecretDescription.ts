@@ -1,10 +1,16 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { ArcaneCard } from '../../../material/ArcaneCard'
+import { PlayerId } from '../../../PlayerId'
 import { RuleId } from '../../RuleId'
 import { ArcaneEffect } from '../ArcaneEffect'
 
 export class TheSecretDescription extends ArcaneEffect {
-  onPlace(_card: ArcaneCard): MaterialMove[] {
-    return [this.startRule(RuleId.TheSecret)]
+  onPlaceTo(_card: ArcaneCard, target: PlayerId): MaterialMove[] {
+    if (this.player !== target) return [this.startPlayerTurn(RuleId.TheSecretChoice, target)]
+    return [this.startRule(RuleId.TheSecretChoice)]
+  }
+
+  get player() {
+    return this.game.rule?.player
   }
 }

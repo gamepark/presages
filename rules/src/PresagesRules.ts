@@ -1,12 +1,22 @@
-import { hideItemId, hideItemIdToOthers, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
+import { hideItemId, MaterialGame, MaterialItem, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { DealRule } from './rules/DealRule'
+import { TheAbsoluteRule } from './rules/immediate-effect/TheAbsoluteRule'
+import { TheAngerRule } from './rules/immediate-effect/TheAngerRule'
+import { TheBetrayalRule } from './rules/immediate-effect/TheBetrayalRule'
+import { TheDreamRule } from './rules/immediate-effect/TheDreamRule'
+import { TheJalousieRule } from './rules/immediate-effect/TheJalousieRule'
+import { TheLawRule } from './rules/immediate-effect/TheLawRule'
+import { TheLuckRule } from './rules/immediate-effect/TheLuckRule'
+import { TheSecretChoiceRule } from './rules/immediate-effect/TheSecretChoiceRule'
+import { TheSecretRule } from './rules/immediate-effect/TheSecretRule'
 import { PlaceRule } from './rules/PlaceRule'
 import { RoundEndRule } from './rules/RoundEndRule'
 import { RoundResolutionRule } from './rules/RoundResolutionRule'
 import { RuleId } from './rules/RuleId'
+import { Visibility } from './rules/Visibility'
 
 /**
  * This class implements the rules of the board game.
@@ -21,6 +31,15 @@ export class PresagesRules
     [RuleId.Place]: PlaceRule,
     [RuleId.RoundResolution]: RoundResolutionRule,
     [RuleId.RoundEnd]: RoundEndRule,
+    [RuleId.TheLaw]: TheLawRule,
+    [RuleId.TheLuck]: TheLuckRule,
+    [RuleId.TheDream]: TheDreamRule,
+    [RuleId.TheJalousie]: TheJalousieRule,
+    [RuleId.TheSecretChoice]: TheSecretChoiceRule,
+    [RuleId.TheSecret]: TheSecretRule,
+    [RuleId.TheAnger]: TheAngerRule,
+    [RuleId.TheBetrayal]: TheBetrayalRule,
+    [RuleId.TheAbsolute]: TheAbsoluteRule
   }
 
   locationsStrategies = {
@@ -34,11 +53,18 @@ export class PresagesRules
   hidingStrategies = {
     [MaterialType.Arcane]: {
       [LocationType.Deck]: hideItemId,
-      [LocationType.Hand]: hideItemIdToOthers,
+      [LocationType.Hand]: hideItemIdToOthersWhenNoZ,
     }
   }
 
   giveTime(): number {
     return 60
   }
+}
+
+export const hideItemIdToOthersWhenNoZ = (
+  item: MaterialItem, player?: PlayerId
+): string[] => {
+  console.log(item.location.rotation)
+  return item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || (item.location.player === player && item.location.rotation === Visibility.VISIBLE_FOR_ME) ? [] : ['id']
 }

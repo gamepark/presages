@@ -9,11 +9,12 @@ export class PlayerHandLocator extends HandLocator {
     const { rules, type, index } = context
     const item = rules.material(type).index(index).getItem()
     const angle = this.getPlayerAngle(location.player!, context)
-    const radiusX = 37
-    const radiusY = 20
+    const rotated = !!item?.location.rotation
+    const radiusX = rotated? 32 : 37
+    const radiusY = rotated? 15: 20
     const x = Math.cos(angle * Math.PI / 180) * radiusX
-    const y = -Math.sin(angle * Math.PI / 180) * radiusY - (item?.selected ? 2 : 0)
-    return { x, y }
+    const y = -Math.sin(angle * Math.PI / 180) * radiusY
+    return { x, y,  }
   }
 
   getMaxAngle(location: Location, context: MaterialContext): number {

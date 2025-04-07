@@ -2,11 +2,12 @@ import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import { ArcaneCard } from '../../material/ArcaneCard'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { PlayerId } from '../../PlayerId'
 
 export type WinTheTrickCondition = (_card: ArcaneCard) => boolean
 
 export abstract class ArcaneEffect extends MaterialRulesPart {
-  onPlace(_card: ArcaneCard): MaterialMove[] {
+  onPlaceTo(_card: ArcaneCard, _player: PlayerId): MaterialMove[] {
     return []
   }
 
@@ -32,7 +33,7 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
       .getItems()
   }
 
-  get immuneToDiscard() {
-    return false
-  }
+  immuneToDiscard: boolean = false
+
+  canBePlacedInFrontOfOtherPlayers: boolean = false
 }

@@ -8,17 +8,18 @@ import { PlayerId } from '../PlayerId'
 import { RoundEffects } from './arcane/RoundEffects'
 import { CustomMoveType } from './CustomMoveType'
 import { RuleId } from './RuleId'
+import { Visibility } from './Visibility'
 
 export class RoundResolutionRule extends MaterialRulesPart {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const cards = this.table
+    this.forget(Memory.CurrentPlayer)
 
     const cardWinningTheTrick = this.cardWinningTheTrick
     this.memorize(Memory.FirstPlayer, cardWinningTheTrick.getItem()!.location.player)
 
     moves.push(this.customMove(CustomMoveType.TempoDiscard))
-    //console.log(moves)
     moves.push(
       cardWinningTheTrick.moveItem({
           type: LocationType.Discard
@@ -39,7 +40,6 @@ export class RoundResolutionRule extends MaterialRulesPart {
     moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
     moves.push(...this.afterEverythingSolved(discardedIndexes))
 
-    console.log(moves)
     return moves
   }
 
@@ -52,7 +52,9 @@ export class RoundResolutionRule extends MaterialRulesPart {
     } else if (this.willTriggerEndOfRound(discardedIndexes)) {
       return [this.startRule(RuleId.RoundEnd)]
     } else {
-      return [this.startPlayerTurn(RuleId.Place, this.firstPlayer)]
+      const firstPlayer = this.firstPlayer
+      this.memorize(Memory.CurrentPlayer, firstPlayer)
+      return [this.startPlayerTurn(RuleId.Place, firstPlayer)]
     }
   }
 
@@ -69,7 +71,7 @@ export class RoundResolutionRule extends MaterialRulesPart {
         .material(MaterialType.Arcane)
         .player(player)
         .index((i) => !discardedCardIndexes.includes(i))
-      console.log(player, playerCards.length)
+      
       if (playerCards.length === 1) return true
     }
 
@@ -93,7 +95,8 @@ export class RoundResolutionRule extends MaterialRulesPart {
   sendCardBackInHandMoves(cards: Material) {
     return cards.moveItems((item) => ({
       type: LocationType.Hand,
-      player: item.location.player
+      player: item.location.player,
+      rotation: Visibility.VISIBLE_FOR_ME
     }))
   }
 

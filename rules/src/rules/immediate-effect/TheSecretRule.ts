@@ -36,8 +36,10 @@ export class TheSecretRule extends BasePlayerTurnRule {
           rotation: Visibility.VISIBLE_FOR_ME
         })
       )
+    }
 
-      if (this.hand.length > 0) {
+    if (move.location.type === LocationType.Hand && move.location.player === this.player) {
+      if (this.hand.length > 1) {
         moves.push(this.hand.shuffle())
       }
 

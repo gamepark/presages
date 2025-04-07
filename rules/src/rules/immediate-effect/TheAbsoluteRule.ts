@@ -66,12 +66,15 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
     if (this.effectPlayer === this.player) {
       return [this.startPlayerTurn(RuleId.TheAbsolute, move.location.player!)]
     } else {
-      return [
-        ...this.givenCards.rotateItems(Visibility.VISIBLE_FOR_ME),
-        this.effectPlayerHand.shuffle(),
-        this.hand.shuffle(),
-        ...this.nextRuleMove
-      ]
+      const effectPlayerHand = this.effectPlayerHand
+      const hand = this.hand
+
+      const moves: MaterialMove[] = []
+      moves.push(...this.givenCards.rotateItems(Visibility.VISIBLE_FOR_ME))
+      if (effectPlayerHand.length > 1) moves.push(effectPlayerHand.shuffle())
+      if (hand.length > 1) moves.push(hand.shuffle())
+      moves.push(...this.nextRuleMove)
+      return moves
     }
   }
 

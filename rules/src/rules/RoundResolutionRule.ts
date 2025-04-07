@@ -72,7 +72,7 @@ export class RoundResolutionRule extends MaterialRulesPart {
         .player(player)
         .index((i) => !discardedCardIndexes.includes(i))
       
-      if (playerCards.length === 1) return true
+      if (playerCards.length <= 1) return true
     }
 
     return false

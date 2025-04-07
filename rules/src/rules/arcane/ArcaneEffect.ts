@@ -22,6 +22,10 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
     return []
   }
 
+  canBePlayed(_card: ArcaneCard): boolean {
+    return true
+  }
+
   get winTheTrickCondition(): WinTheTrickCondition | undefined {
     return
   }

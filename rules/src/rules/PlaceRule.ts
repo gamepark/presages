@@ -42,11 +42,31 @@ export class PlaceRule extends BasePlayerTurnRule {
   }
 
   get hand() {
-    return this
+    const hand = this
       .material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
       .filter((item) => this.blockedCard !== item.id)
+
+    return this.filterPlayable(hand)
+  }
+
+  filterPlayable(hand: Material) {
+    const cardIndexes = hand.getIndexes()
+    const effects = cardIndexes.map((index) => {
+      const itemId = hand.getItem(index)!.id
+      const Effect = RoundEffects[itemId as ArcaneCard]
+      console.log(typeof Effect, itemId)
+      return new Effect(this.game)
+    })
+    const playableIndexes: number[] = []
+    for (const index of cardIndexes) {
+      const item = hand.getItem(index)!
+      if (effects.every((effect) => effect.canBePlayed(item.id))) playableIndexes.push()
+    }
+
+    if (playableIndexes.length === 0) return hand
+    return hand.index(playableIndexes)
   }
 
   get blockedCard() {

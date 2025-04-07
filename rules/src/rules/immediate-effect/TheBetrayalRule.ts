@@ -22,7 +22,7 @@ export class TheBetrayalRule extends PlaceRule {
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Arcane)(move) || move.location.type !== LocationType.Table) return []
     const cardInPlace = this.table.filter((item) => isEqual(item.location, move.location))
-    const movedCard = this.hand.getItem(move.itemIndex)!
+    const movedCard = this.material(MaterialType.Arcane).getItem(move.itemIndex)!
     return cardInPlace.moveItems(movedCard.location)
   }
 
@@ -33,9 +33,11 @@ export class TheBetrayalRule extends PlaceRule {
   }
 
   get hand() {
-    return this
+    const hand = this
       .material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
+
+    return this.filterPlayable(hand)
   }
 }

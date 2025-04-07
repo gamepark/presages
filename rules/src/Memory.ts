@@ -2,7 +2,7 @@ export enum Memory {
   Teams = 1,
   ForcedFirstPlayer,
   FirstPlayer,
-  Round,
+  TheLaw,
   CurrentPlayer,
   EffectPlayer,
   ShowCardTo,

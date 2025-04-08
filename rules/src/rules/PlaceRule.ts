@@ -46,7 +46,7 @@ export class PlaceRule extends BasePlayerTurnRule {
       .material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
-      .filter((item) => this.blockedCard !== item.id)
+      .filter((_item, index) => this.blockedCard !== index)
 
     return this.filterPlayable(hand)
   }

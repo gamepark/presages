@@ -25,9 +25,7 @@ export class TheAngerRule extends BasePlayerTurnRule {
 
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Arcane)(move) || move.location.type !== LocationType.Hand) return []
-
-    const item = this.material(MaterialType.Arcane).getItem(move.itemIndex)!
-    this.memorize(Memory.BlockedCard, item.id)
+    this.memorize(Memory.BlockedCard, move.itemIndex)
     return []
   }
 

@@ -2,5 +2,6 @@ export enum LocationType {
   Hand = 1,
   Deck,
   Table,
-  Discard
+  Discard,
+  Help
 }

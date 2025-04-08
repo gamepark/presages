@@ -31,4 +31,5 @@ export class BasePlayerTurnRule extends PlayerTurnRule {
       .location(LocationType.Table)
       .player(player).length > 0
   }
+
 }

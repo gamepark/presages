@@ -20,8 +20,8 @@ export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, Loca
   Rules = PresagesRules
 
   setupMaterial(_options: PresagesOptions) {
-    this.setupCards()
     this.setupAbsolute()
+    this.setupCards()
   }
 
   setupCards() {
@@ -48,11 +48,12 @@ export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, Loca
     const allAbsolutes = shuffle(absolutes).slice(0, this.players.length)
 
     this.material(MaterialType.Arcane)
-      .createItems(this.players.map((p) => ({
-        id: allAbsolutes[0],
+      .createItems(this.players.map((p, i) => ({
+        id: allAbsolutes[i],
         location: {
           type: LocationType.Hand,
-          player: p
+          player: p,
+          rotation: Visibility.VISIBLE_FOR_ME
         }
       })))
 

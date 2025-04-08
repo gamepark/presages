@@ -4,7 +4,7 @@ import { Coordinates, Location } from '@gamepark/rules-api'
 export class ArcaneDeckLocator extends DeckLocator {
   getCoordinates(_location: Location, _context: MaterialContext): Partial<Coordinates> {
     return {
-      x: -55  , y: 25
+      x: -55  , y: 28
     }
   }
 

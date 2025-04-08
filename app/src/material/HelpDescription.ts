@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { CardDescription } from '@gamepark/react-game'
 import MoonFront from '../images/team-marker/moon-front.jpg'
 import MoonBack from '../images/team-marker/moon-back.jpg'
@@ -19,6 +21,12 @@ export class HelpDescription extends CardDescription {
     1: MoonFront,
     2: DiamondFront,
     3: StarFront,
+  }
+
+  getItemExtraCss() {
+    return css`
+      display: none;
+    `
   }
 }
 

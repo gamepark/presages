@@ -13,6 +13,7 @@ export class HelpLocator extends Locator {
   }
 }
 
+
 const fourPlayersPanelPosition = (index: number) => {
   switch (index) {
     case 0: return { x: -22, y: 19.5, z: 0}

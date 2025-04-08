@@ -74,9 +74,9 @@ const getPlayerPanelPosition = (players: number, index: number) => {
 const fourPlayersPanelPosition = (index: number) => {
   switch (index) {
     case 0: return css`bottom: 1em; left: 40em`
-    case 1: return css`top: 30em; left: 1em`
-    case 2: return css`top: 9em; right: 40em`
-    case 3: return css`bottom: 22em; right: 1em`
+    case 1: return css`top: 51em; left: 1em`
+    case 2: return css`top: 9em; right: 50em`
+    case 3: return css`top: 51em; right: 1em`
     default: return css`bottom: 1em; left: 1em`
   }
 
@@ -85,22 +85,22 @@ const fourPlayersPanelPosition = (index: number) => {
 const fivePlayersPanelPosition = (index: number) => {
   switch (index) {
     case 0: return css`bottom: 1em; left: 45em`
-    case 1: return css`top: 45em; left: 1em`
+    case 1: return css`bottom: 35em; left: 1em`
     case 2: return css`top: 10em; left: 1em`
     case 3: return css`top: 10em; right: 1em`
     case 4:
-    default: return css`top: 45em; right: 1em`
+    default: return css`bottom: 35em; right: 1em`
   }
 }
 
 const sixPlayersPanelPosition = (index: number) => {
   switch (index) {
-    case 0: return css`bottom: 1em; left: 45em`
-    case 1: return css`top: 55em; left: 1em`
-    case 2: return css`top: 10em; left: 1em`
-    case 3: return css`top: 9em; left: 83em`
-    case 4: return css`top: 10em; right: 1em`
+    case 0: return css`bottom: 1em; left: 47em`
+    case 1: return css`bottom: 28em; left: 1em`
+    case 2: return css`top: 22em; left: 1em`
+    case 3: return css`top: 9em; right: 62em`
+    case 4: return css`top: 22em; right: 1em`
     case 5:
-    default: return css`top: 55em; right: 1em`
+    default: return css`bottom: 28em; right: 1em`
   }
 }

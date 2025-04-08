@@ -10,15 +10,15 @@ export class HelpDescription extends CardDescription {
   width = 7
   height = 12
   backImages = {
-    1: MoonFront,
-    2: DiamondFront,
-    3: StarFront,
-  }
-
-  images = {
     1: MoonBack,
     2: DiamondBack,
     3: StarBack,
+  }
+
+  images = {
+    1: MoonFront,
+    2: DiamondFront,
+    3: StarFront,
   }
 }
 

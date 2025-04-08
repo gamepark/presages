@@ -1,5 +1,5 @@
 export enum Memory {
-  Teams = 1,
+  Team = 1,
   ForcedFirstPlayer,
   FirstPlayer,
   TheLaw,

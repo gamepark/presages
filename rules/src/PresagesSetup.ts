@@ -16,7 +16,7 @@ import { Visibility } from './rules/Visibility'
 /**
  * This class creates a new Game based on the game options
  */
-export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, PresagesOptions> {
+export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, PresagesOptions> {
   Rules = PresagesRules
 
   setupMaterial(_options: PresagesOptions) {
@@ -76,14 +76,15 @@ export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, Loca
     const minAbsolute = min(cards)
     const maxAbsolute = max(cards)
 
-    const [extremePlayers, otherPlayers] = partition(this.players, (_: PlayerId, i: number) => {
-      const absolute = cards[i]
+    console.log(minAbsolute, maxAbsolute)
+    const [extremePlayers, otherPlayers] = partition(this.players, (id: PlayerId) => {
+      const absolute = cards[id - 1]
       return absolute === minAbsolute || absolute === maxAbsolute
     })
 
-    this.players.forEach((player, i) => {
+    this.players.forEach((player) => {
       this.material(MaterialType.Arcane).createItem({
-        id: cards[i],
+        id: cards[player - 1],
         location: {
           type: LocationType.Hand,
           player,
@@ -92,13 +93,14 @@ export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, Loca
       })
     })
 
+    console.log(extremePlayers, otherPlayers)
     extremePlayers.forEach((player) => this.markInTeam(player as PlayerId, 1))
     otherPlayers.forEach((player) => this.markInTeam(player as PlayerId, 2))
   }
 
   markInTeam(player: PlayerId, team: number) {
     this.material(MaterialType.Help).createItem({ id: team, location: { type: LocationType.Help, player: player as PlayerId } })
-    this.memorize(Memory.Teams, team, player)
+    this.memorize(Memory.Team, team, player)
   }
 
   get playerWithMaxAbsolute() {
@@ -112,7 +114,9 @@ export class PresageSetup extends MaterialGameSetup<PlayerId, MaterialType, Loca
   }
 
   start() {
-    this.memorize(Memory.FirstPlayer, this.playerWithMaxAbsolute)
+    const firstPlayer = this.playerWithMaxAbsolute
+    this.memorize(Memory.CurrentPlayer, firstPlayer)
+    this.memorize(Memory.FirstPlayer, firstPlayer)
     this.startRule(RuleId.Deal)
   }
 }

@@ -1,9 +1,12 @@
 import { LocationType } from '@gamepark/game-template/material/LocationType'
 import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
+import { arcaneDescription } from '../material/ArcaneDescription'
 
 export class PlayerHandLocator extends HandLocator {
+
+  locationDescription = new DropAreaDescription({ height: arcaneDescription.height, width: arcaneDescription.width * 3.5, borderRadius: arcaneDescription.borderRadius})
 
   getCoordinates(location: Location, context: ItemContext) {
     const { rules, type, index } = context
@@ -11,8 +14,8 @@ export class PlayerHandLocator extends HandLocator {
     const angle = this.getPlayerAngle(location.player!, context)
     const rotated = !!item?.location.rotation
     const bigCircle = rules.players.length > 4
-    const radiusX = rotated? 32 : 37
-    const radiusY = (rotated? 15: 20) + (bigCircle ? 3 : 0)
+    const radiusX = rotated? 34 : 39
+    const radiusY = (rotated? 15: 20) + (bigCircle ? 5 : 0)
     const x = Math.cos(angle * Math.PI / 180) * radiusX
     const y = -Math.sin(angle * Math.PI / 180) * radiusY
     return { x, y,  }
@@ -37,7 +40,7 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
-    return ['translateZ(10em)', 'translateY(-30%)',`rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
+    return ['translateZ(10em)', `translateY(${context.rules.players.length >= 5? -45: -30}%)`,`rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }
 
   getItemIndex(item: MaterialItem, context: ItemContext) {

@@ -96,7 +96,7 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
       .material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
-      .filter((item) => this.blockedCard !== item.id && !item.location.rotation)
+      .filter((item, index) => this.blockedCard !== index && !item.location.rotation)
   }
 
   get blockedCard() {

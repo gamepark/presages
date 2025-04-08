@@ -4,6 +4,7 @@ import { PlayerId } from '@gamepark/game-template/PlayerId'
 import { Locator } from '@gamepark/react-game'
 import { arcaneDeckLocator } from './ArcaneDeckLocator'
 import { arcaneDiscardLocator } from './ArcaneDiscardLocator'
+import { helpLocator } from './HelpLocator'
 import { playerHandLocator } from './PlayerHandLocator'
 import { tableLocator } from './TableLocator'
 
@@ -11,5 +12,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.Hand]: playerHandLocator,
   [LocationType.Deck]: arcaneDeckLocator,
   [LocationType.Table]: tableLocator,
-  [LocationType.Discard]: arcaneDiscardLocator
+  [LocationType.Discard]: arcaneDiscardLocator,
+  [LocationType.Help]: helpLocator
 }

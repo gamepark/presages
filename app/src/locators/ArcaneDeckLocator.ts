@@ -2,10 +2,9 @@ import { DeckLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 
 export class ArcaneDeckLocator extends DeckLocator {
-  getCoordinates(_location: Location, context: MaterialContext): Partial<Coordinates> {
-    const { rules } = context
+  getCoordinates(_location: Location, _context: MaterialContext): Partial<Coordinates> {
     return {
-      x: -40  , y: 20 + (rules.players.length > 4? 5: 0)
+      x: -55  , y: 25
     }
   }
 

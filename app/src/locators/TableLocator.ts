@@ -8,8 +8,9 @@ export class TableLocator extends Locator {
     const { rules, type, index } = context
     const item = rules.material(type).index(index).getItem()
     const angle = playerHandLocator.getPlayerAngle(location.player!, context)
-    const radiusX = 24
-    const radiusY = 7
+    const radiusX = 26.5
+    const bigCircle = rules.players.length > 4
+    const radiusY = 7.5 + (bigCircle ? 5 : 0)
     const x = Math.cos(angle * Math.PI / 180) * radiusX
     const y = -Math.sin(angle * Math.PI / 180) * radiusY - (item?.selected ? 2 : 0)
     return { x, y }

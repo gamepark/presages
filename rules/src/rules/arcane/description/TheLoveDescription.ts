@@ -4,7 +4,7 @@ import { ArcaneEffect } from '../ArcaneEffect'
 
 export class TheLoveDescription extends ArcaneEffect {
   canDiscard(card: ArcaneCard): boolean {
-    if (card !== ArcaneCard.TheLife) return false
+    if (card !== ArcaneCard.TheLove) return false
     return this.table
       .filter((item) => hasColor(item.id, Color.Green))
       .length > 1

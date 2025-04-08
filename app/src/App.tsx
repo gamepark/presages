@@ -16,7 +16,7 @@ export default function App() {
   return (
     <>
       {!!game && <GameDisplay players={game.players.length} />}
-      <LoadingScreen display={loading} author="Someone" artist="Somebody" publisher="Nobody" developer="You" />
+      <LoadingScreen display={loading} author="Maxime Rambourg" artist="Ben Renaut" publisher="Spiral Editions" developer="Game Park" />
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
       <Menu />

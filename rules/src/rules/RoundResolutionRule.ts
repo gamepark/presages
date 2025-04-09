@@ -95,7 +95,9 @@ export class RoundResolutionRule extends MaterialRulesPart {
   }
 
   sendCardBackInHandMoves(cards: Material) {
-    return cards.moveItems((item) => ({
+    return cards
+      .sort((item) => item.location.player!)
+      .moveItems((item) => ({
       type: LocationType.Hand,
       player: item.location.player,
       rotation: Visibility.VISIBLE_FOR_ME

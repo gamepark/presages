@@ -1,12 +1,34 @@
+import { LocationType } from '@gamepark/presages/material/LocationType'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
+import { RuleId } from '@gamepark/presages/rules/RuleId'
+import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { MaterialGameAnimationContext, MaterialGameAnimations } from '@gamepark/react-game'
-import { isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, MaterialMove } from '@gamepark/rules-api'
 
 class PresageGameAnimation extends MaterialGameAnimations {
   getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
-    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return context.game.players.length
+    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 1
     return super.getDuration(move, context)
   }
 }
 
 export const gameAnimations = new PresageGameAnimation()
+
+gameAnimations
+  .when()
+  .move((move) => isMoveItemType(MaterialType.Help)(move))
+  .none()
+
+gameAnimations
+  .when()
+  .move((move, context) => context.rules.game.rule?.id === RuleId.Deal && isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand)
+  .duration(0.2)
+
+gameAnimations
+.when()
+.move((move, context) =>
+  isMoveItemType(MaterialType.Arcane)(move)
+  && move.location.rotation === Visibility.VISIBLE_FOR_ME
+  && context.rules.material(MaterialType.Arcane).getItem(move.itemIndex)!.location.rotation === Visibility.HIDDEN_FOR_EVERYONE)
+.duration(0.5)

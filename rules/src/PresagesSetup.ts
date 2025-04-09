@@ -76,7 +76,6 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     const minAbsolute = min(cards)
     const maxAbsolute = max(cards)
 
-    console.log(minAbsolute, maxAbsolute)
     const [extremePlayers, otherPlayers] = partition(this.players, (id: PlayerId) => {
       const absolute = cards[id - 1]
       return absolute === minAbsolute || absolute === maxAbsolute
@@ -93,7 +92,6 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       })
     })
 
-    console.log(extremePlayers, otherPlayers)
     extremePlayers.forEach((player) => this.markInTeam(player as PlayerId, 1))
     otherPlayers.forEach((player) => this.markInTeam(player as PlayerId, 2))
   }

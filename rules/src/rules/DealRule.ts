@@ -1,4 +1,5 @@
 import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { keyBy, mapValues } from 'lodash'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
@@ -11,14 +12,16 @@ export class DealRule extends MaterialRulesPart {
     const moves: MaterialMove[] = []
     const deck = this.deck
     let count = 0
+    const cardsByPlayer: Record<PlayerId, number> = mapValues(keyBy(this.game.players), () => 0)
     for (const player of this.game.players) {
       const hand = this.getPlayerHand(player)
-      count += this.getCardCountForPlayer(player) - hand.length
+      cardsByPlayer[player] = this.getCardCountForPlayer(player) - hand.length
+      count += cardsByPlayer[player]
     }
-
     for (let i = 0; i < count; i++) {
-      const players = this.playerWithoutFullHand
+      const players = this.getPlayerWithoutFullHand(cardsByPlayer)
       const player = players[i % players.length]
+      cardsByPlayer[player]--
       moves.push(deck.dealOne({
         type: LocationType.Hand,
         player: player,
@@ -32,8 +35,8 @@ export class DealRule extends MaterialRulesPart {
     return moves
   }
 
-  get playerWithoutFullHand() {
-    return this.game.players.filter((p) => (this.getCardCountForPlayer(p) - this.getPlayerHand(p).length) > 0)
+  getPlayerWithoutFullHand(cardsByPlayer: Record<PlayerId, number>) {
+    return this.game.players.filter((p) => cardsByPlayer[p] > 0)
   }
 
   get firstPlayer() {

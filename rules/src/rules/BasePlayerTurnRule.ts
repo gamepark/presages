@@ -21,7 +21,6 @@ export class BasePlayerTurnRule extends PlayerTurnRule {
   get nextPlayer(): PlayerId {
     const currentPlayer = this.currentPlayer ?? this.player
     const players = this.game.players.filter((p) => !this.hasCardOnTable(p) || p === currentPlayer)
-    console.log(currentPlayer, players[(players.indexOf(currentPlayer) + 1) % players.length])
     return players[(players.indexOf(currentPlayer) + 1) % players.length]
   }
 

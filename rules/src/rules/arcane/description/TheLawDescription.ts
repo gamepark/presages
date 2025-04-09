@@ -11,7 +11,6 @@ export class TheLawDescription extends ArcaneEffect {
   }
 
   canBePlayed(card: ArcaneCard) {
-    console.log(this.theLaw)
     if (this.theLaw < 0) return card < 15
     return card > 15
   }

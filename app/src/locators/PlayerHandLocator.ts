@@ -38,7 +38,7 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
-    return ['translateZ(10em)', `translateY(${context.rules.players.length >= 5? -45: -30}%)`,`rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
+    return ['translateZ(10em)', `translateY(-45%)`,`rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }
 
   getItemIndex(item: MaterialItem, context: ItemContext) {

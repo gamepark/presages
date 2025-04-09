@@ -1,4 +1,4 @@
-import { ArcaneCard } from '@gamepark/game-template/material/ArcaneCard'
+import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { CardDescription } from '@gamepark/react-game'
 import Back from '../images/arcane/back.jpg'
 import TheAbsolute30 from '../images/arcane/the-absolute-30.jpg'

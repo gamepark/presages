@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
-import { Memory } from '@gamepark/game-template/Memory'
-import { PlayerId } from '@gamepark/game-template/PlayerId'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { Memory } from '@gamepark/presages/Memory'
+import { PlayerId } from '@gamepark/presages/PlayerId'
 import { StyledPlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { createPortal } from 'react-dom'

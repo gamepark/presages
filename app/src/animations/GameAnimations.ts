@@ -1,4 +1,4 @@
-import { CustomMoveType } from '@gamepark/game-template/rules/CustomMoveType'
+import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { MaterialGameAnimationContext, MaterialGameAnimations } from '@gamepark/react-game'
 import { isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 

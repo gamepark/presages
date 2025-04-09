@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { PresagesRules } from '@gamepark/game-template/PresagesRules'
+import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
 

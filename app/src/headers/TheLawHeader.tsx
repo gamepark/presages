@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { CustomMoveType } from '@gamepark/game-template/rules/CustomMoveType'
+import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { PlayMoveButton, useLegalMove } from '@gamepark/react-game'
 import { isCustomMoveType } from '@gamepark/rules-api'
 

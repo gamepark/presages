@@ -1,5 +1,5 @@
-import { LocationType } from '@gamepark/game-template/material/LocationType'
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
+import { LocationType } from '@gamepark/presages/material/LocationType'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { arcaneDescription } from '../material/ArcaneDescription'

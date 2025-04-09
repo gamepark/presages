@@ -1,4 +1,4 @@
-import { MaterialType } from '@gamepark/game-template/material/MaterialType'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { MaterialDescription } from '@gamepark/react-game'
 import { arcaneDescription } from './ArcaneDescription'
 import { helpDescription } from './HelpDescription'

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { Memory } from '@gamepark/game-template/Memory'
-import { PresagesRules } from '@gamepark/game-template/PresagesRules'
+import { Memory } from '@gamepark/presages/Memory'
+import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
 

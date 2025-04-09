@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/PresagesOptions'
-import { PresagesRules } from '@gamepark/game-template/PresagesRules'
-import { PresagesSetup } from '@gamepark/game-template/PresagesSetup'
+import { GameTemplateOptionsSpec } from '@gamepark/presages/PresagesOptions'
+import { PresagesRules } from '@gamepark/presages/PresagesRules'
+import { PresagesSetup } from '@gamepark/presages/PresagesSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -16,7 +16,7 @@ setupTranslation(translations, { debug: false })
 ReactDOM.render(
   <StrictMode>
     <GameProvider
-      game="game-template"
+      game="presages"
       Rules={PresagesRules}
       optionsSpec={GameTemplateOptionsSpec}
       GameSetup={PresagesSetup}

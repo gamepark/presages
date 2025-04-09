@@ -10,22 +10,30 @@ export class DealRule extends MaterialRulesPart {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const deck = this.deck
+    let count = 0
     for (const player of this.game.players) {
       const hand = this.getPlayerHand(player)
-      const drawCount = this.cardPerPlayer - hand.length
-      moves.push(
-        ...deck.deal({
-          type: LocationType.Hand,
-          player: player,
-          rotation: Visibility.VISIBLE_FOR_ME
-        }, drawCount)
-      )
+      count += this.getCardCountForPlayer(player) - hand.length
+    }
+
+    for (let i = 0; i < count; i++) {
+      const players = this.playerWithoutFullHand
+      const player = players[i % players.length]
+      moves.push(deck.dealOne({
+        type: LocationType.Hand,
+        player: player,
+        rotation: Visibility.VISIBLE_FOR_ME
+      }))
     }
 
     const firstPlayer = this.firstPlayer
     this.memorize(Memory.FirstPlayer, firstPlayer)
     moves.push(this.startPlayerTurn(RuleId.Place, firstPlayer))
     return moves
+  }
+
+  get playerWithoutFullHand() {
+    return this.game.players.filter((p) => (this.getCardCountForPlayer(p) - this.getPlayerHand(p).length) > 0)
   }
 
   get firstPlayer() {
@@ -35,8 +43,10 @@ export class DealRule extends MaterialRulesPart {
     return player
   }
 
-  get cardPerPlayer() {
-    return 9 - this.game.players.length
+  getCardCountForPlayer(player: PlayerId) {
+    if (!this.remind(Memory.RoundWinner) && this.game.players.length === 5 && this.remind(Memory.Team, player) === 1) return 4
+    if (this.game.players.length < 6) return 5
+    return 4
   }
 
   getPlayerHand(player: PlayerId) {

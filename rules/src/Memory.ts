@@ -6,5 +6,7 @@ export enum Memory {
   CurrentPlayer,
   EffectPlayer,
   ShowCardTo,
-  BlockedCard
+  BlockedCard,
+  RoundWinner,
+  TrickWinner
 }

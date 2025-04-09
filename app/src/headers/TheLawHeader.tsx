@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { CustomMoveType } from '@gamepark/game-template/rules/CustomMoveType'
 import { PlayMoveButton, useLegalMove } from '@gamepark/react-game'
 import { isCustomMoveType } from '@gamepark/rules-api'
@@ -8,7 +9,7 @@ export const TheLawHeader = () => {
   const plus15 = useLegalMove((move) => isCustomMoveType(CustomMoveType.TheLaw)(move) && move.data === 15)
 
   return (
-    <>
+    <div css={css`white-space: pre-wrap`}>
       <PlayMoveButton move={minus15}>
         Less than 15
       </PlayMoveButton>
@@ -16,6 +17,6 @@ export const TheLawHeader = () => {
       <PlayMoveButton move={plus15}>
         More than 15
       </PlayMoveButton>
-    </>
+    </div>
   )
 }

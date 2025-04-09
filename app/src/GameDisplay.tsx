@@ -12,7 +12,7 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
   const margin = { top: 0, left: 0, right: 0, bottom: 0 }
   return (
     <>
-      <GameTable verticalCenter xMin={-60} xMax={60} yMin={-35} yMax={35} margin={margin} css={process.env.NODE_ENV === 'development' && tableBorder}>
+      <GameTable verticalCenter xMin={-60} xMax={60} yMin={-35} yMax={35} margin={margin} css={process.env.NODE_ENV !== 'development' && tableBorder}>
         {/*<GameTableNavigation />*/}
         <PlayerPanels />
       </GameTable>

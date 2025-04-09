@@ -84,7 +84,7 @@ const fourPlayersPanelPosition = (index: number) => {
 
 const fivePlayersPanelPosition = (index: number) => {
   switch (index) {
-    case 0: return css`bottom: 1em; left: 45em`
+    case 0: return css`bottom: 1em; left: 40em`
     case 1: return css`bottom: 35em; left: 1em`
     case 2: return css`top: 10em; left: 1em`
     case 3: return css`top: 10em; right: 1em`
@@ -95,7 +95,7 @@ const fivePlayersPanelPosition = (index: number) => {
 
 const sixPlayersPanelPosition = (index: number) => {
   switch (index) {
-    case 0: return css`bottom: 1em; left: 47em`
+    case 0: return css`bottom: 1em; left: 42em`
     case 1: return css`bottom: 28em; left: 1em`
     case 2: return css`top: 22em; left: 1em`
     case 3: return css`top: 9em; right: 62em`

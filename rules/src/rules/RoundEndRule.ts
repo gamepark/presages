@@ -8,6 +8,7 @@ import { RuleId } from './RuleId'
 export class RoundEndRule extends MaterialRulesPart {
   onRuleStart() {
     const players = this.winningPlayers
+    this.memorize(Memory.RoundWinner, this.remind(Memory.Team, players[0]))
     const cards = this.material(MaterialType.Help).location(LocationType.Help).player((p) => players.includes(p as PlayerId))
     if (cards.rotation(true).length > 0) return [this.endGame()]
     const moves: MaterialMove[] = []

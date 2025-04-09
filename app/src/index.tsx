@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/presages/PresagesOptions'
+import { PresagesOptionsSpec } from '@gamepark/presages/PresagesOptions'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { PresagesSetup } from '@gamepark/presages/PresagesSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
@@ -18,7 +18,7 @@ ReactDOM.render(
     <GameProvider
       game="presages"
       Rules={PresagesRules}
-      optionsSpec={GameTemplateOptionsSpec}
+      optionsSpec={PresagesOptionsSpec}
       GameSetup={PresagesSetup}
       material={Material}
       locators={Locators}

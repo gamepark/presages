@@ -1,5 +1,7 @@
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
-import { CardDescription } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/presages/material/LocationType'
+import { CardDescription, MaterialContext } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 import Back from '../images/arcane/back.jpg'
 import TheAbsolute30 from '../images/arcane/the-absolute-30.jpg'
 import TheAbsolute31 from '../images/arcane/the-absolute-31.jpg'
@@ -78,6 +80,11 @@ export class ArcaneDescription extends CardDescription {
     [ArcaneCard.TheAbsolute33]: TheAbsolute33,
     [ArcaneCard.TheAbsolute34]: TheAbsolute34,
     [ArcaneCard.TheAbsolute35]: TheAbsolute35,
+  }
+
+  isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+    if (item.location?.type === LocationType.Deck) return true
+    return super.isFlippedOnTable(item, context)
   }
 }
 

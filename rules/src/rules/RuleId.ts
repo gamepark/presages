@@ -9,8 +9,9 @@ export enum RuleId {
   TheLuck,
   TheDream,
   TheJalousie,
-  TheSecretChoice,
-  TheSecret,
+  TheSecretForMe,
+  TheSecretForOther,
+  TheSecretConfirm,
   TheAnger,
   TheBetrayal,
   TheAbsolute

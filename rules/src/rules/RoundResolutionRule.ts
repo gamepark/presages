@@ -38,9 +38,14 @@ export class RoundResolutionRule extends MaterialRulesPart {
     )
 
     const discardedIndexes = [...discardedCards.getIndexes(), cardWinningTheTrick.getIndex()]
-    moves.push(...this.afterEverythingSolved(discardedIndexes))
-    if (moves.some((move) => isStartRule(move) && move.id === RuleId.RoundEnd)) return moves
-    moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
+    const afterEverythingSolved = this.afterEverythingSolved(discardedIndexes)
+    if (afterEverythingSolved.some((move) => isStartRule(move) && move.id === RuleId.RoundEnd)) {
+      moves.push(...this.afterEverythingSolved(discardedIndexes))
+      return moves
+    } else {
+      moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
+      moves.push(...this.afterEverythingSolved(discardedIndexes))
+    }
 
     return moves
   }

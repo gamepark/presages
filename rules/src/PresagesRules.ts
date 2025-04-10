@@ -10,13 +10,14 @@ import { TheDreamRule } from './rules/immediate-effect/TheDreamRule'
 import { TheJalousieRule } from './rules/immediate-effect/TheJalousieRule'
 import { TheLawRule } from './rules/immediate-effect/TheLawRule'
 import { TheLuckRule } from './rules/immediate-effect/TheLuckRule'
-import { TheSecretChoiceRule } from './rules/immediate-effect/TheSecretChoiceRule'
-import { TheSecretRule } from './rules/immediate-effect/TheSecretRule'
+import { TheSecretForMeRule } from './rules/immediate-effect/TheSecretForMeRule'
+import { TheSecretConfirmRule } from './rules/immediate-effect/TheSecretConfirmRule'
+import { TheSecretForOtherRule } from './rules/immediate-effect/TheSecretForOtherRule'
 import { PlaceRule } from './rules/PlaceRule'
 import { RoundEndRule } from './rules/RoundEndRule'
 import { RoundResolutionRule } from './rules/RoundResolutionRule'
 import { RuleId } from './rules/RuleId'
-import { Visibility } from './rules/Visibility'
+import { isVisibleForMe, Visibility } from './rules/Visibility'
 
 /**
  * This class implements the rules of the board game.
@@ -35,8 +36,9 @@ export class PresagesRules
     [RuleId.TheLuck]: TheLuckRule,
     [RuleId.TheDream]: TheDreamRule,
     [RuleId.TheJalousie]: TheJalousieRule,
-    [RuleId.TheSecretChoice]: TheSecretChoiceRule,
-    [RuleId.TheSecret]: TheSecretRule,
+    [RuleId.TheSecretForMe]: TheSecretForMeRule,
+    [RuleId.TheSecretForOther]: TheSecretForOtherRule,
+    [RuleId.TheSecretConfirm]: TheSecretConfirmRule,
     [RuleId.TheAnger]: TheAngerRule,
     [RuleId.TheBetrayal]: TheBetrayalRule,
     [RuleId.TheAbsolute]: TheAbsoluteRule
@@ -64,4 +66,4 @@ export class PresagesRules
 
 export const hideItemIdToOthersWhenNoZ = (
   item: MaterialItem, player?: PlayerId
-): string[] => item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || (item.location.player === player && item.location.rotation === Visibility.VISIBLE_FOR_ME) ? [] : ['id']
+): string[] => item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || (isVisibleForMe(item, player)) ? [] : ['id']

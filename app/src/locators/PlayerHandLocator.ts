@@ -1,5 +1,6 @@
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { arcaneDescription } from '../material/ArcaneDescription'
@@ -12,8 +13,8 @@ export class PlayerHandLocator extends HandLocator {
     const { rules, type, index } = context
     const item = rules.material(type).index(index).getItem()
     const angle = this.getPlayerAngle(location.player!, context)
-    const rotated = !!item?.location.rotation
-    const radius = rotated? 22: 27
+    const highlight = item?.location.rotation === Visibility.HIDDEN_FOR_EVERYONE || item?.location.rotation === Visibility.TEMPORARY_VISIBLE_FOR_ME
+    const radius = highlight? 22: 27
     const x = Math.cos(angle * Math.PI / 180) * radius
     const y = -Math.sin(angle * Math.PI / 180) * radius
     return { x, y,  }

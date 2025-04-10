@@ -6,8 +6,8 @@ import { ArcaneEffect } from '../ArcaneEffect'
 
 export class TheSecretDescription extends ArcaneEffect {
   onPlaceTo(_card: ArcaneCard, target: PlayerId): MaterialMove[] {
-    if (this.player !== target) return [this.startPlayerTurn(RuleId.TheSecretChoice, target)]
-    return [this.startRule(RuleId.TheSecretChoice)]
+    if (this.player !== target) return [this.startPlayerTurn(RuleId.TheSecretForMe, target)]
+    return [this.startRule(RuleId.TheSecretForMe)]
   }
 
   get player() {

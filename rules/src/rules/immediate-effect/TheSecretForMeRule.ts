@@ -7,7 +7,7 @@ import { RuleId } from '../RuleId'
 import { BasePlayerTurnRule } from '../BasePlayerTurnRule'
 import { Visibility } from '../Visibility'
 
-export class TheSecretChoiceRule extends BasePlayerTurnRule {
+export class TheSecretForMeRule extends BasePlayerTurnRule {
 
   getPlayerMoves() {
     const showCardTo = this.showCardTo
@@ -15,15 +15,26 @@ export class TheSecretChoiceRule extends BasePlayerTurnRule {
       return this.showCardToPlayer
     }
 
-    return this.secretChoice
+    return [
+      ...this.showCardToPlayer,
+      ...this.secretChoice
+    ]
   }
 
   get showCardToPlayer() {
-    return this.hand.moveItems({
-      type: LocationType.Hand,
-      player: this.showCardTo,
-      rotation: Visibility.VISIBLE_FOR_ME
-    })
+    const players = this.game.players.filter((p) => p !== this.player)
+    const moves: MaterialMove[] = []
+    for (const player of players) {
+      moves.push(
+        ...this.hand.moveItems({
+          type: LocationType.Hand,
+          player: player,
+          rotation: Visibility.TEMPORARY_VISIBLE_FOR_ME
+        })
+      )
+    }
+
+    return moves
   }
 
   get secretChoice() {
@@ -31,7 +42,6 @@ export class TheSecretChoiceRule extends BasePlayerTurnRule {
 
     for (const player of this.game.players) {
       if (player === this.player) continue
-      moves.push(this.customMove(CustomMoveType.ShowCard, player))
       moves.push(this.customMove(CustomMoveType.SeeCard, player))
     }
 
@@ -44,11 +54,7 @@ export class TheSecretChoiceRule extends BasePlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (isCustomMoveType(CustomMoveType.SeeCard)(move)) {
-      return [this.startPlayerTurn(RuleId.TheSecret, move.data)]
-    }
-
-    if (isCustomMoveType(CustomMoveType.ShowCard)(move)) {
-      this.memorize(Memory.ShowCardTo, move.data)
+      return [this.startPlayerTurn(RuleId.TheSecretForOther, move.data)]
     }
 
     return []
@@ -66,14 +72,8 @@ export class TheSecretChoiceRule extends BasePlayerTurnRule {
 
     const moves: MaterialMove[] = []
     if (move.location.type === LocationType.Hand && move.location.player !== this.player) {
-      const card = this.material(MaterialType.Arcane).index(move.itemIndex)
-      moves.push(
-        card.moveItem({
-          type: LocationType.Hand,
-          player: this.player,
-          rotation: Visibility.VISIBLE_FOR_ME
-        })
-      )
+      this.memorize(Memory.ShownCard, { player: this.player, index: move.itemIndex })
+      return [this.startPlayerTurn(RuleId.TheSecretConfirm, move.location.player!)]
     }
 
     if (move.location.type === LocationType.Hand && move.location.player === this.player) {
@@ -88,7 +88,6 @@ export class TheSecretChoiceRule extends BasePlayerTurnRule {
   }
 
   onRuleEnd() {
-    this.forget(Memory.ShowCardTo)
     return []
   }
 }

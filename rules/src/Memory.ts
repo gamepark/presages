@@ -8,5 +8,6 @@ export enum Memory {
   ShowCardTo,
   BlockedCard,
   RoundWinner,
-  TrickWinner
+  TrickWinner,
+  ShownCard
 }

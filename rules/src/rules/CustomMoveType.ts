@@ -1,6 +1,6 @@
 export enum CustomMoveType {
   TempoDiscard = 1,
   TheLaw,
-  ShowCard,
+  Confirm,
   SeeCard
 }

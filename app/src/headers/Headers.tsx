@@ -12,8 +12,9 @@ import { TheDreamHeader } from './TheDreamHeader'
 import { TheJalousieHeader } from './TheJalousieHeader'
 import { TheLawHeader } from './TheLawHeader'
 import { TheLuckHeader } from './TheLuckHeader'
-import { TheSecretChoiceHeader } from './TheSecretChoiceHeader'
-import { TheSecretHeader } from './TheSecretHeader'
+import { TheSecretConfirmHeader } from './TheSecretConfirmHeader'
+import { TheSecretForMeHeader } from './TheSecretForMeHeader'
+import { TheSecretForOtherHeader } from './TheSecretForOtherHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Deal]: DealHeader,
@@ -25,8 +26,9 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.TheLuck]: TheLuckHeader,
   [RuleId.TheDream]: TheDreamHeader,
   [RuleId.TheJalousie]: TheJalousieHeader,
-  [RuleId.TheSecretChoice]: TheSecretChoiceHeader,
-  [RuleId.TheSecret]: TheSecretHeader,
+  [RuleId.TheSecretForMe]: TheSecretForMeHeader,
+  [RuleId.TheSecretForOther]: TheSecretForOtherHeader,
+  [RuleId.TheSecretConfirm]: TheSecretConfirmHeader,
   [RuleId.TheAnger]: TheAngerHeader,
   [RuleId.TheBetrayal]: TheBetrayalHeader,
   [RuleId.TheAbsolute]: TheAbsoluteHeader,

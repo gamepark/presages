@@ -4,9 +4,10 @@ import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../../Memory'
 import { BasePlayerTurnRule } from '../BasePlayerTurnRule'
+import { RuleId } from '../RuleId'
 import { Visibility } from '../Visibility'
 
-export class TheSecretRule extends BasePlayerTurnRule {
+export class TheSecretForOtherRule extends BasePlayerTurnRule {
   onRuleStart(_move: RuleMove, previousRule?: RuleStep) {
     if (previousRule) {
       this.memorize(Memory.EffectPlayer, previousRule.player)
@@ -19,7 +20,7 @@ export class TheSecretRule extends BasePlayerTurnRule {
     return this.hand.moveItems({
       type: LocationType.Hand,
       player: this.effectPlayer,
-      rotation: Visibility.VISIBLE_FOR_ME
+      rotation: Visibility.TEMPORARY_VISIBLE_FOR_ME
     })
   }
 
@@ -28,14 +29,8 @@ export class TheSecretRule extends BasePlayerTurnRule {
 
     const moves: MaterialMove[] = []
     if (move.location.type === LocationType.Hand && move.location.player === this.effectPlayer) {
-      const card = this.material(MaterialType.Arcane).index(move.itemIndex)
-      moves.push(
-        card.moveItem({
-          type: LocationType.Hand,
-          player: this.player,
-          rotation: Visibility.VISIBLE_FOR_ME
-        })
-      )
+      this.memorize(Memory.ShownCard, { player: this.player, index: move.itemIndex })
+      return [this.startPlayerTurn(RuleId.TheSecretConfirm, move.location.player!)]
     }
 
     if (move.location.type === LocationType.Hand && move.location.player === this.player) {

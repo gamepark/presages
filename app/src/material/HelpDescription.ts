@@ -23,7 +23,7 @@ export class HelpDescription extends CardDescription {
     3: StarBack,
   }
 
-  images = {
+  images: Record<number, string> = {
     1: MoonFront,
     2: DiamondFront,
     3: StarFront,

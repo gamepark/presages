@@ -155,4 +155,9 @@ export class RoundResolutionRule extends MaterialRulesPart {
       .location(LocationType.Hand)
       .player(playerId)
   }
+
+  onRuleEnd() {
+    this.forget(Memory.TheLaw)
+    return []
+  }
 }

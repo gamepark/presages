@@ -13,7 +13,7 @@ export const RoundResolutionHeader = () => {
   const playerId = usePlayerId()
   const rules = useRules<PresagesRules>()!
   const winner = rules.remind<{ player: PlayerId, value: ArcaneCard}>(Memory.WinningCard)
-  const itsMe = playerId && winner === playerId
+  const itsMe = playerId && winner.player === playerId
   const name = usePlayerName(winner.player)
   
   if (itsMe) {

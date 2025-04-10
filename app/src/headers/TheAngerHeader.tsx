@@ -2,6 +2,7 @@
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, useRules, usePlayerName } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
+import { TransComponents } from '../utils/trans.components'
 
 export const TheAngerHeader = () => {
   const playerId = usePlayerId()
@@ -12,12 +13,17 @@ export const TheAngerHeader = () => {
 
   if (itsMe) {
     return (
-        <Trans defaults="header.the-anger.me"/>
+        <Trans
+          defaults="header.the-anger.me"
+          components={TransComponents}
+        />
     )
   }
   return (
     <Trans
-      defaults="header.the-anger.player" values={{ player: name }}
+      defaults="header.the-anger.player"
+      values={{ player: name }}
+      components={TransComponents}
     />
   )
 }

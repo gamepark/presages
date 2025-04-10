@@ -5,6 +5,7 @@ import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { Picture, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
 import { helpDescription } from '../material/HelpDescription'
+import { TransComponents } from '../utils/trans.components'
 
 export const RoundEndHeader = () => {
   const rule = useRules<PresagesRules>()!
@@ -14,7 +15,9 @@ export const RoundEndHeader = () => {
   const name = usePlayerName(roundWinner)
   return (
     <Trans
-      defaults="header.round.end" values={{ player: name, team: <Picture src={image} css={iconCss} />}}
+      defaults="header.round.end"
+      values={{ player: name, team: <Picture src={image} css={iconCss} />}}
+      components={TransComponents}
     />
   )
 }

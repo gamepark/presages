@@ -1,6 +1,16 @@
-import { hideItemId, MaterialGame, MaterialItem, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, TimeLimit } from '@gamepark/rules-api'
+import {
+  CompetitiveRank,
+  hideItemId,
+  MaterialGame,
+  MaterialItem,
+  MaterialMove,
+  PositiveSequenceStrategy,
+  SecretMaterialRules,
+  TimeLimit
+} from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { Memory } from './Memory'
 import { PlayerId } from './PlayerId'
 import { DealRule } from './rules/DealRule'
 import { TheAbsoluteRule } from './rules/immediate-effect/TheAbsoluteRule'
@@ -25,7 +35,8 @@ import { isVisibleForMe, Visibility } from './rules/Visibility'
  */
 export class PresagesRules
   extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>
+  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>
 {
   rules = {
     [RuleId.Deal]: DealRule,
@@ -61,6 +72,15 @@ export class PresagesRules
 
   giveTime(): number {
     return 60
+  }
+
+  rankPlayers(playerA: PlayerId, playerB: PlayerId) {
+    const winners = this.remind(Memory.Winners)
+    if (winners.includes(playerA) && winners.includes(playerB)) return 0
+    if (winners.includes(playerA)) return -1
+    if (winners.includes(playerB)) return 1
+    return 0
+
   }
 }
 

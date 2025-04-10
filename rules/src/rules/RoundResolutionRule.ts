@@ -17,7 +17,11 @@ export class RoundResolutionRule extends MaterialRulesPart {
     this.forget(Memory.CurrentPlayer)
 
     const cardWinningTheTrick = this.cardWinningTheTrick
-    this.memorize(Memory.TrickWinner, cardWinningTheTrick.getItem()!.location.player)
+    const item = cardWinningTheTrick.getItem()!
+    this.memorize(Memory.WinningCard, {
+      player: item.location.player,
+      value: item.id as ArcaneCard
+    })
     this.memorize(Memory.FirstPlayer, cardWinningTheTrick.getItem()!.location.player)
 
     moves.push(this.customMove(CustomMoveType.TempoDiscard))

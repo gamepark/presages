@@ -4,11 +4,11 @@ import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { MaterialGameAnimationContext, MaterialGameAnimations } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, MaterialMove } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, isStartRule, MaterialMove } from '@gamepark/rules-api'
 
 class PresageGameAnimation extends MaterialGameAnimations {
   getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
-    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 1
+    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 2
     return super.getDuration(move, context)
   }
 }
@@ -17,7 +17,7 @@ export const gameAnimations = new PresageGameAnimation()
 
 gameAnimations
   .when()
-  .move((move) => isMoveItemType(MaterialType.Help)(move))
+  .move(isMoveItemType(MaterialType.Help))
   .none()
 
 gameAnimations
@@ -32,3 +32,9 @@ gameAnimations
   && move.location.rotation === Visibility.VISIBLE_FOR_ME
   && context.rules.material(MaterialType.Arcane).getItem(move.itemIndex)!.location.rotation === Visibility.HIDDEN_FOR_EVERYONE)
 .duration(0.5)
+
+gameAnimations
+.when()
+.move((move) => isStartRule(move) && move.id === RuleId.Deal)
+.duration(1)
+

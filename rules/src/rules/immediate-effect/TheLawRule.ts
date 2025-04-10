@@ -4,6 +4,11 @@ import { CustomMoveType } from '../CustomMoveType'
 import { BasePlayerTurnRule } from '../BasePlayerTurnRule'
 
 export class TheLawRule extends BasePlayerTurnRule {
+  onRuleStart() {
+    this.forget(Memory.TheLaw)
+    return []
+  }
+
   getPlayerMoves() {
     return [
       this.customMove(CustomMoveType.TheLaw, +15),

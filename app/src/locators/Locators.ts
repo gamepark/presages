@@ -7,11 +7,13 @@ import { arcaneDiscardLocator } from './ArcaneDiscardLocator'
 import { helpLocator } from './HelpLocator'
 import { playerHandLocator } from './PlayerHandLocator'
 import { tableLocator } from './TableLocator'
+import { theLawChoiceLocator } from './TheLawChoiceLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialType, LocationType>>> = {
   [LocationType.Hand]: playerHandLocator,
   [LocationType.Deck]: arcaneDeckLocator,
   [LocationType.Table]: tableLocator,
   [LocationType.Discard]: arcaneDiscardLocator,
-  [LocationType.Help]: helpLocator
+  [LocationType.Help]: helpLocator,
+  [LocationType.TheLawChoice]: theLawChoiceLocator
 }

@@ -3,5 +3,6 @@ export enum LocationType {
   Deck,
   Table,
   Discard,
-  Help
+  Help,
+  TheLawChoice
 }

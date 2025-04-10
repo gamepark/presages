@@ -6,6 +6,7 @@ import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { Memory } from '@gamepark/presages/Memory'
 import { LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
+import { useTranslation } from 'react-i18next'
 
 class TheLawChoiceLocator extends Locator {
 
@@ -36,6 +37,7 @@ class TheLawChoiceDescription extends LocationDescription {
 
   getExtraCss(_location: Location, context: MaterialContext) {
     const { rules } = context
+    const { t } = useTranslation()
     const choice = rules.remind(Memory.TheLaw)
     return css`
       display: flex;
@@ -47,7 +49,7 @@ class TheLawChoiceDescription extends LocationDescription {
       box-sizing: content-box;
       &:after {
         position: absolute;
-        content: 'LA LOI \\A ${choice < 0 ? "plus FAIBLE que 15" : "plus FORTE que 15"}';
+        content: '${choice < 0? t('the-law.minus'): t('the-law.plus')}';
         line-height: 1.3;
         white-space: pre;
         width: 100%;

@@ -1,12 +1,23 @@
-import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { isMoveItemTypeAtOnce, ItemMove, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
 import { PlayerId } from '../PlayerId'
 import { RuleId } from './RuleId'
+import { Visibility } from './Visibility'
 
 export class RoundEndRule extends MaterialRulesPart {
   onRuleStart() {
+    return [
+      this
+        .material(MaterialType.Arcane)
+        .location(LocationType.Hand)
+        .moveItemsAtOnce({ rotation: Visibility.VISIBLE_FOR_EVERYONE })
+    ]
+  }
+
+  afterItemMove(move: ItemMove) {
+    if (!isMoveItemTypeAtOnce(MaterialType.Arcane)(move)) return []
     const players = this.winningPlayers
     this.memorize(Memory.RoundWinner, players[0])
     const cards = this.material(MaterialType.Help).location(LocationType.Help).player((p) => players.includes(p as PlayerId))
@@ -36,14 +47,14 @@ export class RoundEndRule extends MaterialRulesPart {
   }
 
   rankPlayers() {
-    return this.game
+    return  this.game
       .players
       .filter((p) => this.getPlayerCards(p).length <= 1)
       .sort((a, b) => {
         const aCards = this.getPlayerCards(a)
         const bCards = this.getPlayerCards(b)
-        if(aCards.length !== bCards.length) return aCards.length - bCards.length
-        return bCards.getItem()!.id - aCards.getItem()!.id
+        if (aCards.length !== bCards.length) return aCards.length - bCards.length
+        return bCards.getItem()?.id ?? 0 - aCards.getItem()?.id ?? 0
       })
   }
 

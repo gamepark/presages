@@ -1,4 +1,4 @@
-import { isMoveItemType, isStartRule, ItemMove, Material, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Material, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import maxBy from 'lodash/maxBy'
 import { ArcaneCard } from '../material/ArcaneCard'
 import { LocationType } from '../material/LocationType'
@@ -42,14 +42,8 @@ export class RoundResolutionRule extends MaterialRulesPart {
     )
 
     const discardedIndexes = [...discardedCards.getIndexes(), cardWinningTheTrick.getIndex()]
-    const afterEverythingSolved = this.afterEverythingSolved(discardedIndexes)
-    if (afterEverythingSolved.some((move) => isStartRule(move) && move.id === RuleId.RoundEnd)) {
-      moves.push(...this.afterEverythingSolved(discardedIndexes))
-      return moves
-    } else {
-      moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
-      moves.push(...this.afterEverythingSolved(discardedIndexes))
-    }
+    moves.push(...this.sendCardBackInHandMoves(cards.index((i) => !discardedIndexes.includes(i))))
+    moves.push(...this.afterEverythingSolved(discardedIndexes))
 
     return moves
   }

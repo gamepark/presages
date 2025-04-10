@@ -16,8 +16,11 @@ export const RoundEndHeader = () => {
   return (
     <Trans
       defaults="header.round.end"
-      values={{ player: name, team: <Picture src={image} css={iconCss} />}}
-      components={TransComponents}
+      values={{ player: name}}
+      components={{
+        ...TransComponents,
+        'team': <Picture src={image} css={iconCss} />
+    }}
     />
   )
 }

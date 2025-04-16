@@ -41,7 +41,8 @@ export enum ArcaneCard {
 
 export const arcanes = getEnumValues(ArcaneCard)
 
-export const absolutes = arcanes.filter((a) => a >= 30)
+export const isAbsolute = (card: ArcaneCard) => card >= ArcaneCard.TheAbsolute30
+export const absolutes = arcanes.filter(isAbsolute)
 
 export const getColors = (card: ArcaneCard) => {
   if (card <= 8) return [Color.Green]

@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
-import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext, SortFunction } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { arcaneDescription } from '../material/ArcaneDescription'
 
@@ -52,6 +52,12 @@ export class PlayerHandLocator extends HandLocator {
     }
   }
 
+  getNavigationSorts(context: ItemContext): SortFunction[] {
+    const { index, type } = context
+    const item = context.rules.material(type).index(index).getItem()
+    if (!item?.id) return []
+    return [(i: MaterialItem) => i.id]
+  }
 }
 
 export const playerHandLocator = new PlayerHandLocator()

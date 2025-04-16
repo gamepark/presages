@@ -38,6 +38,16 @@ import TheSpring from '../images/arcane/the-spring.jpg'
 import TheSummer from '../images/arcane/the-summer.jpg'
 import TheTruth from '../images/arcane/the-truth.jpg'
 import TheWinter from '../images/arcane/the-winter.jpg'
+import Green from '../images/icons/green.png'
+import Red from '../images/icons/red.png'
+import Yellow from '../images/icons/yellow.png'
+import Blue from '../images/icons/blue.png'
+import Book from '../images/icons/book.png'
+import Lightning from '../images/icons/lightning.png'
+import Important from '../images/icons/important.png'
+import Hourglass from '../images/icons/hourglass.png'
+import Help from '../images/icons/help.jpg'
+import { ArcaneHelp } from './help/ArcaneHelp'
 
 export class ArcaneDescription extends CardDescription {
   width = 7
@@ -82,10 +92,27 @@ export class ArcaneDescription extends CardDescription {
     [ArcaneCard.TheAbsolute35]: TheAbsolute35,
   }
 
+  getImages() {
+    const images = super.getImages()
+    images.push(Green)
+    images.push(Red)
+    images.push(Yellow)
+    images.push(Blue)
+    images.push(Lightning)
+    images.push(Book)
+    images.push(Important)
+    images.push(Hourglass)
+    images.push(Help)
+
+    return images
+  }
+
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     if (item.location?.type === LocationType.Deck) return true
     return super.isFlippedOnTable(item, context)
   }
+
+  help = ArcaneHelp
 }
 
 export const arcaneDescription = new ArcaneDescription()

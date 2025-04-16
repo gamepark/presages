@@ -7,6 +7,7 @@ import { PlayerId } from '@gamepark/presages/PlayerId'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
+import { getHtmlColor } from '../utils/color'
 import { TransComponents } from '../utils/trans.components'
 
 export const RoundResolutionHeader = () => {
@@ -45,19 +46,4 @@ const colorCss = (colors: Color[]) => {
   return css`
     color: ${getHtmlColor(colors[0])};
   `
-}
-
-const getHtmlColor = (color: Color) => {
-  switch (color) {
-    case Color.Green:
-      return '#4e9d6e'
-    case Color.Yellow:
-      return '#df9a21'
-    case Color.Red:
-      return '#c12844'
-    case Color.Blue:
-    default:
-      return '#37a2d0'
-
-  }
 }

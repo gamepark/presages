@@ -3,11 +3,13 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
 import { PlayerId } from '../PlayerId'
+import { CustomMoveType } from './CustomMoveType'
 import { RuleId } from './RuleId'
 import { Visibility } from './Visibility'
 
 export class RoundEndRule extends MaterialRulesPart {
   onRuleStart() {
+    console.log("Entering round end rule", this.material(MaterialType.Arcane).location(LocationType.Hand).length)
     return [
       this
         .material(MaterialType.Arcane)
@@ -23,7 +25,10 @@ export class RoundEndRule extends MaterialRulesPart {
     const cards = this.material(MaterialType.Help).location(LocationType.Help).player((p) => players.includes(p as PlayerId))
     if (cards.rotation(true).length > 0) {
       this.memorize(Memory.Winners, players)
-      return [this.endGame()]
+      return [
+        this.customMove(CustomMoveType.TempoDiscard),
+        this.endGame()
+      ]
     }
     const moves: MaterialMove[] = []
 

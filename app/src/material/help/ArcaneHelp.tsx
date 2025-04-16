@@ -128,6 +128,6 @@ const getTitleBackground = (item: Partial<MaterialItem>) => css`
 `
 
 const minWidthCss = css`
-  min-width: 52dvw;
-  min-width: 52vw;
+  min-width: 48.5dvw;
+  min-width: 48.5vw;
 `

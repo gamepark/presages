@@ -42,4 +42,4 @@ gameAnimations
 gameAnimations
   .when()
   .move((move) => isMoveItemTypeAtOnce(MaterialType.Arcane)(move) && move.location.rotation === Visibility.VISIBLE_FOR_EVERYONE)
-  .none()
+  .duration(0.2)

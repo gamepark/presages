@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/presages",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The rules of Présages adapted for Game Park",
   "sideEffects": false,
   "main": "dist/index.js",

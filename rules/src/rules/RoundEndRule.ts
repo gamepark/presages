@@ -9,7 +9,6 @@ import { Visibility } from './Visibility'
 
 export class RoundEndRule extends MaterialRulesPart {
   onRuleStart() {
-    console.log("Entering round end rule", this.material(MaterialType.Arcane).location(LocationType.Hand).length)
     return [
       this
         .material(MaterialType.Arcane)

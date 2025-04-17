@@ -76,6 +76,7 @@ export class PresagesRules
 
   rankPlayers(playerA: PlayerId, playerB: PlayerId) {
     const winners = this.remind(Memory.Winners)
+    if (!winners) return 0
     if (winners.includes(playerA) && winners.includes(playerB)) return 0
     if (winners.includes(playerA)) return -1
     if (winners.includes(playerB)) return 1

@@ -5,6 +5,7 @@ import { DealHeader } from './DealHeader'
 import { PlaceHeader } from './PlaceHeader'
 import { RoundEndHeader } from './RoundEndHeader'
 import { RoundResolutionHeader } from './RoundResolutionHeader'
+import { ShowStarterHeader } from './ShowStarterHeader'
 import { TheAbsoluteHeader } from './TheAbsoluteHeader'
 import { TheAngerHeader } from './TheAngerHeader'
 import { TheBetrayalHeader } from './TheBetrayalHeader'
@@ -32,4 +33,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.TheAnger]: TheAngerHeader,
   [RuleId.TheBetrayal]: TheBetrayalHeader,
   [RuleId.TheAbsolute]: TheAbsoluteHeader,
+  [RuleId.ShowStarter]: ShowStarterHeader,
 }

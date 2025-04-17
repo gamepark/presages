@@ -30,8 +30,11 @@ export class DealRule extends MaterialRulesPart {
     }
 
     const firstPlayer = this.firstPlayer
-    this.memorize(Memory.FirstPlayer, firstPlayer)
-    moves.push(this.startPlayerTurn(RuleId.Place, firstPlayer))
+    if (this.isFirstRound) {
+      moves.push(this.startSimultaneousRule(RuleId.ShowStarter))
+    } else {
+      moves.push(this.startPlayerTurn(RuleId.Place, firstPlayer))
+    }
     return moves
   }
 
@@ -62,5 +65,9 @@ export class DealRule extends MaterialRulesPart {
     return this.material(MaterialType.Arcane)
       .location(LocationType.Deck)
       .deck()
+  }
+
+  get isFirstRound() {
+    return this.remind(Memory.RoundWinner) === undefined
   }
 }

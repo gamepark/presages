@@ -27,6 +27,7 @@ import { PlaceRule } from './rules/PlaceRule'
 import { RoundEndRule } from './rules/RoundEndRule'
 import { RoundResolutionRule } from './rules/RoundResolutionRule'
 import { RuleId } from './rules/RuleId'
+import { ShowStarterRule } from './rules/ShowStarterRule'
 import { isVisibleForMe, Visibility } from './rules/Visibility'
 
 /**
@@ -52,7 +53,8 @@ export class PresagesRules
     [RuleId.TheSecretConfirm]: TheSecretConfirmRule,
     [RuleId.TheAnger]: TheAngerRule,
     [RuleId.TheBetrayal]: TheBetrayalRule,
-    [RuleId.TheAbsolute]: TheAbsoluteRule
+    [RuleId.TheAbsolute]: TheAbsoluteRule,
+    [RuleId.ShowStarter]: ShowStarterRule
   }
 
   locationsStrategies = {

@@ -51,9 +51,8 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       .createItems(this.players.map((p, i) => ({
         id: allAbsolutes[i],
         location: {
-          type: LocationType.Hand,
-          player: p,
-          rotation: Visibility.VISIBLE_FOR_ME
+          type: LocationType.Table,
+          player: p
         }
       })))
 
@@ -104,7 +103,7 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   get playerWithMaxAbsolute() {
     return this
       .material(MaterialType.Arcane)
-      .location(LocationType.Hand)
+      .location(LocationType.Table)
       .maxBy((i) => i.id)!
       .getItem()!
       .location

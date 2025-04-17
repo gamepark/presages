@@ -19,7 +19,6 @@ export class PlayerHandLocator extends HandLocator {
     const y = -Math.sin(angle * Math.PI / 180) * radius
     return { x, y,  }
   }
-
   getMaxAngle(location: Location, context: MaterialContext): number {
     if (location.player === (context.player ?? context.rules.players[0])) {
       return 20

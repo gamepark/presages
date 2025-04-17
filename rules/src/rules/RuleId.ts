@@ -14,5 +14,6 @@ export enum RuleId {
   TheSecretConfirm,
   TheAnger,
   TheBetrayal,
-  TheAbsolute
+  TheAbsolute,
+  ShowStarter
 }

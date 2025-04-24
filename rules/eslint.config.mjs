@@ -22,8 +22,8 @@ export default tseslint.config([
         },
         ...pluginJs.configs.recommended,
         rules: {
-            '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
-            '@typescript-eslint/restrict-template-expressions': ['error', { 'allowNullish': true, 'allowNumber': true }],
+            '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+            '@typescript-eslint/restrict-template-expressions': ['error', { allowNullish: true, allowNumber: true }],
             '@typescript-eslint/no-confusing-void-expression': 'off',
             '@typescript-eslint/consistent-type-definitions': 'off',
             '@typescript-eslint/no-non-null-assertion': 'off',

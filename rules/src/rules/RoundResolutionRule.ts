@@ -27,18 +27,15 @@ export class RoundResolutionRule extends MaterialRulesPart {
     moves.push(this.customMove(CustomMoveType.TempoDiscard))
     moves.push(
       cardWinningTheTrick.moveItem({
-          type: LocationType.Discard
-        }
-      )
+        type: LocationType.Discard
+      })
     )
 
     const discardedCards = this.discardedCards.filter((_, index) => index !== cardWinningTheTrick.getIndex())
     moves.push(
-      ...discardedCards
-        .moveItems({
-          type: LocationType.Discard
-        }
-      )
+      ...discardedCards.moveItems({
+        type: LocationType.Discard
+      })
     )
 
     const discardedIndexes = [...discardedCards.getIndexes(), cardWinningTheTrick.getIndex()]
@@ -72,17 +69,15 @@ export class RoundResolutionRule extends MaterialRulesPart {
 
   willTriggerEndOfRound(discardedCardIndexes: number[]) {
     for (const player of this.game.players) {
-      const playerCards = this
-        .material(MaterialType.Arcane)
+      const playerCards = this.material(MaterialType.Arcane)
         .player(player)
         .index((i) => !discardedCardIndexes.includes(i))
-      
+
       if (playerCards.length <= 1) return true
     }
 
     return false
   }
-
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Arcane)(move)) return []
@@ -94,28 +89,25 @@ export class RoundResolutionRule extends MaterialRulesPart {
     }
 
     return []
-
   }
 
   sendCardBackInHandMoves(cards: Material) {
     return cards
       .sort((item) => item.location.player!)
       .moveItems((item) => ({
-      type: LocationType.Hand,
-      player: item.location.player,
-      rotation: Visibility.VISIBLE_FOR_ME
-    }))
+        type: LocationType.Hand,
+        player: item.location.player,
+        rotation: Visibility.VISIBLE_FOR_ME
+      }))
   }
 
   onDiscardMoves(discardedIndexes: number[]) {
     const cards = this.table.index(discardedIndexes)
-    return cards.getItems()
-      .flatMap((item) => new RoundEffects[item.id as ArcaneCard]!(this.game).onDiscard())
+    return cards.getItems().flatMap((item) => new RoundEffects[item.id as ArcaneCard]!(this.game).onDiscard())
   }
 
   afterResolution() {
-    return this.table.getItems()
-      .forEach((item) => new RoundEffects[item.id as ArcaneCard]!(this.game).afterResolution(item.id))
+    return this.table.getItems().forEach((item) => new RoundEffects[item.id as ArcaneCard]!(this.game).afterResolution(item.id))
   }
 
   get cardWinningTheTrick(): Material {
@@ -145,15 +137,11 @@ export class RoundResolutionRule extends MaterialRulesPart {
   }
 
   get table() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Table)
+    return this.material(MaterialType.Arcane).location(LocationType.Table)
   }
 
   getPlayerHand(playerId: PlayerId) {
-    return this.material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(playerId)
+    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(playerId)
   }
 
   onRuleEnd() {

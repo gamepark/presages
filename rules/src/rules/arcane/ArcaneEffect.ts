@@ -11,8 +11,7 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
     return []
   }
 
-  afterResolution(_card: ArcaneCard) {
-  }
+  afterResolution(_card: ArcaneCard) {}
 
   canDiscard(_card: ArcaneCard): boolean {
     return false
@@ -31,10 +30,7 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
   }
 
   get table() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Table)
-      .getItems()
+    return this.material(MaterialType.Arcane).location(LocationType.Table).getItems()
   }
 
   immuneToDiscard: boolean = false

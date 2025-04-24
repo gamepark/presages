@@ -33,5 +33,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.TheAnger]: TheAngerHeader,
   [RuleId.TheBetrayal]: TheBetrayalHeader,
   [RuleId.TheAbsolute]: TheAbsoluteHeader,
-  [RuleId.ShowStarter]: ShowStarterHeader,
+  [RuleId.ShowStarter]: ShowStarterHeader
 }

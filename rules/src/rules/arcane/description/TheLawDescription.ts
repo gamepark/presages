@@ -18,6 +18,4 @@ export class TheLawDescription extends ArcaneEffect {
   get theLaw() {
     return this.remind(Memory.TheLaw)
   }
-
-
 }

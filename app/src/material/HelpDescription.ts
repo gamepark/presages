@@ -20,13 +20,13 @@ export class HelpDescription extends CardDescription {
   backImages = {
     1: MoonBack,
     2: DiamondBack,
-    3: StarBack,
+    3: StarBack
   }
 
   images: Record<number, string> = {
     1: MoonFront,
     2: DiamondFront,
-    3: StarFront,
+    3: StarFront
   }
 
   getItemExtraCss() {

@@ -49,10 +49,7 @@ export class TheSecretForOtherRule extends BasePlayerTurnRule {
   }
 
   get hand() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(this.player)
+    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(this.player)
   }
 
   onRuleEnd() {

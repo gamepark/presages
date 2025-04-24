@@ -10,10 +10,7 @@ export class TheLawRule extends BasePlayerTurnRule {
   }
 
   getPlayerMoves() {
-    return [
-      this.customMove(CustomMoveType.TheLaw, +15),
-      this.customMove(CustomMoveType.TheLaw, -15)
-    ]
+    return [this.customMove(CustomMoveType.TheLaw, +15), this.customMove(CustomMoveType.TheLaw, -15)]
   }
 
   onCustomMove(move: CustomMove) {

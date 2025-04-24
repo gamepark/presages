@@ -8,17 +8,13 @@ import { BasePlayerTurnRule } from '../BasePlayerTurnRule'
 import { Visibility } from '../Visibility'
 
 export class TheSecretForMeRule extends BasePlayerTurnRule {
-
   getPlayerMoves() {
     const showCardTo = this.showCardTo
     if (showCardTo) {
       return this.showCardToPlayer
     }
 
-    return [
-      ...this.showCardToPlayer,
-      ...this.secretChoice
-    ]
+    return [...this.showCardToPlayer, ...this.secretChoice]
   }
 
   get showCardToPlayer() {
@@ -61,10 +57,7 @@ export class TheSecretForMeRule extends BasePlayerTurnRule {
   }
 
   get hand() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(this.player)
+    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(this.player)
   }
 
   afterItemMove(move: ItemMove) {

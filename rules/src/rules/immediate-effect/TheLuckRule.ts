@@ -13,9 +13,7 @@ export class TheLuckRule extends BasePlayerTurnRule {
 
   get triggersEndOfRound() {
     for (const player of this.game.players) {
-      const playerCards = this
-        .material(MaterialType.Arcane)
-        .player(player)
+      const playerCards = this.material(MaterialType.Arcane).player(player)
 
       if (playerCards.length <= 1) return true
     }
@@ -30,9 +28,6 @@ export class TheLuckRule extends BasePlayerTurnRule {
   }
 
   get hand() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(this.player)
+    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(this.player)
   }
 }

@@ -4,7 +4,8 @@ import { Location } from '@gamepark/rules-api'
 export class ArcaneDiscardLocator extends DeckLocator {
   getCoordinates(_location: Location, _context: MaterialContext) {
     return {
-      x: -47, y: 28
+      x: -47,
+      y: 28
     }
   }
 }

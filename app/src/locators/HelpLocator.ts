@@ -13,41 +13,53 @@ export class HelpLocator extends Locator {
   }
 }
 
-
 const fourPlayersPanelPosition = (index: number) => {
   switch (index) {
-    case 0: return { x: -22, y: 19.5, z: 0}
-    case 1: return { x: -55, y: -6.5, z: 0}
-    case 2: return { x: 22, y: -19.5, z: 0}
-    case 3: return { x: 55, y: 6.5, z: 0}
-    default: return { x: -10, y: -50, z: 0}
+    case 0:
+      return { x: -22, y: 19.5, z: 0 }
+    case 1:
+      return { x: -55, y: -6.5, z: 0 }
+    case 2:
+      return { x: 22, y: -19.5, z: 0 }
+    case 3:
+      return { x: 55, y: 6.5, z: 0 }
+    default:
+      return { x: -10, y: -50, z: 0 }
   }
-
 }
 
 const sixPlayersPanelPosition = (index: number) => {
   switch (index) {
-    case 0: return { x: 16, y: 25, z: 0}
-    case 1: return { x: -55, y: 9, z: 0}
-    case 2: return { x: -55, y: -19, z: 0}
-    case 3: return { x: 16, y: -25, z: 0}
-    case 4: return { x: 55, y: -19, z: 0}
+    case 0:
+      return { x: 16, y: 25, z: 0 }
+    case 1:
+      return { x: -55, y: 9, z: 0 }
+    case 2:
+      return { x: -55, y: -19, z: 0 }
+    case 3:
+      return { x: 16, y: -25, z: 0 }
+    case 4:
+      return { x: 55, y: -19, z: 0 }
     case 5:
-    default: return { x: 55, y: 9.5, z: 0}
+    default:
+      return { x: 55, y: 9.5, z: 0 }
   }
-
 }
 
 const fivePlayersPanelPosition = (index: number) => {
   switch (index) {
-    case 0: return { x: -19, y: 19.5, z: 0}
-    case 1: return { x: -55, y: 2.7, z: 0}
-    case 2: return { x: -55, y: -19, z: 0}
-    case 3: return { x: 55, y: -19, z: 0}
+    case 0:
+      return { x: -19, y: 19.5, z: 0 }
+    case 1:
+      return { x: -55, y: 2.7, z: 0 }
+    case 2:
+      return { x: -55, y: -19, z: 0 }
+    case 3:
+      return { x: 55, y: -19, z: 0 }
     case 4:
-    default: return { x: 55, y: 2.7, z: 0}
+    default:
+      return { x: 55, y: 2.7, z: 0 }
   }
-
 }
 
 export const helpLocator = new HelpLocator()

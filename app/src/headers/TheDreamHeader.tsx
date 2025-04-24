@@ -16,29 +16,11 @@ export const TheDreamHeader = () => {
   const effectPlayerName = usePlayerName(effectPlayer)
 
   if (itsMe && !imTheEffectPlayer) {
-    return (
-        <Trans
-          defaults="header.the-dream.me"
-          values={{ effectPlayer: effectPlayerName }}
-          components={TransComponents}
-        />
-    )
+    return <Trans defaults="header.the-dream.me" values={{ effectPlayer: effectPlayerName }} components={TransComponents} />
   }
 
   if (imTheEffectPlayer && !itsMe) {
-    return (
-      <Trans
-        defaults="header.the-dream.in-front-me"
-        values={{ player: name }}
-        components={TransComponents}
-      />
-    )
+    return <Trans defaults="header.the-dream.in-front-me" values={{ player: name }} components={TransComponents} />
   }
-  return (
-    <Trans
-      defaults="header.the-dream.player"
-      values={{ player: name, effectPlayer: effectPlayerName }}
-      components={TransComponents}
-    />
-  )
+  return <Trans defaults="header.the-dream.player" values={{ player: name, effectPlayer: effectPlayerName }} components={TransComponents} />
 }

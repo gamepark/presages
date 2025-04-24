@@ -25,10 +25,6 @@ export class BasePlayerTurnRule extends PlayerTurnRule {
   }
 
   hasCardOnTable(player: PlayerId) {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Table)
-      .player(player).length > 0
+    return this.material(MaterialType.Arcane).location(LocationType.Table).player(player).length > 0
   }
-
 }

@@ -27,13 +27,14 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   setupCards() {
     const other = shuffle(arcanes.filter((a) => a < 30))
 
-    this.material(MaterialType.Arcane)
-      .createItems(other.map((a) => ({
+    this.material(MaterialType.Arcane).createItems(
+      other.map((a) => ({
         id: a,
         location: {
           type: LocationType.Deck
         }
-      })))
+      }))
+    )
   }
 
   setupAbsolute() {
@@ -44,21 +45,21 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     }
   }
 
-  setupFourAndSixPlayers()  {
+  setupFourAndSixPlayers() {
     const allAbsolutes = shuffle(absolutes).slice(0, this.players.length)
 
-    this.material(MaterialType.Arcane)
-      .createItems(this.players.map((p, i) => ({
+    this.material(MaterialType.Arcane).createItems(
+      this.players.map((p, i) => ({
         id: allAbsolutes[i],
         location: {
           type: LocationType.Table,
           player: p
         }
-      })))
+      }))
+    )
 
     let remainingAbsolutes = allAbsolutes
-    for (let i = 1; i <= (this.players.length / 2); i++) {
-
+    for (let i = 1; i <= this.players.length / 2; i++) {
       const minAbsolute = min(remainingAbsolutes)
       const maxAbsolute = max(remainingAbsolutes)
       remainingAbsolutes = remainingAbsolutes.filter((a) => a !== minAbsolute && a !== maxAbsolute)
@@ -101,13 +102,10 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
   }
 
   get playerWithMaxAbsolute() {
-    return this
-      .material(MaterialType.Arcane)
+    return this.material(MaterialType.Arcane)
       .location(LocationType.Table)
       .maxBy((i) => i.id)!
-      .getItem()!
-      .location
-      .player
+      .getItem()!.location.player
   }
 
   start() {

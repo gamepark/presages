@@ -1,6 +1,5 @@
 import { Color } from '@gamepark/presages/material/Color'
 
-
 export const getHtmlColor = (color: Color) => {
   switch (color) {
     case Color.Green:
@@ -12,6 +11,5 @@ export const getHtmlColor = (color: Color) => {
     case Color.Blue:
     default:
       return '#37a2d0'
-
   }
 }

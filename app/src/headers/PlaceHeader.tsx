@@ -9,13 +9,10 @@ export const PlaceHeader = () => {
   const activePlayer = rules.getActivePlayer()
   const itsMe = playerId && activePlayer === playerId
   const name = usePlayerName(activePlayer)
-  
+
   if (itsMe) {
-    return (
-        <Trans defaults="header.place.me"/>
-    )}
-  
-  return (
-    <Trans defaults="header.place.player" values={{ player: name }}  />
-  )
+    return <Trans defaults="header.place.me" />
+  }
+
+  return <Trans defaults="header.place.player" values={{ player: name }} />
 }

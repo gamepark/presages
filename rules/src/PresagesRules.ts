@@ -36,7 +36,8 @@ import { isVisibleForMe, Visibility } from './rules/Visibility'
  */
 export class PresagesRules
   extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+  implements
+    CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
     TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>
 {
   rules = {
@@ -61,14 +62,14 @@ export class PresagesRules
     [MaterialType.Arcane]: {
       [LocationType.Deck]: new PositiveSequenceStrategy(),
       [LocationType.Hand]: new PositiveSequenceStrategy(),
-      [LocationType.Discard]: new PositiveSequenceStrategy(),
+      [LocationType.Discard]: new PositiveSequenceStrategy()
     }
   }
 
   hidingStrategies = {
     [MaterialType.Arcane]: {
       [LocationType.Deck]: hideItemId,
-      [LocationType.Hand]: hideItemIdToOthersWhenNoZ,
+      [LocationType.Hand]: hideItemIdToOthersWhenNoZ
     }
   }
 
@@ -83,10 +84,8 @@ export class PresagesRules
     if (winners.includes(playerA)) return -1
     if (winners.includes(playerB)) return 1
     return 0
-
   }
 }
 
-export const hideItemIdToOthersWhenNoZ = (
-  item: MaterialItem, player?: PlayerId
-): string[] => (item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || (isVisibleForMe(item, player))) ? [] : ['id']
+export const hideItemIdToOthersWhenNoZ = (item: MaterialItem, player?: PlayerId): string[] =>
+  item.location.rotation === Visibility.VISIBLE_FOR_EVERYONE || isVisibleForMe(item, player) ? [] : ['id']

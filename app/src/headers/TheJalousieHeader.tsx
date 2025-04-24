@@ -12,18 +12,7 @@ export const TheJalousieHeader = () => {
   const name = usePlayerName(activePlayer)
 
   if (itsMe) {
-    return (
-        <Trans
-          defaults="header.the-jalousie.me"
-          components={TransComponents}
-        />
-    )
+    return <Trans defaults="header.the-jalousie.me" components={TransComponents} />
   }
-  return (
-    <Trans
-      defaults="header.the-jalousie.player"
-      values={{ player: name }}
-      components={TransComponents}
-    />
-  )
+  return <Trans defaults="header.the-jalousie.player" values={{ player: name }} components={TransComponents} />
 }

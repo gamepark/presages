@@ -15,10 +15,7 @@ class PresageGameAnimation extends MaterialGameAnimations {
 
 export const gameAnimations = new PresageGameAnimation()
 
-gameAnimations
-  .when()
-  .move(isMoveItemType(MaterialType.Help))
-  .none()
+gameAnimations.when().move(isMoveItemType(MaterialType.Help)).none()
 
 gameAnimations
   .when()
@@ -26,18 +23,19 @@ gameAnimations
   .duration(0.2)
 
 gameAnimations
-.when()
-.move((move, context) =>
-  isMoveItemType(MaterialType.Arcane)(move)
-  && move.location.rotation === Visibility.VISIBLE_FOR_ME
-  && context.rules.material(MaterialType.Arcane).getItem(move.itemIndex)!.location.rotation === Visibility.HIDDEN_FOR_EVERYONE)
-.duration(0.5)
+  .when()
+  .move(
+    (move, context) =>
+      isMoveItemType(MaterialType.Arcane)(move) &&
+      move.location.rotation === Visibility.VISIBLE_FOR_ME &&
+      context.rules.material(MaterialType.Arcane).getItem(move.itemIndex)!.location.rotation === Visibility.HIDDEN_FOR_EVERYONE
+  )
+  .duration(0.5)
 
 gameAnimations
-.when()
-.move((move) => isStartRule(move) && move.id === RuleId.Deal)
-.duration(1)
-
+  .when()
+  .move((move) => isStartRule(move) && move.id === RuleId.Deal)
+  .duration(1)
 
 gameAnimations
   .when()

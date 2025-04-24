@@ -8,5 +8,5 @@ export enum Visibility {
   TEMPORARY_VISIBLE_FOR_ME
 }
 
-export const isVisibleForMe = (item: MaterialItem, player?: PlayerId) => item.location.player === player
-  && (item.location.rotation === Visibility.VISIBLE_FOR_ME || item.location.rotation === Visibility.TEMPORARY_VISIBLE_FOR_ME)
+export const isVisibleForMe = (item: MaterialItem, player?: PlayerId) =>
+  item.location.player === player && (item.location.rotation === Visibility.VISIBLE_FOR_ME || item.location.rotation === Visibility.TEMPORARY_VISIBLE_FOR_ME)

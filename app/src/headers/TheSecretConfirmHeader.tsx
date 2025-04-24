@@ -20,7 +20,7 @@ export const TheSecretConfirmHeader = () => {
         defaults="header.the-secret-confirm.me"
         components={{
           ...TransComponents,
-          'confirm': <PlayMoveButton move={confirm} auto={10}/>
+          confirm: <PlayMoveButton move={confirm} auto={10} />
         }}
       />
     )

@@ -35,23 +35,20 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
   }
 
   giveCardTo(player: PlayerId) {
-    return this.hand
-      .moveItems({
-        type: LocationType.Hand,
-        player: player,
-        rotation: Visibility.HIDDEN_FOR_EVERYONE
-      })
+    return this.hand.moveItems({
+      type: LocationType.Hand,
+      player: player,
+      rotation: Visibility.HIDDEN_FOR_EVERYONE
+    })
   }
 
   get otherPlayers() {
-    return this
-      .game
-      .players
-      .filter((player) => player !== this.player)
+    return this.game.players.filter((player) => player !== this.player)
   }
 
   beforeItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Arcane)(move) || move.location.type !== LocationType.Hand || move.location.rotation !== Visibility.HIDDEN_FOR_EVERYONE) return []
+    if (!isMoveItemType(MaterialType.Arcane)(move) || move.location.type !== LocationType.Hand || move.location.rotation !== Visibility.HIDDEN_FOR_EVERYONE)
+      return []
 
     if (this.effectPlayer === this.player) {
       this.memorize(Memory.BlockedCard, move.itemIndex)
@@ -79,21 +76,15 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
   }
 
   get effectPlayerHand(): Material {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(this.effectPlayer)
+    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(this.effectPlayer)
   }
 
   get givenCards() {
-    return this
-      .material(MaterialType.Arcane)
-      .location((l) => l.type === LocationType.Hand && !!l.rotation)
+    return this.material(MaterialType.Arcane).location((l) => l.type === LocationType.Hand && !!l.rotation)
   }
 
   get hand() {
-    return this
-      .material(MaterialType.Arcane)
+    return this.material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
       .filter((item, index) => this.blockedCard !== index && !item.location.rotation)

@@ -19,29 +19,25 @@ export const TheSecretForMeHeader = () => {
   if (itsMe) {
     return (
       <div css={fontSizeCss(0.8)}>
-        <Trans defaults="header.the-secret-me.me" components={TransComponents}/>
-        {seeCards.length > 0 && seeCards.map((c) => (
-          <><SecretPlayer playerId={c.data} move={c}/>&nbsp;</>
-        ))}
+        <Trans defaults="header.the-secret-me.me" components={TransComponents} />
+        {seeCards.length > 0 &&
+          seeCards.map((c) => (
+            <>
+              <SecretPlayer playerId={c.data} move={c} />
+              &nbsp;
+            </>
+          ))}
       </div>
-
-  )
+    )
   }
   return (
     <>
-      <Trans
-        defaults="header.the-secret-me.player" values={{ player: name }}
-        components={TransComponents}
-      />
+      <Trans defaults="header.the-secret-me.player" values={{ player: name }} components={TransComponents} />
     </>
   )
 }
 
-const SecretPlayer: FC<{ playerId: PlayerId, move: CustomMove }> = ({ playerId, move }) => {
+const SecretPlayer: FC<{ playerId: PlayerId; move: CustomMove }> = ({ playerId, move }) => {
   const name = usePlayerName(playerId)
-  return (
-    <PlayMoveButton move={move}>
-      {name}
-    </PlayMoveButton>
-  )
+  return <PlayMoveButton move={move}>{name}</PlayMoveButton>
 }

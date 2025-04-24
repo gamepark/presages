@@ -5,15 +5,12 @@ import { MaterialType } from '../../material/MaterialType'
 import { PlaceRule } from '../PlaceRule'
 
 export class TheBetrayalRule extends PlaceRule {
-
   getPlayerMoves() {
     const table = this.table.getItems()
     const hand = this.hand
     const moves: MaterialMove[] = []
     for (const tableItem of table) {
-        moves.push(
-          ...hand.moveItems(tableItem.location)
-        )
+      moves.push(...hand.moveItems(tableItem.location))
     }
 
     return moves
@@ -27,17 +24,13 @@ export class TheBetrayalRule extends PlaceRule {
   }
 
   get table() {
-    return this
-      .material(MaterialType.Arcane)
+    return this.material(MaterialType.Arcane)
       .location(LocationType.Table)
       .player((p) => p !== this.player)
   }
 
   get hand() {
-    const hand = this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(this.player)
+    const hand = this.material(MaterialType.Arcane).location(LocationType.Hand).player(this.player)
 
     return this.filterPlayable(hand)
   }

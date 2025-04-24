@@ -16,25 +16,23 @@ export const RoundEndHeader = () => {
   return (
     <Trans
       defaults="header.round.end"
-      values={{ player: name}}
+      values={{ player: name }}
       components={{
         ...TransComponents,
-        'team': <Picture src={image} css={iconCss} />
-    }}
+        team: <Picture src={image} css={iconCss} />
+      }}
     />
   )
 }
-
-
-
 
 export const iconCss = css`
   height: 1em;
   position: relative;
   border-radius: 0.2em;
   top: 0.1em;
-  
-  img, picture {
+
+  img,
+  picture {
     vertical-align: center;
   }
 `

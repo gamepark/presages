@@ -9,29 +9,28 @@ import { Location } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
 
 class TheLawChoiceLocator extends Locator {
-
-  coordinates = { x: 0, y: 0}
-
+  coordinates = { x: 0, y: 0 }
 
   getLocations(context: MaterialContext) {
-      const { rules }  = context
-      const theLaw = rules.material(MaterialType.Arcane).location(LocationType.Table).id(ArcaneCard.TheLaw)
-      const choice = rules.remind(Memory.TheLaw)
-      if (!theLaw.length || !choice) return super.getLocations(context)
-      return [{
+    const { rules } = context
+    const theLaw = rules.material(MaterialType.Arcane).location(LocationType.Table).id(ArcaneCard.TheLaw)
+    const choice = rules.remind(Memory.TheLaw)
+    if (!theLaw.length || !choice) return super.getLocations(context)
+    return [
+      {
         type: LocationType.TheLawChoice
-      }]
+      }
+    ]
   }
 
   locationDescription = new TheLawChoiceDescription()
-
 }
 
 class TheLawChoiceDescription extends LocationDescription {
   constructor() {
     super({
       height: 3.5,
-      width: 11,
+      width: 11
     })
   }
 
@@ -49,7 +48,7 @@ class TheLawChoiceDescription extends LocationDescription {
       box-sizing: content-box;
       &:after {
         position: absolute;
-        content: '${choice < 0? t('the-law.minus'): t('the-law.plus')}';
+        content: '${choice < 0 ? t('the-law.minus') : t('the-law.plus')}';
         line-height: 1.3;
         white-space: pre;
         width: 100%;

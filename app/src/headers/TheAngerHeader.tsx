@@ -12,18 +12,7 @@ export const TheAngerHeader = () => {
   const name = usePlayerName(activePlayer)
 
   if (itsMe) {
-    return (
-        <Trans
-          defaults="header.the-anger.me"
-          components={TransComponents}
-        />
-    )
+    return <Trans defaults="header.the-anger.me" components={TransComponents} />
   }
-  return (
-    <Trans
-      defaults="header.the-anger.player"
-      values={{ player: name }}
-      components={TransComponents}
-    />
-  )
+  return <Trans defaults="header.the-anger.player" values={{ player: name }} components={TransComponents} />
 }

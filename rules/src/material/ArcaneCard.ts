@@ -36,7 +36,7 @@ export enum ArcaneCard {
   TheAbsolute32,
   TheAbsolute33,
   TheAbsolute34,
-  TheAbsolute35   ,
+  TheAbsolute35
 }
 
 export const arcanes = getEnumValues(ArcaneCard)

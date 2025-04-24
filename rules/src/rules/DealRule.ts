@@ -22,11 +22,13 @@ export class DealRule extends MaterialRulesPart {
       const players = this.getPlayerWithoutFullHand(cardsByPlayer)
       const player = players[i % players.length]
       cardsByPlayer[player]--
-      moves.push(deck.dealOne({
-        type: LocationType.Hand,
-        player: player,
-        rotation: Visibility.VISIBLE_FOR_ME
-      }))
+      moves.push(
+        deck.dealOne({
+          type: LocationType.Hand,
+          player: player,
+          rotation: Visibility.VISIBLE_FOR_ME
+        })
+      )
     }
 
     const firstPlayer = this.firstPlayer
@@ -56,15 +58,11 @@ export class DealRule extends MaterialRulesPart {
   }
 
   getPlayerHand(player: PlayerId) {
-    return this.material(MaterialType.Arcane)
-      .location(LocationType.Hand)
-      .player(player)
+    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(player)
   }
 
   get deck() {
-    return this.material(MaterialType.Arcane)
-      .location(LocationType.Deck)
-      .deck()
+    return this.material(MaterialType.Arcane).location(LocationType.Deck).deck()
   }
 
   get isFirstRound() {

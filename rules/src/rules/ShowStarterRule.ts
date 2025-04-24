@@ -7,9 +7,7 @@ import { Visibility } from './Visibility'
 
 export class ShowStarterRule extends SimultaneousRule {
   getActivePlayerLegalMoves(player: number) {
-    return [
-      this.endPlayerTurn(player)
-    ]
+    return [this.endPlayerTurn(player)]
   }
 
   getMovesAfterPlayersDone() {
@@ -23,16 +21,12 @@ export class ShowStarterRule extends SimultaneousRule {
       }))
     )
 
-    moves.push(
-      this.startPlayerTurn(RuleId.Place, this.remind(Memory.FirstPlayer))
-    )
+    moves.push(this.startPlayerTurn(RuleId.Place, this.remind(Memory.FirstPlayer)))
 
     return moves
   }
 
   get absolutes() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Table)
+    return this.material(MaterialType.Arcane).location(LocationType.Table)
   }
 }

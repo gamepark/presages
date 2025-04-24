@@ -21,32 +21,45 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
       <div css={minWidthCss}>
         <div css={getTitleBackground(item)}>{t('help.arcane.effect')}</div>
         <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief && borderedCss(getColors(item.id)[0])]}>
-          <Trans
-            defaults={isAbsolute(item.id) ? `card.absolute.desc` : `card.${item.id}.desc`}
-            components={TransComponents}
-          />
+          <Trans defaults={isAbsolute(item.id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={TransComponents} />
         </p>
 
         <div css={[precisionsCss, littleCss]}>
-          <div css={css`width: 100%; display: flex; align-items: flex-end`}>
+          <div
+            css={css`
+              width: 100%;
+              display: flex;
+              align-items: flex-end;
+            `}
+          >
             <span css={blueCss}>
-              <Trans defaults="help.arcane.precision" components={TransComponents}/>
+              <Trans defaults="help.arcane.precision" components={TransComponents} />
             </span>
             <Picture src={Help} css={helpImageCss} />
           </div>
           <ul css={listCss}>
-            <li><Trans defaults="help.arcane.precision.1" components={TransComponents}/></li>
-            <li><Trans defaults="help.arcane.precision.2" components={TransComponents}/></li>
-            <li><Trans defaults="help.arcane.precision.3" components={TransComponents}/></li>
-            <li><Trans defaults="help.arcane.precision.4" components={TransComponents}/></li>
-            <li><Trans defaults="help.arcane.precision.5" components={TransComponents}/></li>
+            <li>
+              <Trans defaults="help.arcane.precision.1" components={TransComponents} />
+            </li>
+            <li>
+              <Trans defaults="help.arcane.precision.2" components={TransComponents} />
+            </li>
+            <li>
+              <Trans defaults="help.arcane.precision.3" components={TransComponents} />
+            </li>
+            <li>
+              <Trans defaults="help.arcane.precision.4" components={TransComponents} />
+            </li>
+            <li>
+              <Trans defaults="help.arcane.precision.5" components={TransComponents} />
+            </li>
           </ul>
           <div css={importantCss}>
-          <span>
-            <Picture src={Important} css={importantImageCss}/>
-          </span>
+            <span>
+              <Picture src={Important} css={importantImageCss} />
+            </span>
             <div>
-              <Trans defaults="help.arcane.important" components={TransComponents}/>
+              <Trans defaults="help.arcane.important" components={TransComponents} />
             </div>
           </div>
         </div>
@@ -64,7 +77,7 @@ const borderedCss = (color: Color) => css`
 const importantCss = css`
   display: flex;
   flex-direction: row;
-  border: 0.2em solid #CF3745;
+  border: 0.2em solid #cf3745;
   padding: 0.5em;
   margin-right: 1.5em;
   border-radius: 0.5em;
@@ -116,7 +129,6 @@ const effectCss = css`
 `
 
 const getTitleBackground = (item: Partial<MaterialItem>) => css`
-
   padding: 0.3em 0.5em 0.1em;
   margin-top: 1em;
   color: white;
@@ -124,7 +136,7 @@ const getTitleBackground = (item: Partial<MaterialItem>) => css`
   text-transform: uppercase;
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
-  background-color: ${getHtmlColor(getColors(item.id)[0])}
+  background-color: ${getHtmlColor(getColors(item.id)[0])};
 `
 
 const minWidthCss = css`

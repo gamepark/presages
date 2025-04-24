@@ -13,22 +13,23 @@ import { TransComponents } from '../utils/trans.components'
 export const RoundResolutionHeader = () => {
   const playerId = usePlayerId()
   const rules = useRules<PresagesRules>()!
-  const winner = rules.remind<{ player: PlayerId, value: ArcaneCard}>(Memory.WinningCard)
+  const winner = rules.remind<{ player: PlayerId; value: ArcaneCard }>(Memory.WinningCard)
   const itsMe = playerId && winner.player === playerId
   const name = usePlayerName(winner.player)
-  
+
   if (itsMe) {
     return (
-        <Trans
-          defaults="header.round-resolution.me"
-          values={{ value: winner.value }}
-          components={{
-            ...TransComponents,
-            color: <span css={colorCss(getColors(winner.value))} />
-          }}
-        />
-    )}
-  
+      <Trans
+        defaults="header.round-resolution.me"
+        values={{ value: winner.value }}
+        components={{
+          ...TransComponents,
+          color: <span css={colorCss(getColors(winner.value))} />
+        }}
+      />
+    )
+  }
+
   return (
     <Trans
       defaults="header.round-resolution.player"

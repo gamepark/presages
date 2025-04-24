@@ -16,49 +16,20 @@ export const TheAbsoluteHeader = () => {
   const effectPlayerName = usePlayerName(effectPlayer)
 
   if (imTheEffectPlayer && !itsMe) {
-    return (
-      <Trans
-        defaults="header.the-absolute.player-must-give-me"
-        values={{ player: name }}
-        components={TransComponents}
-      />
-    )
+    return <Trans defaults="header.the-absolute.player-must-give-me" values={{ player: name }} components={TransComponents} />
   }
 
   if (itsMe && imTheEffectPlayer) {
-    return (
-      <Trans
-        defaults="header.the-absolute.me"
-        components={TransComponents}
-      />
-    )
+    return <Trans defaults="header.the-absolute.me" components={TransComponents} />
   }
 
   if (itsMe && !imTheEffectPlayer) {
-    return (
-        <Trans
-          defaults="header.the-absolute.i-must-give"
-          components={TransComponents}
-          values={{ effectPlayer: effectPlayerName }}
-        />
-    )
+    return <Trans defaults="header.the-absolute.i-must-give" components={TransComponents} values={{ effectPlayer: effectPlayerName }} />
   }
 
   if (!itsMe && !imTheEffectPlayer && effectPlayer === activePlayer) {
-      return (
-        <Trans
-          defaults="header.the-absolute.player"
-          components={TransComponents}
-          values={{ player: name }}
-        />
-      )
+    return <Trans defaults="header.the-absolute.player" components={TransComponents} values={{ player: name }} />
   }
 
-  return (
-    <Trans
-      defaults="header.the-absolute.player-must-give"
-      components={TransComponents}
-      values={{ player: name, effectPlayer: effectPlayerName }}
-    />
-  )
+  return <Trans defaults="header.the-absolute.player-must-give" components={TransComponents} values={{ player: name, effectPlayer: effectPlayerName }} />
 }

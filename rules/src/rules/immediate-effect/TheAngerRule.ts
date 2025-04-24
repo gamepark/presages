@@ -7,7 +7,6 @@ import { RuleId } from '../RuleId'
 import { Visibility } from '../Visibility'
 
 export class TheAngerRule extends BasePlayerTurnRule {
-
   getPlayerMoves() {
     return this.table.moveItems((item) => ({
       type: LocationType.Hand,
@@ -17,8 +16,7 @@ export class TheAngerRule extends BasePlayerTurnRule {
   }
 
   get table() {
-    return this
-      .material(MaterialType.Arcane)
+    return this.material(MaterialType.Arcane)
       .location(LocationType.Table)
       .player((p) => p !== this.player)
   }

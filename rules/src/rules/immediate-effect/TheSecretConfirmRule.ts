@@ -8,11 +8,8 @@ import { CustomMoveType } from '../CustomMoveType'
 import { Visibility } from '../Visibility'
 
 export class TheSecretConfirmRule extends BasePlayerTurnRule {
-
   getPlayerMoves() {
-    return [
-      this.customMove(CustomMoveType.Confirm)
-    ]
+    return [this.customMove(CustomMoveType.Confirm)]
   }
 
   onCustomMove(move: CustomMove) {
@@ -29,7 +26,7 @@ export class TheSecretConfirmRule extends BasePlayerTurnRule {
   }
 
   get shownCard() {
-    return this.remind<{ player: PlayerId, index: number}>(Memory.ShownCard)
+    return this.remind<{ player: PlayerId; index: number }>(Memory.ShownCard)
   }
 
   afterItemMove(move: ItemMove) {
@@ -37,10 +34,7 @@ export class TheSecretConfirmRule extends BasePlayerTurnRule {
 
     const moves: MaterialMove[] = []
     if (move.location.type === LocationType.Hand && move.location.player !== this.player) {
-      const hand = this
-        .material(MaterialType.Arcane)
-        .location(LocationType.Hand)
-        .player(move.location.player)
+      const hand = this.material(MaterialType.Arcane).location(LocationType.Hand).player(move.location.player)
 
       if (hand.length > 1) {
         moves.push(hand.shuffle())

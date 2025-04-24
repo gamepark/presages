@@ -9,35 +9,29 @@ import { Visibility } from './Visibility'
 
 export class RoundEndRule extends MaterialRulesPart {
   onRuleStart() {
-    return [
-      this
-        .material(MaterialType.Arcane)
-        .location(LocationType.Hand)
-        .moveItemsAtOnce({ rotation: Visibility.VISIBLE_FOR_EVERYONE })
-    ]
+    return [this.material(MaterialType.Arcane).location(LocationType.Hand).moveItemsAtOnce({ rotation: Visibility.VISIBLE_FOR_EVERYONE })]
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemTypeAtOnce(MaterialType.Arcane)(move) || move.location.rotation !== Visibility.VISIBLE_FOR_EVERYONE) return []
     const players = this.winningPlayers
     this.memorize(Memory.RoundWinner, players[0])
-    const cards = this.material(MaterialType.Help).location(LocationType.Help).player((p) => players.includes(p as PlayerId))
+    const cards = this.material(MaterialType.Help)
+      .location(LocationType.Help)
+      .player((p) => players.includes(p as PlayerId))
     if (cards.rotation(true).length > 0) {
       this.memorize(Memory.Winners, players)
-      return [
-        this.customMove(CustomMoveType.TempoDiscard),
-        this.endGame()
-      ]
+      return [this.customMove(CustomMoveType.TempoDiscard), this.endGame()]
     }
     const moves: MaterialMove[] = []
 
     moves.push(
       ...cards.rotateItems(true),
       this.allPlayedCards.moveItemsAtOnce({
-        type: LocationType.Deck,
+        type: LocationType.Deck
       }),
       this.allCards.shuffle(),
-      this.startRule(RuleId.Deal),
+      this.startRule(RuleId.Deal)
     )
 
     return moves
@@ -50,20 +44,18 @@ export class RoundEndRule extends MaterialRulesPart {
     return this.getTeamPlayers(team)
   }
 
-  arrangeItemsAroundCircle(items: any[], centerX: number, centerY: number, radius: number): { item: any, x: number, y: number }[] {
+  arrangeItemsAroundCircle(items: any[], centerX: number, centerY: number, radius: number): { item: any; x: number; y: number }[] {
     const totalItems = items.length
     return items.map((item, index) => {
-      const angle = (2 * Math.PI / totalItems) * index
+      const angle = ((2 * Math.PI) / totalItems) * index
       const x = centerX + radius * Math.cos(angle)
       const y = centerY + radius * Math.sin(angle)
       return { item, x, y }
     })
   }
 
-
   rankPlayers() {
-    return  this.game
-      .players
+    return this.game.players
       .filter((p) => this.getPlayerCards(p).length <= 1)
       .sort((a, b) => {
         const aCards = this.getPlayerCards(a)
@@ -82,13 +74,10 @@ export class RoundEndRule extends MaterialRulesPart {
   }
 
   get allCards() {
-    return this
-      .material(MaterialType.Arcane)
+    return this.material(MaterialType.Arcane)
   }
 
   get allPlayedCards() {
-    return this
-      .allCards
-      .location((l) => l.type !== LocationType.Deck)
+    return this.allCards.location((l) => l.type !== LocationType.Deck)
   }
 }

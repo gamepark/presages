@@ -21,17 +21,11 @@ export const TheLawHeader = () => {
         defaults="header.the-law.me"
         components={{
           ...TransComponents,
-          'less': <PlayMoveButton move={minus15}/>,
-          'more': <PlayMoveButton move={plus15}/>
+          less: <PlayMoveButton move={minus15} />,
+          more: <PlayMoveButton move={plus15} />
         }}
       />
     )
   }
-  return (
-    <Trans
-      defaults="header.the-law.player"
-      components={TransComponents}
-      values={{ player: name }}
-    />
-  )
+  return <Trans defaults="header.the-law.player" components={TransComponents} values={{ player: name }} />
 }

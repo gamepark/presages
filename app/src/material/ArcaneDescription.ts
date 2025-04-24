@@ -89,7 +89,7 @@ export class ArcaneDescription extends CardDescription {
     [ArcaneCard.TheAbsolute32]: TheAbsolute32,
     [ArcaneCard.TheAbsolute33]: TheAbsolute33,
     [ArcaneCard.TheAbsolute34]: TheAbsolute34,
-    [ArcaneCard.TheAbsolute35]: TheAbsolute35,
+    [ArcaneCard.TheAbsolute35]: TheAbsolute35
   }
 
   getImages() {

@@ -12,18 +12,7 @@ export const TheBetrayalHeader = () => {
   const name = usePlayerName(activePlayer)
 
   if (itsMe) {
-    return (
-        <Trans
-          defaults="header.the-betrayal.me"
-          components={TransComponents}
-        />
-    )
+    return <Trans defaults="header.the-betrayal.me" components={TransComponents} />
   }
-  return (
-    <Trans
-      defaults="header.the-betrayal.player"
-      values={{ player: name }}
-      components={TransComponents}
-    />
-  )
+  return <Trans defaults="header.the-betrayal.player" values={{ player: name }} components={TransComponents} />
 }

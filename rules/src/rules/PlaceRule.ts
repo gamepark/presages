@@ -28,22 +28,23 @@ export class PlaceRule extends BasePlayerTurnRule {
   placeCardInFrontOfMe(card: Material) {
     return card.moveItem({
       type: LocationType.Table,
-      player: this.player,
+      player: this.player
     })
   }
 
   placeCardInFrontOfAnyone(card: Material) {
     return this.game.players
       .filter((p) => !this.hasCardOnTable(p))
-      .map((p) => card.moveItem({
-      type: LocationType.Table,
-      player: p,
-    }))
+      .map((p) =>
+        card.moveItem({
+          type: LocationType.Table,
+          player: p
+        })
+      )
   }
 
   get hand() {
-    const hand = this
-      .material(MaterialType.Arcane)
+    const hand = this.material(MaterialType.Arcane)
       .location(LocationType.Hand)
       .player(this.player)
       .filter((_item, index) => this.blockedCard !== index)
@@ -83,9 +84,7 @@ export class PlaceRule extends BasePlayerTurnRule {
   }
 
   get table() {
-    return this
-      .material(MaterialType.Arcane)
-      .location(LocationType.Table)
+    return this.material(MaterialType.Arcane).location(LocationType.Table)
   }
 
   onRuleEnd() {

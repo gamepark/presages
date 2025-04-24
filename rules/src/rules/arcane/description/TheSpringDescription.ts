@@ -5,9 +5,6 @@ import { ArcaneEffect } from '../ArcaneEffect'
 export class TheSpringDescription extends ArcaneEffect {
   canDiscard(card: ArcaneCard): boolean {
     if (card !== ArcaneCard.TheSpring) return false
-    return this
-      .table
-      .filter((item) => hasColor(item.id, Color.Green))
-      .length === 1
+    return this.table.filter((item) => hasColor(item.id, Color.Green)).length === 1
   }
 }

@@ -16,7 +16,7 @@ export class TheDreamRule extends PlaceRule {
   getPlayerMoves() {
     return this.hand.moveItems({
       type: LocationType.Table,
-      player: this.effectPlayer,
+      player: this.effectPlayer
     })
   }
 

@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Memory } from '@gamepark/presages/Memory'
+import { PlayerId } from '@gamepark/presages/PlayerId'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { Picture, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
@@ -9,7 +10,7 @@ import { TransComponents } from '../utils/trans.components'
 
 export const RoundEndHeader = () => {
   const rule = useRules<PresagesRules>()!
-  const roundWinner = rule.remind(Memory.RoundWinner)
+  const roundWinner = rule.remind<PlayerId>(Memory.RoundWinner)
   const team = rule.remind<number>(Memory.Team, roundWinner)
   const image = helpDescription.images[team]
   const name = usePlayerName(roundWinner)

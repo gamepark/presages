@@ -11,7 +11,8 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
     return []
   }
 
-  afterResolution(_card: ArcaneCard) {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  afterResolution(_card: ArcaneCard): void {}
 
   canDiscard(_card: ArcaneCard): boolean {
     return false
@@ -30,10 +31,10 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
   }
 
   get table() {
-    return this.material(MaterialType.Arcane).location(LocationType.Table).getItems()
+    return this.material(MaterialType.Arcane).location(LocationType.Table).getItems<ArcaneCard>()
   }
 
-  immuneToDiscard: boolean = false
+  immuneToDiscard = false
 
-  canBePlacedInFrontOfOtherPlayers: boolean = false
+  canBePlacedInFrontOfOtherPlayers = false
 }

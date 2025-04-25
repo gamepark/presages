@@ -2,6 +2,7 @@
 import { css } from '@emotion/react'
 import { Color } from '@gamepark/presages/material/Color'
 import { Picture } from '@gamepark/react-game'
+import { ReactElement } from 'react'
 import Blue from '../images/icons/blue.png'
 import Book from '../images/icons/book.png'
 import Green from '../images/icons/green.png'
@@ -29,7 +30,7 @@ const colorCss = (color: Color) => css`
   font-weight: bold;
 `
 
-export const TransComponents: Record<string, any> = {
+export const TransComponents: Record<string, ReactElement> = {
   bold: <strong />,
   u: <u />,
   greenColor: <span css={colorCss(Color.Green)}></span>,

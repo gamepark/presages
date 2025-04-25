@@ -5,7 +5,6 @@ import tseslint from 'typescript-eslint'
 import pluginReact from 'eslint-plugin-react'
 import { globalIgnores } from 'eslint/config'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-
 export default tseslint.config([
     globalIgnores(['build/**/*.js', 'config-overrides.js', 'eslint.config.mjs']),
     eslint.configs.recommended,
@@ -37,7 +36,8 @@ export default tseslint.config([
             '@typescript-eslint/no-confusing-void-expression': 'off',
             '@typescript-eslint/consistent-type-definitions': 'off',
             '@typescript-eslint/no-non-null-assertion': 'off',
-            '@typescript-eslint/no-unsafe-enum-comparison': 'off'
+            '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+            '@typescript-eslint/no-unsafe-assignment': 'off'
         }
     },
     eslintPluginPrettierRecommended

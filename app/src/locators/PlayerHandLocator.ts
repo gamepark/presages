@@ -1,5 +1,7 @@
+import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { PlayerId } from '@gamepark/presages/PlayerId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext, SortFunction } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
@@ -44,13 +46,13 @@ export class PlayerHandLocator extends HandLocator {
     return ['translateZ(10em)', `translateY(-45%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }
 
-  getItemIndex(item: MaterialItem, context: ItemContext) {
+  getItemIndex(item: MaterialItem<PlayerId, LocationType, ArcaneCard>, context: ItemContext) {
     if (item.location.player === context.player) {
       const cards = context.rules
         .material(MaterialType.Arcane)
         .location(LocationType.Hand)
         .player(context.player)
-        .getItems()
+        .getItems<ArcaneCard>()
         .map((item) => item.id)
       cards.sort((a, b) => a - b)
       return cards.indexOf(item.id)
@@ -61,9 +63,9 @@ export class PlayerHandLocator extends HandLocator {
 
   getNavigationSorts(context: ItemContext): SortFunction[] {
     const { index, type } = context
-    const item = context.rules.material(type).index(index).getItem()
+    const item = context.rules.material(type).index(index).getItem<ArcaneCard>()
     if (!item?.id) return []
-    return [(i: MaterialItem) => i.id]
+    return [(i: MaterialItem) => i.id as ArcaneCard]
   }
 }
 

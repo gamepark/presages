@@ -1,4 +1,5 @@
 import { isMoveItemType, ItemMove, Material, MaterialMove } from '@gamepark/rules-api'
+import { ArcaneCard } from '../../material/ArcaneCard'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../../Memory'
@@ -18,7 +19,7 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
   }
 
   get effectPlayer() {
-    return this.remind(Memory.EffectPlayer)
+    return this.remind<PlayerId>(Memory.EffectPlayer)
   }
 
   getPlayerMoves() {
@@ -91,7 +92,7 @@ export class TheAbsoluteRule extends BasePlayerTurnRule {
   }
 
   get blockedCard() {
-    return this.remind(Memory.BlockedCard)
+    return this.remind<ArcaneCard | undefined>(Memory.BlockedCard)
   }
 
   onRuleEnd() {

@@ -44,8 +44,8 @@ export class DealRule extends MaterialRulesPart {
     return this.game.players.filter((p) => cardsByPlayer[p] > 0)
   }
 
-  get firstPlayer() {
-    const player = this.remind(Memory.ForcedFirstPlayer) ?? this.remind(Memory.FirstPlayer)
+  get firstPlayer(): PlayerId {
+    const player = this.remind<PlayerId | undefined>(Memory.ForcedFirstPlayer) ?? this.remind<PlayerId>(Memory.FirstPlayer)
     this.memorize(Memory.FirstPlayer, player)
     this.forget(Memory.ForcedFirstPlayer)
     return player

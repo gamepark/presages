@@ -12,10 +12,10 @@ export class PlaceRule extends BasePlayerTurnRule {
     const moves: MaterialMove[] = []
     for (const index of hand.getIndexes()) {
       const card = hand.index(index)
-      const item = card.getItem()!
+      const item = card.getItem<ArcaneCard>()!
 
-      const Effect = RoundEffects[item.id as ArcaneCard]
-      if (Effect && new Effect(this.game).canBePlacedInFrontOfOtherPlayers) {
+      const Effect = RoundEffects[item.id]
+      if (new Effect(this.game).canBePlacedInFrontOfOtherPlayers) {
         moves.push(...this.placeCardInFrontOfAnyone(card))
       } else {
         moves.push(this.placeCardInFrontOfMe(card))
@@ -55,10 +55,10 @@ export class PlaceRule extends BasePlayerTurnRule {
   filterPlayable(hand: Material) {
     const cardIndexes = hand.getIndexes()
     const table = this.table
-    const effects = table.getItems().map((item) => new RoundEffects[item.id as ArcaneCard](this.game))
+    const effects = table.getItems<ArcaneCard>().map((item) => new RoundEffects[item.id](this.game))
     const playableIndexes: number[] = []
     for (const index of cardIndexes) {
-      const item = hand.getItem(index)!
+      const item = hand.getItem<ArcaneCard>(index)
       if (effects.some((effect) => !effect.canBePlayed(item.id))) continue
       playableIndexes.push(index)
     }
@@ -68,17 +68,15 @@ export class PlaceRule extends BasePlayerTurnRule {
   }
 
   get blockedCard() {
-    return this.remind(Memory.BlockedCard)
+    return this.remind<ArcaneCard | undefined>(Memory.BlockedCard)
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Arcane)(move) || move.location.type !== LocationType.Table) return []
-    const card = this.material(MaterialType.Arcane).getItem(move.itemIndex)!
-    const Effect = RoundEffects[card.id as ArcaneCard]
-    if (Effect) {
-      const moves: MaterialMove[] = new Effect(this.game).onPlaceTo(card.id, move.location.player!)
-      if (moves.length) return moves
-    }
+    const card = this.material(MaterialType.Arcane).getItem<ArcaneCard>(move.itemIndex)
+    const Effect = RoundEffects[card.id]
+    const moves: MaterialMove[] = new Effect(this.game).onPlaceTo(card.id, move.location.player!)
+    if (moves.length) return moves
 
     return this.nextRuleMove
   }

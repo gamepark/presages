@@ -2,6 +2,7 @@ import { RuleMove } from '@gamepark/rules-api'
 import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
 import { LocationType } from '../../material/LocationType'
 import { Memory } from '../../Memory'
+import { PlayerId } from '../../PlayerId'
 import { PlaceRule } from '../PlaceRule'
 
 export class TheDreamRule extends PlaceRule {
@@ -21,7 +22,7 @@ export class TheDreamRule extends PlaceRule {
   }
 
   get effectPlayer() {
-    return this.remind(Memory.EffectPlayer)
+    return this.remind<PlayerId>(Memory.EffectPlayer)
   }
 
   onRuleEnd() {

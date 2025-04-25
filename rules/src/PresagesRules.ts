@@ -38,7 +38,7 @@ export class PresagesRules
   extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
   implements
     CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
-    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>
+    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>>
 {
   rules = {
     [RuleId.Deal]: DealRule,
@@ -78,7 +78,7 @@ export class PresagesRules
   }
 
   rankPlayers(playerA: PlayerId, playerB: PlayerId) {
-    const winners = this.remind(Memory.Winners)
+    const winners = this.remind<PlayerId[] | undefined>(Memory.Winners)
     if (!winners) return 0
     if (winners.includes(playerA) && winners.includes(playerB)) return 0
     if (winners.includes(playerA)) return -1

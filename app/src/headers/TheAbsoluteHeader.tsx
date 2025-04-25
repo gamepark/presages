@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { Memory } from '@gamepark/presages/Memory'
+import { PlayerId } from '@gamepark/presages/PlayerId'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
 import { TransComponents } from '../utils/trans.components'
 
 export const TheAbsoluteHeader = () => {
-  const playerId = usePlayerId()
+  const playerId = usePlayerId<PlayerId>()
   const rules = useRules<PresagesRules>()!
   const activePlayer = rules.getActivePlayer()
   const effectPlayer = rules.remind(Memory.EffectPlayer)

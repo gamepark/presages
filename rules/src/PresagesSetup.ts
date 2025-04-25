@@ -1,9 +1,9 @@
-import { MaterialGameSetup } from '@gamepark/rules-api'
+import { MaterialGameSetup, MaterialItem } from '@gamepark/rules-api'
 import { partition } from 'lodash'
 import max from 'lodash/max'
 import min from 'lodash/min'
 import shuffle from 'lodash/shuffle'
-import { absolutes, arcanes } from './material/ArcaneCard'
+import { absolutes, ArcaneCard, arcanes } from './material/ArcaneCard'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './Memory'
@@ -92,20 +92,20 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
       })
     })
 
-    extremePlayers.forEach((player) => this.markInTeam(player as PlayerId, 1))
-    otherPlayers.forEach((player) => this.markInTeam(player as PlayerId, 2))
+    extremePlayers.forEach((player) => this.markInTeam(player, 1))
+    otherPlayers.forEach((player) => this.markInTeam(player, 2))
   }
 
   markInTeam(player: PlayerId, team: number) {
-    this.material(MaterialType.Help).createItem({ id: team, location: { type: LocationType.Help, player: player as PlayerId } })
+    this.material(MaterialType.Help).createItem({ id: team, location: { type: LocationType.Help, player: player } })
     this.memorize(Memory.Team, team, player)
   }
 
-  get playerWithMaxAbsolute() {
+  get playerWithMaxAbsolute(): PlayerId {
     return this.material(MaterialType.Arcane)
       .location(LocationType.Table)
-      .maxBy((i) => i.id)!
-      .getItem()!.location.player
+      .maxBy((i: MaterialItem) => i.id as ArcaneCard)
+      .getItem()!.location.player!
   }
 
   start() {

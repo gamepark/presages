@@ -28,7 +28,7 @@ gameAnimations
     (move, context) =>
       isMoveItemType(MaterialType.Arcane)(move) &&
       move.location.rotation === Visibility.VISIBLE_FOR_ME &&
-      context.rules.material(MaterialType.Arcane).getItem(move.itemIndex)!.location.rotation === Visibility.HIDDEN_FOR_EVERYONE
+      context.rules.material(MaterialType.Arcane).getItem(move.itemIndex).location.rotation === Visibility.HIDDEN_FOR_EVERYONE
   )
   .duration(0.5)
 

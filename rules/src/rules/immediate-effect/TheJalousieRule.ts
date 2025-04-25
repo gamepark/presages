@@ -23,7 +23,7 @@ export class TheJalousieRule extends BasePlayerTurnRule {
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Arcane)(move) || !this.myCard.length) return []
     const cardInPlace = this.table.filter((item) => isEqual(item.location, move.location))
-    const movedCard = this.myCard.getItem(move.itemIndex)!
+    const movedCard = this.myCard.getItem(move.itemIndex)
     return [cardInPlace.moveItem(movedCard.location), ...this.nextRuleMove]
   }
 

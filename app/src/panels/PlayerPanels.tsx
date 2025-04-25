@@ -24,8 +24,8 @@ export const PlayerPanels = () => {
   return createPortal(
     <>
       {players.map((player, index) => {
-        const rotated = rules.material(MaterialType.Help).player(player.id).getItem()?.location.rotation
-        const team = rules.remind(Memory.Team, player.id)
+        const rotated: boolean = rules.material(MaterialType.Help).player(player.id).getItem()?.location.rotation
+        const team = rules.remind<number>(Memory.Team, player.id)
         return (
           <StyledPlayerPanel key={player.id} player={player} backgroundImage={getBackgroundImage(team, rotated)} css={panelPosition(players.length, index)} />
         )

@@ -2,6 +2,7 @@ import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove } 
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../../Memory'
+import { PlayerId } from '../../PlayerId'
 import { CustomMoveType } from '../CustomMoveType'
 import { RuleId } from '../RuleId'
 import { BasePlayerTurnRule } from '../BasePlayerTurnRule'
@@ -45,7 +46,7 @@ export class TheSecretForMeRule extends BasePlayerTurnRule {
   }
 
   get showCardTo() {
-    return this.remind(Memory.ShowCardTo)
+    return this.remind<PlayerId | undefined>(Memory.ShowCardTo)
   }
 
   onCustomMove(move: CustomMove) {

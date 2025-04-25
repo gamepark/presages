@@ -18,7 +18,7 @@ export class RoundEndRule extends MaterialRulesPart {
     this.memorize(Memory.RoundWinner, players[0])
     const cards = this.material(MaterialType.Help)
       .location(LocationType.Help)
-      .player((p) => players.includes(p as PlayerId))
+      .player((p) => players.includes(p!))
     if (cards.rotation(true).length > 0) {
       this.memorize(Memory.Winners, players)
       return [this.customMove(CustomMoveType.TempoDiscard), this.endGame()]
@@ -40,18 +40,8 @@ export class RoundEndRule extends MaterialRulesPart {
   get winningPlayers(): PlayerId[] {
     const rankedPlayers = this.rankPlayers()
     const player = rankedPlayers[0]
-    const team = this.remind(Memory.Team, player)
+    const team = this.remind<number>(Memory.Team, player)
     return this.getTeamPlayers(team)
-  }
-
-  arrangeItemsAroundCircle(items: any[], centerX: number, centerY: number, radius: number): { item: any; x: number; y: number }[] {
-    const totalItems = items.length
-    return items.map((item, index) => {
-      const angle = ((2 * Math.PI) / totalItems) * index
-      const x = centerX + radius * Math.cos(angle)
-      const y = centerY + radius * Math.sin(angle)
-      return { item, x, y }
-    })
   }
 
   rankPlayers() {
@@ -61,7 +51,9 @@ export class RoundEndRule extends MaterialRulesPart {
         const aCards = this.getPlayerCards(a)
         const bCards = this.getPlayerCards(b)
         if (aCards.length !== bCards.length) return aCards.length - bCards.length
-        return bCards.getItem()?.id ?? 0 - aCards.getItem()?.id ?? 0
+        const bId = bCards.getItem()?.id ?? 0
+        const aId = aCards.getItem()?.id ?? 0
+        return bId - aId
       })
   }
 

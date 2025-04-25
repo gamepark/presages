@@ -3,6 +3,7 @@ import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../../Memory'
+import { PlayerId } from '../../PlayerId'
 import { BasePlayerTurnRule } from '../BasePlayerTurnRule'
 import { RuleId } from '../RuleId'
 import { Visibility } from '../Visibility'
@@ -30,7 +31,7 @@ export class TheSecretForOtherRule extends BasePlayerTurnRule {
     const moves: MaterialMove[] = []
     if (move.location.type === LocationType.Hand && move.location.player === this.effectPlayer) {
       this.memorize(Memory.ShownCard, { player: this.player, index: move.itemIndex })
-      return [this.startPlayerTurn(RuleId.TheSecretConfirm, move.location.player!)]
+      return [this.startPlayerTurn(RuleId.TheSecretConfirm, move.location.player)]
     }
 
     if (move.location.type === LocationType.Hand && move.location.player === this.player) {
@@ -45,7 +46,7 @@ export class TheSecretForOtherRule extends BasePlayerTurnRule {
   }
 
   get effectPlayer() {
-    return this.remind(Memory.EffectPlayer)
+    return this.remind<PlayerId>(Memory.EffectPlayer)
   }
 
   get hand() {

@@ -3,11 +3,10 @@ import { css } from '@emotion/react'
 import { ArcaneCard, getColors, isAbsolute } from '@gamepark/presages/material/ArcaneCard'
 import { Color } from '@gamepark/presages/material/Color'
 import { MaterialHelpProps, Picture } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import Important from '../../images/icons/important.png'
 import Help from '../../images/icons/help.jpg'
+import Important from '../../images/icons/important.png'
 import { getHtmlColor } from '../../utils/color'
 import { TransComponents } from '../../utils/trans.components'
 
@@ -15,13 +14,14 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
   const { item } = props
   const { t } = useTranslation()
   if (!item.id) return null
+  const id = item.id as ArcaneCard
   return (
     <>
-      <h2>{t(isAbsolute(item.id) ? `card.absolute` : `card.${item.id}`)}</h2>
+      <h2>{t(isAbsolute(id) ? `card.absolute` : `card.${id}`)}</h2>
       <div css={minWidthCss}>
-        <div css={getTitleBackground(item)}>{t('help.arcane.effect')}</div>
-        <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief && borderedCss(getColors(item.id)[0])]}>
-          <Trans defaults={isAbsolute(item.id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={TransComponents} />
+        <div css={getTitleBackground(id)}>{t('help.arcane.effect')}</div>
+        <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief && borderedCss(getColors(id)[0])]}>
+          <Trans defaults={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={TransComponents} />
         </p>
 
         <div css={[precisionsCss, littleCss]}>
@@ -128,7 +128,7 @@ const effectCss = css`
   margin-top: 0;
 `
 
-const getTitleBackground = (item: Partial<MaterialItem>) => css`
+const getTitleBackground = (id: ArcaneCard) => css`
   padding: 0.3em 0.5em 0.1em;
   margin-top: 1em;
   color: white;
@@ -136,7 +136,7 @@ const getTitleBackground = (item: Partial<MaterialItem>) => css`
   text-transform: uppercase;
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
-  background-color: ${getHtmlColor(getColors(item.id)[0])};
+  background-color: ${getHtmlColor(getColors(id)[0])};
 `
 
 const minWidthCss = css`

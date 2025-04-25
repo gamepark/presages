@@ -15,7 +15,7 @@ export class BasePlayerTurnRule extends PlayerTurnRule {
   }
 
   get currentPlayer() {
-    return this.remind(Memory.CurrentPlayer)
+    return this.remind<PlayerId | undefined>(Memory.CurrentPlayer)
   }
 
   get nextPlayer(): PlayerId {

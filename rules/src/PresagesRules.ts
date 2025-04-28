@@ -8,6 +8,7 @@ import {
   SecretMaterialRules,
   TimeLimit
 } from '@gamepark/rules-api'
+import { sample } from 'lodash'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './Memory'
@@ -71,6 +72,14 @@ export class PresagesRules
       [LocationType.Deck]: hideItemId,
       [LocationType.Hand]: hideItemIdToOthersWhenNoZ
     }
+  }
+
+  getAutomaticMoves(): MaterialMove[] {
+    const activeBot = this.players.find((player) => this.remind(Memory.Bot, player) && this.isTurnToPlay(player))
+    if (activeBot !== undefined) {
+      return [sample(this.getLegalMoves(activeBot))!]
+    }
+    return []
   }
 
   giveTime(): number {

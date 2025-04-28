@@ -10,5 +10,6 @@ export enum Memory {
   RoundWinner,
   WinningCard,
   ShownCard,
-  Winners
+  Winners,
+  Bot
 }

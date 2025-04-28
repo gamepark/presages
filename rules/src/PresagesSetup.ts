@@ -1,5 +1,5 @@
 import { MaterialGameSetup, MaterialItem } from '@gamepark/rules-api'
-import { partition } from 'lodash'
+import { partition, range } from 'lodash'
 import max from 'lodash/max'
 import min from 'lodash/min'
 import shuffle from 'lodash/shuffle'
@@ -11,7 +11,6 @@ import { PlayerId } from './PlayerId'
 import { PresagesOptions } from './PresagesOptions'
 import { PresagesRules } from './PresagesRules'
 import { RuleId } from './rules/RuleId'
-import { Visibility } from './rules/Visibility'
 
 /**
  * This class creates a new Game based on the game options
@@ -19,8 +18,8 @@ import { Visibility } from './rules/Visibility'
 export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, PresagesOptions> {
   Rules = PresagesRules
 
-  setupMaterial(_options: PresagesOptions) {
-    this.setupAbsolute()
+  setupMaterial(options: PresagesOptions) {
+    this.setupTeamsWithAbsolutes(options)
     this.setupCards()
   }
 
@@ -37,63 +36,53 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
     )
   }
 
-  setupAbsolute() {
-    if (this.players.length === 5) {
-      this.setupFivePlayers()
-    } else {
-      this.setupFourAndSixPlayers()
+  setupTeamsWithAbsolutes(options: PresagesOptions) {
+    const players = options.players < 4 ? options.players * 2 : options.players
+    let absolutesInGame = shuffle(absolutes).slice(0, players)
+    if (options.players < 4) {
+      // Make sure real players are not in the same team
+      while (!this.firstHalfMakesDifferentTeams(absolutesInGame)) {
+        absolutesInGame = shuffle(absolutes).slice(0, players)
+      }
+      this.game.players = range(1, options.players * 2 + 1)
+      for (let i = this.game.players.length / 2; i < this.game.players.length; i++) {
+        this.memorize(Memory.Bot, true, this.game.players[i])
+      }
     }
-  }
-
-  setupFourAndSixPlayers() {
-    const allAbsolutes = shuffle(absolutes).slice(0, this.players.length)
-
     this.material(MaterialType.Arcane).createItems(
-      this.players.map((p, i) => ({
-        id: allAbsolutes[i],
-        location: {
-          type: LocationType.Table,
-          player: p
-        }
-      }))
+      this.players.map((player, i) => ({ id: absolutesInGame[i], location: { type: LocationType.Table, player } }))
     )
-
-    let remainingAbsolutes = allAbsolutes
-    for (let i = 1; i <= this.players.length / 2; i++) {
-      const minAbsolute = min(remainingAbsolutes)
-      const maxAbsolute = max(remainingAbsolutes)
-      remainingAbsolutes = remainingAbsolutes.filter((a) => a !== minAbsolute && a !== maxAbsolute)
-      const firstPlayer: PlayerId = this.material(MaterialType.Arcane).id(minAbsolute).getItem()!.location.player!
-      this.markInTeam(firstPlayer, i)
-
-      const secondPlayer: PlayerId = this.material(MaterialType.Arcane).id(maxAbsolute).getItem()!.location.player!
-      this.markInTeam(secondPlayer, i)
+    const minAbsolute = min(absolutesInGame)
+    const maxAbsolute = max(absolutesInGame)
+    const [team1, others] = partition(this.players, (id) => absolutesInGame[id - 1] === minAbsolute || absolutesInGame[id - 1] === maxAbsolute)
+    for (const player of team1) {
+      this.markInTeam(player, 1)
+    }
+    if (others.length < 4) {
+      for (const player of others) {
+        this.markInTeam(player, 2)
+      }
+    } else {
+      const [team2, team3] = partition(this.players, (id) => absolutesInGame[id - 1] === 31 || absolutesInGame[id - 1] === 34)
+      for (const player of team2) {
+        this.markInTeam(player, 2)
+      }
+      for (const player of team3) {
+        this.markInTeam(player, 3)
+      }
+    }
+    if (options.players < 4) {
+      // Randomize position of players and bots
+      this.game.players = shuffle(this.game.players)
     }
   }
 
-  setupFivePlayers() {
-    const cards = shuffle(absolutes).slice(0, this.players.length)
-    const minAbsolute = min(cards)
-    const maxAbsolute = max(cards)
-
-    const [extremePlayers, otherPlayers] = partition(this.players, (id: PlayerId) => {
-      const absolute = cards[id - 1]
-      return absolute === minAbsolute || absolute === maxAbsolute
-    })
-
-    this.players.forEach((player) => {
-      this.material(MaterialType.Arcane).createItem({
-        id: cards[player - 1],
-        location: {
-          type: LocationType.Hand,
-          player,
-          rotation: Visibility.VISIBLE_FOR_ME
-        }
-      })
-    })
-
-    extremePlayers.forEach((player) => this.markInTeam(player, 1))
-    otherPlayers.forEach((player) => this.markInTeam(player, 2))
+  firstHalfMakesDifferentTeams(cards: number[]) {
+    if (cards.length === 4) {
+      return cards.indexOf(max(cards)!) < 2 !== cards.indexOf(min(cards)!) < 2
+    } else {
+      return cards.indexOf(30) < 3 !== cards.indexOf(35) < 3 && cards.indexOf(31) < 3 !== cards.indexOf(34) < 3
+    }
   }
 
   markInTeam(player: PlayerId, team: number) {

@@ -1,3 +1,4 @@
+import { PresagesBot } from '@gamepark/presages-app/src/PresagesBot'
 import {
   CompetitiveRank,
   hideItemId,
@@ -8,7 +9,6 @@ import {
   SecretMaterialRules,
   TimeLimit
 } from '@gamepark/rules-api'
-import { sample } from 'lodash'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './Memory'
@@ -21,8 +21,8 @@ import { TheDreamRule } from './rules/immediate-effect/TheDreamRule'
 import { TheJalousieRule } from './rules/immediate-effect/TheJalousieRule'
 import { TheLawRule } from './rules/immediate-effect/TheLawRule'
 import { TheLuckRule } from './rules/immediate-effect/TheLuckRule'
-import { TheSecretForMeRule } from './rules/immediate-effect/TheSecretForMeRule'
 import { TheSecretConfirmRule } from './rules/immediate-effect/TheSecretConfirmRule'
+import { TheSecretForMeRule } from './rules/immediate-effect/TheSecretForMeRule'
 import { TheSecretForOtherRule } from './rules/immediate-effect/TheSecretForOtherRule'
 import { PlaceRule } from './rules/PlaceRule'
 import { RoundEndRule } from './rules/RoundEndRule'
@@ -77,7 +77,7 @@ export class PresagesRules
   getAutomaticMoves(): MaterialMove[] {
     const activeBot = this.players.find((player) => this.remind(Memory.Bot, player) && this.isTurnToPlay(player))
     if (activeBot !== undefined) {
-      return [sample(this.getLegalMoves(activeBot))!]
+      return PresagesBot(this.game, activeBot)
     }
     return []
   }

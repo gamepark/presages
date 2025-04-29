@@ -33,7 +33,11 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     return rules.getLegalMoves(player)
   }
 
-  private negamax(rules: R, depth: number, player = rules.players.find((player) => rules.isTurnToPlay(player))): NegamaxResult {
+  areTeammates(_rules: R, player1: number, player2 = this.player) {
+    return player1 === player2
+  }
+
+  private negamax(rules: R, player?: number, depth = 0, alpha = -Infinity, beta = Infinity): NegamaxResult {
     if (player === undefined || this.isLeaf(rules, depth)) {
       return { moves: [], score: this.evaluate(rules) }
     }
@@ -46,9 +50,15 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     for (const move of moves) {
       const rulesAfter = new this.Rules(structuredClone(rules.game)) as R
       playAction(rulesAfter, move, player)
-      const result = this.negamax(rulesAfter, depth + 1)
+      const nextPlayer = rulesAfter.players.find((player) => rulesAfter.isTurnToPlay(player))
+      const teammates = this.areTeammates(rulesAfter, player, nextPlayer)
+      const result = this.negamax(rulesAfter, nextPlayer, depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
       if (!best || best.score < result.score || (best.score === result.score && Math.random() < 0.5)) {
         best = { player, moves: player === result.player ? [move, ...result.moves] : [move], score: result.score }
+        alpha = Math.max(alpha, best.score)
+        if (alpha >= beta) {
+          break
+        }
       }
     }
     return best!
@@ -56,7 +66,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
 
   getBestMoves(rules: R, player: number) {
     this.player = player
-    return this.negamax(rules, 0, player).moves
+    return this.negamax(rules, player).moves
   }
 }
 

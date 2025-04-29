@@ -8,7 +8,9 @@ import { MaterialGame, MaterialMove, MaterialRules, playAction, RulesCreator } f
 import { sumBy } from 'lodash'
 
 export const PresagesBot = (game: MaterialGame, player: number): MaterialMove[] => {
-  return new PresagesNegamax().getBestMoves(new PresagesRules(game), player)
+  const rules = new PresagesRules(structuredClone(game))
+  rules.forget(Memory.Bot) // Bots must be ignored when executing a bot to prevent infinite loops
+  return new PresagesNegamax().getBestMoves(rules, player)
 }
 
 type NegamaxResult = {
@@ -38,7 +40,6 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     let best: NegamaxResult | undefined = undefined
     for (const move of moves) {
       const rulesAfter = new this.Rules(structuredClone(rules.game)) as R
-      rulesAfter.forget(Memory.Bot)
       playAction(rulesAfter, move, player)
       const result = this.negamax(rulesAfter, depth + 1)
       if (!best || best.score < result.score || (best.score === result.score && Math.random() < 0.5)) {

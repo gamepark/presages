@@ -14,8 +14,8 @@ export class DealRule extends MaterialRulesPart {
     let count = 0
     const cardsByPlayer: Record<PlayerId, number> = mapValues(keyBy(this.game.players), () => 0)
     for (const player of this.game.players) {
-      const hand = this.getPlayerHand(player)
-      cardsByPlayer[player] = this.getCardCountForPlayer(player) - hand.length
+      const playerCards = this.getPlayerCards(player)
+      cardsByPlayer[player] = this.getCardCountForPlayer(player) - playerCards.length
       count += cardsByPlayer[player]
     }
     for (let i = 0; i < count; i++) {
@@ -57,8 +57,8 @@ export class DealRule extends MaterialRulesPart {
     return 4
   }
 
-  getPlayerHand(player: PlayerId) {
-    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(player)
+  getPlayerCards(player: PlayerId) {
+    return this.material(MaterialType.Arcane).player(player)
   }
 
   get deck() {

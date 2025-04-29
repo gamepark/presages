@@ -4,8 +4,8 @@ import { Memory } from '@gamepark/presages/Memory'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { GameAI, getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
-import { MaterialGame, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
-import { sumBy } from 'lodash'
+import { isMoveItem, MaterialGame, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
+import { sample, sumBy } from 'lodash'
 
 export const PresagesBot = (game: MaterialGame, player: number): MaterialMove[] => {
   const rules = new PresagesRules(structuredClone(game))
@@ -62,15 +62,18 @@ class PresagesNegamax extends Negamax {
     return depth !== 0 && rules.game.rule?.id === RuleId.Place && rules.material(MaterialType.Arcane).location(LocationType.Table).length === 0
   }
 
-  isTeammate(rules: PresagesRules, player: number) {
-    return rules.remind(Memory.Team, player) === rules.remind(Memory.Team, this.player)
+  areTeammates(rules: PresagesRules, player1: number, player2 = this.player) {
+    return rules.remind(Memory.Team, player1) === rules.remind(Memory.Team, player2)
   }
 
-  getMovesOfInterest(rules: MaterialRules, player: number): MaterialMove[] {
+  getMovesOfInterest(rules: PresagesRules, player: number): MaterialMove[] {
     const legalMoves = super.getMovesOfInterest(rules, player)
     const ruleId = rules.game.rule?.id
-    if (ruleId === RuleId.TheSecretForMe || ruleId === RuleId.TheSecretForOther) {
-      return legalMoves.slice(0, 1) // TODO: get the best move for The Secret
+    if (ruleId === RuleId.TheSecretForMe) {
+      return [sample(legalMoves.filter((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player)))!]
+    }
+    if (ruleId === RuleId.TheSecretForOther) {
+      return [sample(legalMoves)!]
     }
     if (ruleId === RuleId.TheAbsolute) {
       return legalMoves.slice(0, 1) // TODO: evaluate quality of hand and optimize absolute
@@ -87,14 +90,14 @@ class PresagesNegamax extends Negamax {
 
   evaluateWinRounds(rules: PresagesRules) {
     const helpCards = rules.material(MaterialType.Help).location(LocationType.Help).rotation(true).getItems()
-    return sumBy(helpCards, (card) => (this.isTeammate(rules, card.location.player!) ? 100 : -100))
+    return sumBy(helpCards, (card) => (this.areTeammates(rules, card.location.player!) ? 100 : -100))
   }
 
   evaluateRemainingCards(rules: PresagesRules) {
     return sumBy(rules.players, (player) => {
       const hand = rules.material(MaterialType.Arcane).location(LocationType.Hand).player(player).length
       const value = hand === 2 ? 50 : hand === 3 ? 30 : hand === 4 ? 10 : 0
-      return this.isTeammate(rules, player) ? value : -value
+      return this.areTeammates(rules, player) ? value : -value
     })
   }
 
@@ -102,7 +105,7 @@ class PresagesNegamax extends Negamax {
     const startingPlayer = rules.getActivePlayer()!
     return sumBy(rules.players, (player) => {
       const position = getRelativePlayerIndex({ rules, player: startingPlayer } as unknown as MaterialContext, player)
-      return this.isTeammate(rules, player) ? position : -position
+      return this.areTeammates(rules, player) ? position : -position
     })
   }
 }

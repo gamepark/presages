@@ -1,4 +1,4 @@
-import { GameAI, getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, MaterialGame, MaterialItem, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
 import { maxBy, minBy, sample, sumBy, uniq } from 'lodash'
 import { ArcaneCard, getColors, hasColor } from './material/ArcaneCard'
@@ -283,5 +283,3 @@ class PresagesNegamax extends Negamax {
     }
   }
 }
-
-export const TutorialBot: GameAI = (game: MaterialGame, player: number) => Promise.resolve(PresagesBot(game, player))

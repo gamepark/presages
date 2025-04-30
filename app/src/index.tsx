@@ -1,18 +1,21 @@
 /** @jsxImportSource @emotion/react */
+import { PresagesBot } from '@gamepark/presages/PresagesBot'
 import { PresagesOptionsSpec } from '@gamepark/presages/PresagesOptions'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { PresagesSetup } from '@gamepark/presages/PresagesSetup'
-import { GameProvider, setupTranslation } from '@gamepark/react-game'
+import { GameAI, GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import { MaterialGame } from '../../../rules-api/src'
 import { gameAnimations } from './animations/GameAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
-import { TutorialBot } from '@gamepark/presages/PresagesBot'
 import translations from './translations.json'
 
 setupTranslation(translations, { debug: false })
+
+const TutorialBot: GameAI = (game: MaterialGame, player: number) => Promise.resolve(PresagesBot(game, player))
 
 ReactDOM.render(
   <StrictMode>

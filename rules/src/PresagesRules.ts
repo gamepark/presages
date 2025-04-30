@@ -1,4 +1,3 @@
-import { PresagesBot } from './PresagesBot'
 import {
   CompetitiveRank,
   hideItemId,
@@ -13,6 +12,7 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './Memory'
 import { PlayerId } from './PlayerId'
+import { PresagesBot } from './PresagesBot'
 import { DealRule } from './rules/DealRule'
 import { TheAbsoluteRule } from './rules/immediate-effect/TheAbsoluteRule'
 import { TheAngerRule } from './rules/immediate-effect/TheAngerRule'

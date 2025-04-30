@@ -1,4 +1,4 @@
-import { PresagesBot } from '@gamepark/presages-app/src/PresagesBot'
+import { PresagesBot } from 'src/PresagesBot'
 import {
   CompetitiveRank,
   hideItemId,

@@ -1,13 +1,13 @@
-import { ArcaneCard, getColors, hasColor } from '@gamepark/presages/material/ArcaneCard'
-import { Color } from '@gamepark/presages/material/Color'
-import { LocationType } from '@gamepark/presages/material/LocationType'
-import { MaterialType } from '@gamepark/presages/material/MaterialType'
-import { Memory } from '@gamepark/presages/Memory'
-import { PresagesRules } from '@gamepark/presages/PresagesRules'
-import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { GameAI, getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, MaterialGame, MaterialItem, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
 import { maxBy, minBy, sample, sumBy, uniq } from 'lodash'
+import { ArcaneCard, getColors, hasColor } from './material/ArcaneCard'
+import { Color } from './material/Color'
+import { LocationType } from './material/LocationType'
+import { MaterialType } from './material/MaterialType'
+import { Memory } from './Memory'
+import { PresagesRules } from './PresagesRules'
+import { RuleId } from './rules/RuleId'
 
 export const PresagesBot = (game: MaterialGame, player: number): MaterialMove[] => {
   const rules = new PresagesRules(structuredClone(game))

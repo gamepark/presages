@@ -9,7 +9,7 @@ import { gameAnimations } from './animations/GameAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
-import { TutorialBot } from './PresagesBot'
+import { TutorialBot } from '@gamepark/presages/PresagesBot'
 import translations from './translations.json'
 
 setupTranslation(translations, { debug: false })

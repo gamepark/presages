@@ -1,4 +1,4 @@
-import { PresagesBot } from 'src/PresagesBot'
+import { PresagesBot } from './PresagesBot'
 import {
   CompetitiveRank,
   hideItemId,

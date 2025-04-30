@@ -26,8 +26,13 @@ export class RoundEndRule extends MaterialRulesPart {
     }
     const moves: MaterialMove[] = []
 
+    moves.push(...cards.rotateItems(true))
+
+    if (this.isThereEquality) {
+      moves.push(this.customMove(CustomMoveType.SeeEquality))
+    }
+
     moves.push(
-      ...cards.rotateItems(true),
       this.allPlayedCards.moveItemsAtOnce({
         type: LocationType.Deck
       }),
@@ -38,11 +43,22 @@ export class RoundEndRule extends MaterialRulesPart {
     return moves
   }
 
+  /**
+   * There is an equality if two player has 0 or two players has 1 card
+   */
+  get isThereEquality(): boolean {
+    const zeroCardPlayers = this.game.players.filter((p) => this.getPlayerCards(p).length === 0)
+    if (zeroCardPlayers.length === 1) return false
+
+    const oneCardPlayers = this.game.players.filter((p) => this.getPlayerCards(p).length === 1)
+    return zeroCardPlayers.length >= 2 || oneCardPlayers.length >= 2
+  }
+
   get winningPlayers(): PlayerId[] {
     const rankedPlayers = this.rankPlayers()
     const player = rankedPlayers[0]
     const team = this.remind<number>(Memory.Team, player)
-    return this.getTeamPlayers(team)
+    return [player, ...this.getTeamPlayers(team).filter((p) => p !== player)]
   }
 
   rankPlayers() {

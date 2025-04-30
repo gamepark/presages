@@ -15,7 +15,7 @@ export const PlayerPanels = () => {
   return createPortal(
     <>
       {players.map((player) => (
-        <PresagesPlayerPanel playerId={player} />
+        <PresagesPlayerPanel key={player} playerId={player} />
       ))}
     </>,
     root

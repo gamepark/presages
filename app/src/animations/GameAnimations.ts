@@ -8,7 +8,8 @@ import { isCustomMoveType, isMoveItemType, isMoveItemTypeAtOnce, isStartRule, Ma
 
 class PresageGameAnimation extends MaterialGameAnimations {
   getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
-    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 2
+    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return context.game.players.length
+    if (isCustomMoveType(CustomMoveType.SeeEquality)(move)) return 3
     return super.getDuration(move, context)
   }
 }

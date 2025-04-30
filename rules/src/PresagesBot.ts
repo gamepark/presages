@@ -1,4 +1,3 @@
-import { getRelativePlayerIndex, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, MaterialGame, MaterialItem, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
 import { maxBy, minBy, sample, sumBy, uniq } from 'lodash'
 import { ArcaneCard, getColors, hasColor } from './material/ArcaneCard'
@@ -139,8 +138,9 @@ class PresagesNegamax extends Negamax {
 
   evaluateStartingPlayer(rules: PresagesRules) {
     const startingPlayer = rules.getActivePlayer()!
-    return sumBy(rules.players, (player) => {
-      const position = getRelativePlayerIndex({ rules, player: startingPlayer } as unknown as MaterialContext, player)
+    const players = rules.players
+    return sumBy(players, (player) => {
+      const position = (players.indexOf(player) - players.indexOf(startingPlayer) + players.length) % players.length
       return this.areTeammates(rules, player) ? position : -position
     })
   }

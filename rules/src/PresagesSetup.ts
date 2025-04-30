@@ -63,7 +63,7 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
         this.markInTeam(player, 2)
       }
     } else {
-      const [team2, team3] = partition(this.players, (id) => absolutesInGame[id - 1] === 31 || absolutesInGame[id - 1] === 34)
+      const [team2, team3] = partition(others, (id) => absolutesInGame[id - 1] === 31 || absolutesInGame[id - 1] === 34)
       for (const player of team2) {
         this.markInTeam(player, 2)
       }

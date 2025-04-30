@@ -29,7 +29,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
 
   abstract evaluate(rules: R): number
 
-  getMovesOfInterest(rules: R, player: number): MaterialMove[] {
+  getMovesOfInterest(rules: R, player: number, _depth: number): MaterialMove[] {
     return rules.getLegalMoves(player)
   }
 
@@ -41,7 +41,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     if (player === undefined || this.isLeaf(rules, depth)) {
       return { moves: [], score: this.evaluate(rules) }
     }
-    const moves = this.getMovesOfInterest(rules, player)
+    const moves = this.getMovesOfInterest(rules, player, depth)
     if (moves.length === 0) {
       throw new Error('You must return at least on move of interest for the active player')
     }
@@ -81,8 +81,8 @@ class PresagesNegamax extends Negamax {
     return rules.remind(Memory.Team, player1) === rules.remind(Memory.Team, player2)
   }
 
-  getMovesOfInterest(rules: PresagesRules, player: number): MaterialMove[] {
-    const legalMoves = super.getMovesOfInterest(rules, player)
+  getMovesOfInterest(rules: PresagesRules, player: number, depth: number): MaterialMove[] {
+    const legalMoves = rules.getLegalMoves(player)
     const ruleId = rules.game.rule?.id
     if (ruleId === RuleId.TheSecretForMe) {
       return [sample(legalMoves.filter((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player)))!]
@@ -91,6 +91,10 @@ class PresagesNegamax extends Negamax {
       return [sample(legalMoves)!]
     }
     if (ruleId === RuleId.TheAbsolute) {
+      if (depth !== 0) {
+        const giveToPartner = legalMoves.find((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player))
+        return giveToPartner ? [giveToPartner] : legalMoves.slice(0, 1)
+      }
       let giveMoves = legalMoves.filter(isMoveItem)
       const playersToGiveTo = uniq(giveMoves.map((move) => move.location.player!))
       const cardsToGive = uniq(giveMoves.map((move) => move.itemIndex))

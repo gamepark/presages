@@ -28,6 +28,5 @@
     "@types/lodash": "^4.17.7",
     "i18next": "^22.0.3",
     "lodash": "^4.17.21"
-  },
-  "gitHead": "5470906220b9c2df4a09ef14cd942b44f542bf1c"
+  }
 }

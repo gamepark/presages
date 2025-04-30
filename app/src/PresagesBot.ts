@@ -30,7 +30,11 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
   abstract evaluate(rules: R): number
 
   getMovesOfInterest(rules: R, player: number, _depth: number): MaterialMove[] {
-    return rules.getLegalMoves(player)
+    const legalMoves = rules.getLegalMoves(player)
+    if (!legalMoves.length) {
+      console.error(`Player ${player} is active but has no legal moves!`)
+    }
+    return legalMoves
   }
 
   areTeammates(_rules: R, player1: number, player2 = this.player) {
@@ -82,7 +86,7 @@ class PresagesNegamax extends Negamax {
   }
 
   getMovesOfInterest(rules: PresagesRules, player: number, depth: number): MaterialMove[] {
-    const legalMoves = rules.getLegalMoves(player)
+    const legalMoves = super.getMovesOfInterest(rules, player, depth)
     const ruleId = rules.game.rule?.id
     if (ruleId === RuleId.TheSecretForMe) {
       return [sample(legalMoves.filter((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player)))!]

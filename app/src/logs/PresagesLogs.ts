@@ -80,7 +80,10 @@ export class PresagesLogs implements LogDescription {
     }
 
     const isStartOfTurn =
-      context.game.rule?.id === RuleId.RoundResolution || context.game.rule?.id === RuleId.ShowStarter || context.game.rule?.id === RuleId.TheLuck
+      context.game.rule?.id === RuleId.RoundResolution ||
+      context.game.rule?.id === RuleId.ShowStarter ||
+      context.game.rule?.id === RuleId.TheLuck ||
+      context.game.rule?.id === RuleId.Deal
     if ((isStartPlayerTurn(move) || isStartRule(move)) && move.id === RuleId.Place && isStartOfTurn) {
       return {
         Component: StartRoundLog,

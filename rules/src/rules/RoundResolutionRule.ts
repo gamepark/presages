@@ -16,12 +16,16 @@ export class RoundResolutionRule extends MaterialRulesPart {
     const cards = this.table
     this.forget(Memory.CurrentPlayer)
 
+    this.memorize(Memory.Table, this.table.getItems())
+
     const cardWinningTheTrick = this.cardWinningTheTrick
     const item = cardWinningTheTrick.getItem<ArcaneCard>()!
+    moves.push(this.customMove(CustomMoveType.CardResolutionLog, item.location.player))
     this.memorize(Memory.WinningCard, {
       player: item.location.player,
       value: item.id
     })
+
     this.memorize(Memory.FirstPlayer, cardWinningTheTrick.getItem()!.location.player)
 
     moves.push(this.customMove(CustomMoveType.TempoDiscard))
@@ -32,6 +36,10 @@ export class RoundResolutionRule extends MaterialRulesPart {
     )
 
     const discardedCards = this.discardedCards.filter((_, index) => index !== cardWinningTheTrick.getIndex())
+    for (const player of discardedCards.getItems().map((item) => item.location.player)) {
+      moves.push(this.customMove(CustomMoveType.CardResolutionLog, player))
+    }
+
     moves.push(
       ...discardedCards.moveItems({
         type: LocationType.Discard
@@ -49,22 +57,25 @@ export class RoundResolutionRule extends MaterialRulesPart {
     const onDiscardMoves = this.onDiscardMoves(discardedIndexes)
 
     this.afterResolution()
+    if (!onDiscardMoves.length && this.willTriggerEndOfRound(discardedIndexes)) return [this.startRule(RuleId.RoundEnd)]
+
+    this.updateFirstPlayer()
     if (onDiscardMoves.length) {
       return onDiscardMoves
-    } else if (this.willTriggerEndOfRound(discardedIndexes)) {
-      return [this.startRule(RuleId.RoundEnd)]
-    } else {
-      const firstPlayer = this.firstPlayer
-      this.memorize(Memory.CurrentPlayer, firstPlayer)
-      return [this.startPlayerTurn(RuleId.Place, firstPlayer)]
     }
+
+    return [this.startPlayerTurn(RuleId.Place, this.firstPlayer)]
   }
 
-  get firstPlayer() {
+  updateFirstPlayer() {
     const player = this.remind<PlayerId | undefined>(Memory.ForcedFirstPlayer) ?? this.remind<PlayerId>(Memory.FirstPlayer)
     this.memorize(Memory.FirstPlayer, player)
     this.forget(Memory.ForcedFirstPlayer)
     return player
+  }
+
+  get firstPlayer() {
+    return this.remind<PlayerId>(Memory.FirstPlayer)
   }
 
   willTriggerEndOfRound(discardedCardIndexes: number[]) {
@@ -146,6 +157,7 @@ export class RoundResolutionRule extends MaterialRulesPart {
 
   onRuleEnd() {
     this.forget(Memory.TheLaw)
+    this.forget(Memory.Table)
     return []
   }
 }

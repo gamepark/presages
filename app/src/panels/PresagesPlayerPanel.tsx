@@ -54,7 +54,7 @@ const PanelVictoryImage: Record<number, string> = {
   3: StarVictory
 }
 
-const getBackgroundImage = (team: number, rotated: boolean) => {
+export const getBackgroundImage = (team: number, rotated: boolean) => {
   return rotated ? PanelVictoryImage[team] : PanelImage[team]
 }
 

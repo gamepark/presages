@@ -11,5 +11,6 @@ export enum Memory {
   WinningCard,
   ShownCard,
   Winners,
-  Bot
+  Bot,
+  Table
 }

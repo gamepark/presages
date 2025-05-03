@@ -3,5 +3,6 @@ export enum CustomMoveType {
   TheLaw,
   Confirm,
   SeeCard,
-  SeeEquality
+  SeeEquality,
+  CardResolutionLog
 }

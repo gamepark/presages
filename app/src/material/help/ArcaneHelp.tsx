@@ -7,6 +7,7 @@ import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import Help from '../../images/icons/help.jpg'
 import Important from '../../images/icons/important.png'
+import { rainbowGradiant } from '../../logs/components/styles'
 import { getHtmlColor } from '../../utils/color'
 import { TransComponents } from '../../utils/trans.components'
 
@@ -19,9 +20,11 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
     <>
       <h2>{t(isAbsolute(id) ? `card.absolute` : `card.${id}`)}</h2>
       <div css={minWidthCss}>
-        <div css={getTitleBackground(id)}>{t('help.arcane.effect')}</div>
-        <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief && borderedCss(getColors(id)[0])]}>
-          <Trans defaults={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={TransComponents} />
+        <div css={item.id !== ArcaneCard.TheMischief ? getTitleBackground(id) : mischiefTitleBackgroundCss}>{t('help.arcane.effect')}</div>
+        <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief ? borderedCss(getColors(id)[0]) : allColorBorderedCss]}>
+          <span>
+            <Trans defaults={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={TransComponents} />
+          </span>
         </p>
 
         <div css={[precisionsCss, littleCss]}>
@@ -72,6 +75,20 @@ const borderedCss = (color: Color) => css`
   border: 0.2em solid ${getHtmlColor(color)};
   border-radius: 0 0 0.5em 0.5em;
   padding: 0.5em;
+`
+
+const allColorBorderedCss = css`
+  background-image: ${rainbowGradiant};
+  border-image-slice: 1;
+  border-image-source: ${rainbowGradiant};
+  border-radius: 0 0 0.5em 0.5em;
+  padding: 0.2em;
+  padding-top: 0.2em;
+
+  > span {
+    padding: 0.5em;
+    border-radius: 0 0 0.3em 0.3em;
+  }
 `
 
 const importantCss = css`
@@ -126,6 +143,14 @@ const blueCss = css`
 
 const effectCss = css`
   margin-top: 0;
+  margin-bottom: 0;
+
+  > span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: #f0fbfc;
+  }
 `
 
 const getTitleBackground = (id: ArcaneCard) => css`
@@ -137,6 +162,11 @@ const getTitleBackground = (id: ArcaneCard) => css`
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
   background-color: ${getHtmlColor(getColors(id)[0])};
+`
+
+const mischiefTitleBackgroundCss = css`
+  ${getTitleBackground(ArcaneCard.TheMischief)};
+  background-image: ${rainbowGradiant};
 `
 
 const minWidthCss = css`

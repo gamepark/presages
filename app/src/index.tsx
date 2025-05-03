@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom'
 import { gameAnimations } from './animations/GameAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
+import { PresagesLogs } from './logs/PresagesLogs'
 import { Material } from './material/Material'
 import translations from './translations.json'
 
@@ -27,6 +28,7 @@ ReactDOM.render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
+      logs={new PresagesLogs()}
       ai={TutorialBot}
     >
       <App />

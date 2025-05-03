@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { FailuresDialog, FullscreenDialog, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
+import { css } from '@emotion/react'
+import { FailuresDialog, FullscreenDialog, LiveLogContainer, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'
 import { useEffect, useState } from 'react'
 import { GameDisplay } from './GameDisplay'
@@ -22,6 +23,30 @@ export default function App() {
       <Menu />
       <FailuresDialog />
       <FullscreenDialog />
+      {!loading && <LiveLogContainer css={[liveLogCss, liveLogPosition(game.players.length)]} />}
     </>
   )
+}
+
+const liveLogCss = css`
+  position: absolute;
+  width: 45em;
+  pointer-events: none;
+`
+
+const liveLogPosition = (players: number) => {
+  switch (players) {
+    case 4:
+      return css`
+        top: 10em;
+      `
+    case 5:
+      return css`
+        top: 18em;
+      `
+    default:
+      return css`
+        top: 28em;
+      `
+  }
 }

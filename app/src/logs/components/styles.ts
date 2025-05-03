@@ -12,7 +12,7 @@ export const logCss = (team: number, rotated: boolean) => css`
   ${simpleLogCss};
   background: url(${getBackgroundImage(team, rotated)}) #1c2242 no-repeat;
   background-size: auto 90%;
-  background-position: 120% center;
+  background-position: center right -5em;
 `
 
 export const simpleLogCss = css`

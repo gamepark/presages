@@ -123,7 +123,7 @@ export class PresagesLogs implements LogDescription {
       } else {
         return {
           Component: PlaceCardLog,
-          player: context.game.rule.player,
+          depth: 1,
           css: [coloredLogCss(Color.Blue), depthCss]
         }
       }

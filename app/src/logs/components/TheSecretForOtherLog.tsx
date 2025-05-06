@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
-import { usePlayerName } from '@gamepark/react-game'
-import { MoveComponentProps } from '@gamepark/react-game/dist/components/History'
+import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
 import { MaterialGame, StartPlayerTurn } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'

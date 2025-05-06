@@ -1,5 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from '@gamepark/rules-api'
-import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
+import { isMoveItemType, ItemMove, MaterialMove, RuleMove, RuleStep } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../../Memory'

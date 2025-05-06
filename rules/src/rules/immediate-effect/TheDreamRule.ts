@@ -1,5 +1,4 @@
-import { RuleMove } from '@gamepark/rules-api'
-import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
+import { RuleMove, RuleStep } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { Memory } from '../../Memory'
 import { PlayerId } from '../../PlayerId'

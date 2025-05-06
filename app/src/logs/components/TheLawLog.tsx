@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MoveComponentProps } from '@gamepark/react-game/dist/components/History'
+import { MoveComponentProps } from '@gamepark/react-game'
 import { CustomMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'

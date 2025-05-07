@@ -47,6 +47,8 @@ import Important from '../images/icons/important.png'
 import Lightning from '../images/icons/lightning.png'
 import Red from '../images/icons/red.png'
 import Yellow from '../images/icons/yellow.png'
+import Moon from '../images/icons/moon.jpg'
+import Star from '../images/icons/star.jpg'
 import { ArcaneHelp } from './help/ArcaneHelp'
 
 export class ArcaneDescription extends CardDescription {
@@ -103,6 +105,8 @@ export class ArcaneDescription extends CardDescription {
     images.push(Important)
     images.push(Hourglass)
     images.push(Help)
+    images.push(Star)
+    images.push(Moon)
 
     return images
   }

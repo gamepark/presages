@@ -10,7 +10,7 @@ export const ShowStarterHeader = () => {
   const playerId = usePlayerId<PlayerId>()
   const confirm = useLegalMove(isEndPlayerTurn)
   const rules = useRules<PresagesRules>()!
-  const itsMe = playerId && rules.isTurnToPlay(playerId)
+  const itsMe = playerId && rules.game.rule?.players?.includes(playerId)
 
   if (itsMe) {
     return (

@@ -1,5 +1,6 @@
-import { getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
+import { arcaneDescription } from '../material/ArcaneDescription'
 import { playerHandLocator } from './PlayerHandLocator'
 
 export class TableLocator extends Locator {
@@ -21,6 +22,8 @@ export class TableLocator extends Locator {
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
     return ['translateZ(10em)', `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }
+
+  locationDescription = new DropAreaDescription(arcaneDescription)
 }
 
 export const tableLocator = new TableLocator()

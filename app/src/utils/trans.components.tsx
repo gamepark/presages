@@ -12,6 +12,8 @@ import Lightning from '../images/icons/lightning.png'
 import Red from '../images/icons/red.png'
 import Yellow from '../images/icons/yellow.png'
 import { getHtmlColor } from './color'
+import Moon from '../images/icons/moon.jpg'
+import Star from '../images/icons/star.jpg'
 
 const pictureCss = css`
   height: 1em;
@@ -30,6 +32,10 @@ const colorCss = (color: Color) => css`
   font-weight: bold;
 `
 
+const roundCss = css`
+  border-radius: 0.5em;
+`
+
 export const TransComponents: Record<string, ReactElement> = {
   bold: <strong />,
   u: <u />,
@@ -44,5 +50,7 @@ export const TransComponents: Record<string, ReactElement> = {
   lightning: <Picture src={Lightning} css={pictureCss} />,
   book: <Picture src={Book} css={pictureCss} />,
   important: <Picture src={Important} css={pictureCss} />,
-  hourglass: <Picture src={Hourglass} css={pictureCss} />
+  hourglass: <Picture src={Hourglass} css={pictureCss} />,
+  moon: <Picture src={Moon} css={[pictureCss, roundCss]} />,
+  star: <Picture src={Star} css={[pictureCss, roundCss]} />
 }

@@ -13,6 +13,7 @@ import { Locators } from './locators/Locators'
 import { PresagesLogs } from './logs/PresagesLogs'
 import { Material } from './material/Material'
 import translations from './translations.json'
+import { Tutorial } from './tutorial/Tutorial'
 
 setupTranslation(translations, { debug: false })
 
@@ -28,6 +29,7 @@ ReactDOM.render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
+      tutorial={new Tutorial()}
       logs={new PresagesLogs()}
       ai={TutorialBot}
     >

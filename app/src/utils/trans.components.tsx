@@ -39,6 +39,7 @@ const roundCss = css`
 export const TransComponents: Record<string, ReactElement> = {
   bold: <strong />,
   u: <u />,
+  italic: <i />,
   greenColor: <span css={colorCss(Color.Green)}></span>,
   redColor: <span css={colorCss(Color.Red)}></span>,
   yellowColor: <span css={colorCss(Color.Yellow)}></span>,

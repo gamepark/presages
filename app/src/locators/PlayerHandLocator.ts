@@ -3,27 +3,31 @@ import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { PlayerId } from '@gamepark/presages/PlayerId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
-import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext, SortFunction } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, HandLocator, isItemContext, ItemContext, MaterialContext, SortFunction } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { arcaneDescription } from '../material/ArcaneDescription'
 
 export class PlayerHandLocator extends HandLocator {
   locationDescription = new DropAreaDescription({
-    height: arcaneDescription.height,
+    height: arcaneDescription.height + 1,
     width: arcaneDescription.width * 3.5,
     borderRadius: arcaneDescription.borderRadius
   })
 
   getCoordinates(location: Location, context: ItemContext) {
-    const { rules, type, index } = context
-    const item = rules.material(type).index(index).getItem()
+    let highlight = false
+    if (isItemContext(context)) {
+      const { rules, type, index } = context
+      const item = rules.material(type).index(index).getItem()
+      highlight = item?.location.rotation === Visibility.HIDDEN_FOR_EVERYONE || item?.location.rotation === Visibility.TEMPORARY_VISIBLE_FOR_ME
+    }
     const angle = this.getPlayerAngle(location.player!, context)
-    const highlight = item?.location.rotation === Visibility.HIDDEN_FOR_EVERYONE || item?.location.rotation === Visibility.TEMPORARY_VISIBLE_FOR_ME
     const radius = highlight ? 22 : 27
     const x = Math.cos((angle * Math.PI) / 180) * radius
     const y = -Math.sin((angle * Math.PI) / 180) * radius
-    return { x, y }
+    return { x, y, z: isItemContext(context) ? 0.05 : 1 }
   }
+
   getMaxAngle(location: Location, context: MaterialContext): number {
     if (location.player === (context.player ?? context.rules.players[0])) {
       return 20

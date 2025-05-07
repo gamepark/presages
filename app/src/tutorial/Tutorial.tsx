@@ -1,10 +1,11 @@
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { MaterialTutorial } from '@gamepark/react-game'
 import { TutorialStep } from '@gamepark/react-game/dist/components/tutorial/MaterialTutorial'
-import { isEndPlayerTurn, isMoveItemType } from '@gamepark/rules-api'
+import { isEndPlayerTurn, isMoveItemType, isStartRule } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { TransComponents } from '../utils/trans.components'
 import { jakob, jane, lisa, me, TutorialSetup } from './TutorialSetup'
@@ -12,10 +13,10 @@ import { jakob, jane, lisa, me, TutorialSetup } from './TutorialSetup'
 export class Tutorial extends MaterialTutorial {
   version = 1
   options = {
-    players: [{ id: me }, { id: lisa }, { id: jakob }, { id: jane }]
+    players: [{ id: me }, { id: jakob }, { id: lisa }, { id: jane }]
   }
 
-  players = [{ id: me }, { id: lisa }, { id: jakob }, { id: jane }]
+  players = [{ id: me }, { id: jakob }, { id: lisa }, { id: jane }]
 
   setup = new TutorialSetup()
 
@@ -90,27 +91,118 @@ export class Tutorial extends MaterialTutorial {
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.absolute.effect" components={TransComponents} />,
-        position: { y: -17, x: 17 }
+        text: () => <Trans defaults="tuto.absolute.effect" components={TransComponents} />
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.Arcane).location(LocationType.Table).player(me)],
+        materials: [
+          this.material(game, MaterialType.Arcane).location(LocationType.Table).player(me),
+          this.material(game, MaterialType.Arcane).location(LocationType.Hand).id(ArcaneCard.TheMischief)
+        ],
         locations: [{ type: LocationType.Hand, player: lisa, rotation: Visibility.HIDDEN_FOR_EVERYONE }],
         margin: {
-          top: 5,
-          bottom: 20
+          top: 10,
+          bottom: 5,
+          left: 5
         }
       }),
       move: {
-        filter: (move) => isMoveItemType(MaterialType.Arcane)(move) && move.location.player === lisa
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Arcane)(move) && move.location.player === lisa && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheMischief
       }
     },
-    { popup: { text: () => <Trans defaults="tuto.absolute.effect.opponent" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.life" components={TransComponents} /> } },
+    {
+      move: {
+        player: lisa,
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Arcane)(move) && move.location.player === me && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheNight
+      }
+    },
+    {
+      popup: {
+        text: () => <Trans defaults="tuto.absolute.effect.opponent" components={TransComponents} />,
+        position: { x: 30, y: -15 }
+      },
+      focus: (game) => ({
+        materials: [this.material(game, MaterialType.Arcane).location(LocationType.Hand).id(ArcaneCard.TheNight)],
+        margin: {
+          top: 10,
+          bottom: 10,
+          right: 16
+        }
+      })
+    },
+    {
+      move: {
+        player: jakob,
+        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheLife
+      }
+    },
+    {
+      popup: { text: () => <Trans defaults="tuto.life" components={TransComponents} />, position: { x: 30, y: -15 } },
+      focus: (game) => ({
+        materials: [this.material(game, MaterialType.Arcane).location(LocationType.Table).id(ArcaneCard.TheLife)],
+        margin: {
+          top: 10,
+          bottom: 10,
+          right: 16
+        }
+      })
+    },
     { popup: { text: () => <Trans defaults="tuto.trigger.end" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.win.turn" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.death" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.take.inhand" components={TransComponents} /> } },
+    {
+      move: {
+        player: lisa,
+        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheFriendship
+      }
+    },
+    {
+      move: {
+        player: jane,
+        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheDeath,
+        interrupt: (move) => isStartRule(move) && move.id === RuleId.RoundResolution
+      }
+    },
+    {
+      popup: { text: () => <Trans defaults="tuto.win.turn" components={TransComponents} />, position: { x: 35, y: 30 }, size: { width: 70 } },
+      focus: (game) => ({
+        materials: [this.material(game, MaterialType.Arcane).location(LocationType.Table)],
+        margin: {
+          top: 5,
+          bottom: 5,
+          right: 18
+        }
+      })
+    },
+    {
+      popup: { text: () => <Trans defaults="tuto.death" components={TransComponents} />, position: { x: 0, y: 25 }, size: { width: 100 } },
+      focus: (game) => ({
+        materials: [
+          this.material(game, MaterialType.Arcane)
+            .location(LocationType.Table)
+            .id((id: ArcaneCard) => [ArcaneCard.TheLife, ArcaneCard.TheDeath].includes(id))
+        ],
+        margin: {
+          top: 10,
+          bottom: 25,
+          right: 5,
+          left: 5
+        }
+      }),
+      move: {
+        interrupt: (move) => isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand
+      }
+    },
+    {
+      popup: { text: () => <Trans defaults="tuto.take.inhand" components={TransComponents} />, position: { y: 20 } },
+      focus: (game) => ({
+        materials: [this.material(game, MaterialType.Arcane).id(ArcaneCard.TheFriendship)],
+        margin: {
+          top: 10,
+          bottom: 25
+        }
+      }),
+      move: {}
+    },
     { popup: { text: () => <Trans defaults="tuto.new.round" components={TransComponents} /> } },
     { popup: { text: () => <Trans defaults="tuto.help" components={TransComponents} /> } },
     { popup: { text: () => <Trans defaults="tuto.win.round" components={TransComponents} /> } },

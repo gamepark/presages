@@ -15,18 +15,17 @@ export const PresagesBot = (game: MaterialGame, player: number): MaterialMove[] 
 }
 
 type NegamaxResult = {
-  player?: number
   moves: MaterialMove[]
   score: number
 }
 
 abstract class Negamax<R extends MaterialRules = MaterialRules> {
   abstract Rules: RulesCreator<MaterialGame>
-  player!: number
+  private player!: number
 
   abstract isLeaf(rules: R, depth: number): boolean
 
-  abstract evaluate(rules: R): number
+  abstract evaluate(rules: R, player: number): number
 
   getMovesOfInterest(rules: R, player: number, _depth: number): MaterialMove[] {
     const legalMoves = rules.getLegalMoves(player)
@@ -42,29 +41,30 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
 
   private negamax(rules: R, player?: number, depth = 0, alpha = -Infinity, beta = Infinity): NegamaxResult {
     if (player === undefined || this.isLeaf(rules, depth)) {
-      return { moves: [], score: this.evaluate(rules) }
+      return { score: this.evaluate(rules, player ?? this.player), moves: [] }
     }
+
     const moves = this.getMovesOfInterest(rules, player, depth)
-    if (moves.length === 0) {
-      throw new Error('You must return at least on move of interest for the active player')
-    }
+    if (moves.length === 0) throw new Error('You must return at least on move of interest for the active player')
     if (depth === 0 && moves.length === 1) return { moves, score: 0 }
-    let best: NegamaxResult | undefined = undefined
+
+    let best: NegamaxResult = { score: -Infinity, moves: [] }
     for (const move of moves) {
-      const rulesAfter = new this.Rules(structuredClone(rules.game)) as R
-      playAction(rulesAfter, move, player)
-      const nextPlayer = rulesAfter.players.find((player) => rulesAfter.isTurnToPlay(player))
-      const teammates = this.areTeammates(rulesAfter, player, nextPlayer)
-      const result = this.negamax(rulesAfter, nextPlayer, depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
-      if (!best || best.score < result.score || (best.score === result.score && Math.random() < 0.5)) {
-        best = { player, moves: player === result.player ? [move, ...result.moves] : [move], score: result.score }
-        alpha = Math.max(alpha, best.score)
+      const childRules = new this.Rules(structuredClone(rules.game)) as R
+      playAction(childRules, move, player)
+      const nextPlayer = childRules.players.find((player) => childRules.isTurnToPlay(player))
+      const teammates = this.areTeammates(childRules, player, nextPlayer)
+      const result = this.negamax(childRules, nextPlayer, depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
+      const score = teammates ? result.score : -result.score
+      if (best.score < score || (best.score === score && Math.random() < 0.5)) {
+        best = { score, moves: player === nextPlayer ? [move, ...result.moves] : [move] }
+        alpha = Math.max(alpha, score)
         if (alpha >= beta) {
           break
         }
       }
     }
-    return best!
+    return best
   }
 
   getBestMoves(rules: R, player: number) {
@@ -80,7 +80,7 @@ class PresagesNegamax extends Negamax {
     return depth !== 0 && rules.game.rule?.id === RuleId.Place && rules.material(MaterialType.Arcane).location(LocationType.Table).length === 0
   }
 
-  areTeammates(rules: PresagesRules, player1: number, player2 = this.player) {
+  areTeammates(rules: PresagesRules, player1: number, player2: number) {
     return rules.remind(Memory.Team, player1) === rules.remind(Memory.Team, player2)
   }
 
@@ -88,14 +88,14 @@ class PresagesNegamax extends Negamax {
     const legalMoves = super.getMovesOfInterest(rules, player, depth)
     const ruleId = rules.game.rule?.id
     if (ruleId === RuleId.TheSecretForMe) {
-      return [sample(legalMoves.filter((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player)))!]
+      return [sample(legalMoves.filter((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player!)))!]
     }
     if (ruleId === RuleId.TheSecretForOther) {
       return [sample(legalMoves)!]
     }
     if (ruleId === RuleId.TheAbsolute) {
       if (depth !== 0) {
-        const giveToPartner = legalMoves.find((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player))
+        const giveToPartner = legalMoves.find((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player!))
         return giveToPartner ? [giveToPartner] : legalMoves.slice(0, 1)
       }
       let giveMoves = legalMoves.filter(isMoveItem)
@@ -116,44 +116,44 @@ class PresagesNegamax extends Negamax {
     return legalMoves
   }
 
-  evaluate(rules: PresagesRules): number {
+  evaluate(rules: PresagesRules, player: number): number {
     if (rules.isOver()) {
-      return rules.remind<number[]>(Memory.Winners).includes(this.player) ? Infinity : -Infinity
+      return rules.remind<number[]>(Memory.Winners).includes(player) ? Infinity : -Infinity
     }
     return (
-      this.evaluateWinRounds(rules) * 1000 +
-      this.evaluateRemainingCards(rules) * 100 +
-      this.evaluateStartingPlayer(rules) * 10 +
-      this.evaluateHandsQuality(rules)
+      this.evaluateWinRounds(rules, player) * 1000 +
+      this.evaluateRemainingCards(rules, player) * 100 +
+      this.evaluateStartingPlayer(rules, player) * 10 +
+      this.evaluateHandsQuality(rules, player)
     )
   }
 
-  evaluateWinRounds(rules: PresagesRules) {
+  evaluateWinRounds(rules: PresagesRules, player: number) {
     const helpCards = rules.material(MaterialType.Help).location(LocationType.Help).rotation(true).getItems()
-    return sumBy(helpCards, (card) => (this.areTeammates(rules, card.location.player!) ? 1 : -1))
+    return sumBy(helpCards, (card) => (this.areTeammates(rules, player, card.location.player!) ? 1 : -1))
   }
 
-  evaluateRemainingCards(rules: PresagesRules) {
-    return sumBy(rules.players, (player) => {
-      const hand = rules.material(MaterialType.Arcane).location(LocationType.Hand).player(player).length
-      const value = hand === 2 ? 5 : hand === 3 ? 3 : hand === 4 ? 1 : 0
-      return this.areTeammates(rules, player) ? value : -value
+  evaluateRemainingCards(rules: PresagesRules, player: number) {
+    return sumBy(rules.players, (otherPlayer) => {
+      const hand = rules.material(MaterialType.Arcane).location(LocationType.Hand).player(otherPlayer).length
+      const value = hand === 2 ? 6 : hand === 3 ? 3 : hand === 4 ? 1 : 0
+      return this.areTeammates(rules, player, otherPlayer) ? value : -value
     })
   }
 
-  evaluateStartingPlayer(rules: PresagesRules) {
+  evaluateStartingPlayer(rules: PresagesRules, player: number) {
     const startingPlayer = rules.getActivePlayer()!
     const players = rules.players
-    return sumBy(players, (player) => {
-      const position = (players.indexOf(player) - players.indexOf(startingPlayer) + players.length) % players.length
-      return this.areTeammates(rules, player) ? position : -position
+    return sumBy(players, (otherPlayer) => {
+      const position = (players.indexOf(otherPlayer) - players.indexOf(startingPlayer) + players.length) % players.length
+      return this.areTeammates(rules, player, otherPlayer) ? position : -position
     })
   }
 
-  evaluateHandsQuality(rules: PresagesRules) {
-    return sumBy(rules.players, (player) => {
-      const quality = this.evaluateHandQuality(rules, player)
-      return this.areTeammates(rules, player) ? quality : -quality
+  evaluateHandsQuality(rules: PresagesRules, player: number) {
+    return sumBy(rules.players, (handPlayer) => {
+      const quality = this.evaluateHandQuality(rules, handPlayer)
+      return this.areTeammates(rules, player, handPlayer) ? quality : -quality
     })
   }
 
@@ -175,14 +175,14 @@ class PresagesNegamax extends Negamax {
       case ArcaneCard.TheDay: {
         const sameColorCards = cards.filter((card) => hasColor(card.id, getColors(arcane)[0]))
         const maxInColor = maxBy(sameColorCards, (card) => card.id)!
-        return this.areTeammates(rules, owner, maxInColor.location.player) ? 10 : 5
+        return this.areTeammates(rules, owner, maxInColor.location.player!) ? 10 : 5
       }
       case ArcaneCard.TheDeath:
       case ArcaneCard.TheTruth:
       case ArcaneCard.TheNight: {
         const sameColorCards = cards.filter((card) => hasColor(card.id, getColors(arcane)[0]))
         const minInColor = minBy(sameColorCards, (card) => card.id)!
-        return this.areTeammates(rules, owner, minInColor.location.player) ? 10 : 5
+        return this.areTeammates(rules, owner, minInColor.location.player!) ? 10 : 5
       }
       case ArcaneCard.TheLove: {
         const greenCards = sumBy(cards, (card) => (hasColor(card.id, Color.Green) ? 1 : 0))
@@ -231,7 +231,7 @@ class PresagesNegamax extends Negamax {
           [ArcaneCard.TheMirror]: 3
         }
         const comboCards = cards.filter((card) => combo[card.id] !== undefined)
-        const potential = sumBy(comboCards, (card) => combo[card.id]! * (this.areTeammates(rules, owner, card.location.player) ? 2 : 1))
+        const potential = sumBy(comboCards, (card) => combo[card.id]! * (this.areTeammates(rules, owner, card.location.player!) ? 2 : 1))
         return Math.min(20, Math.max(3, potential))
       }
       case ArcaneCard.TheMirror:
@@ -243,14 +243,14 @@ class PresagesNegamax extends Negamax {
         const helper = [ArcaneCard.TheLove, ArcaneCard.TheFriendship, ArcaneCard.TheCalm]
         const comboCount = sumBy(cards, (card) => (combo.includes(card.id) ? 1 : 0))
         const helperCount = sumBy(cards, (card) =>
-          helper.includes(card.id) && owner !== card.location.player && this.areTeammates(rules, owner, card.location.player) ? 1 : 0
+          helper.includes(card.id) && owner !== card.location.player && this.areTeammates(rules, owner, card.location.player!) ? 1 : 0
         )
         return Math.min(10, Math.max(1, comboCount * 4 + helperCount * 2))
       }
       case ArcaneCard.TheHarmony: {
         const otherPlayerCards = cards.filter((card) => card.location.player !== owner)
         const minCard = minBy(otherPlayerCards, (card) => card.id)!
-        return this.areTeammates(rules, owner, minCard.location.player) ? 6 : 3
+        return this.areTeammates(rules, owner, minCard.location.player!) ? 6 : 3
       }
       case ArcaneCard.TheDream: {
         const leftPlayer = rules.players[(rules.players.indexOf(owner) + 1) % rules.players.length]
@@ -268,7 +268,7 @@ class PresagesNegamax extends Negamax {
         return 7
       case ArcaneCard.TheWinter: {
         const potential = sumBy(cards, (card) => {
-          if (owner === card.location.player || !this.areTeammates(rules, owner, card.location.player)) return 0
+          if (owner === card.location.player || !this.areTeammates(rules, owner, card.location.player!)) return 0
           if (!getColors(card.id).includes(Color.Yellow)) return 0
           return card.id === ArcaneCard.TheLuck ? 10 : 5
         })

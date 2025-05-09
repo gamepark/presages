@@ -27,9 +27,7 @@ export class Tutorial extends MaterialTutorial {
     {
       popup: {
         text: () => <Trans defaults="tuto.mate" components={TransComponents} />
-      }
-    },
-    {
+      },
       move: {
         player: me,
         filter: (move) => isEndPlayerTurn(move)

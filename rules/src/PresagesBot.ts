@@ -105,7 +105,7 @@ class PresagesNegamax extends Negamax {
     if (ruleId === RuleId.TheAbsolute) {
       if (depth !== 0) {
         const giveToPartner = legalMoves.find((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player!))
-        return giveToPartner ? [giveToPartner] : legalMoves.slice(0, 1)
+        if (giveToPartner) return [giveToPartner]
       }
       let giveMoves = legalMoves.filter(isMoveItem)
       const playersToGiveTo = uniq(giveMoves.map((move) => move.location.player!))
@@ -243,10 +243,14 @@ class PresagesNegamax extends Negamax {
         const potential = sumBy(comboCards, (card) => combo[card.id]! * (this.areTeammates(rules, owner, card.location.player!) ? 2 : 1))
         return Math.min(20, Math.max(3, potential))
       }
-      case ArcaneCard.TheMirror:
-        return 9
-      case ArcaneCard.TheLaw:
-        return 8
+      case ArcaneCard.TheMirror: {
+        const rightPlayer = rules.players[(rules.players.indexOf(owner) + rules.players.length - 1) % rules.players.length]
+        return this.areTeammates(rules, owner, rightPlayer) ? 8 : 9
+      }
+      case ArcaneCard.TheLaw: {
+        const leftPlayer = rules.players[(rules.players.indexOf(owner) + 1) % rules.players.length]
+        return this.areTeammates(rules, owner, leftPlayer) ? 7 : 8
+      }
       case ArcaneCard.TheMischief: {
         const combo = [ArcaneCard.TheLife, ArcaneCard.TheLie, ArcaneCard.TheNight, ArcaneCard.TheWinter]
         const helper = [ArcaneCard.TheLove, ArcaneCard.TheFriendship, ArcaneCard.TheCalm]
@@ -269,12 +273,16 @@ class PresagesNegamax extends Negamax {
         const leftPlayer = rules.players[(rules.players.indexOf(owner) + 1) % rules.players.length]
         return this.areTeammates(rules, owner, leftPlayer) ? 3 : 5
       }
-      case ArcaneCard.TheJalousie:
-        return 10
+      case ArcaneCard.TheJalousie: {
+        const rightPlayer = rules.players[(rules.players.indexOf(owner) + rules.players.length - 1) % rules.players.length]
+        return this.areTeammates(rules, owner, rightPlayer) ? 9 : 10
+      }
       case ArcaneCard.TheSecret:
         return 2
-      case ArcaneCard.TheSadness:
-        return 7
+      case ArcaneCard.TheSadness: {
+        const rightPlayer = rules.players[(rules.players.indexOf(owner) + rules.players.length - 1) % rules.players.length]
+        return this.areTeammates(rules, owner, rightPlayer) ? 6 : 7
+      }
       case ArcaneCard.TheWinter: {
         const potential = sumBy(cards, (card) => {
           if (owner === card.location.player || !this.areTeammates(rules, owner, card.location.player!)) return 0
@@ -283,10 +291,14 @@ class PresagesNegamax extends Negamax {
         })
         return Math.min(10, Math.max(2, potential))
       }
-      case ArcaneCard.TheAnger:
-        return 8
-      case ArcaneCard.TheBetrayal:
-        return 12
+      case ArcaneCard.TheAnger: {
+        const rightPlayer = rules.players[(rules.players.indexOf(owner) + rules.players.length - 1) % rules.players.length]
+        return this.areTeammates(rules, owner, rightPlayer) ? 7 : 8
+      }
+      case ArcaneCard.TheBetrayal: {
+        const rightPlayer = rules.players[(rules.players.indexOf(owner) + rules.players.length - 1) % rules.players.length]
+        return this.areTeammates(rules, owner, rightPlayer) ? 11 : 12
+      }
       case ArcaneCard.TheAbsolute30:
         return 8
       case ArcaneCard.TheAbsolute31:

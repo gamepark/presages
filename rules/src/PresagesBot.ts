@@ -15,13 +15,13 @@ export const PresagesBot = (game: MaterialGame, player: number): MaterialMove[] 
 }
 
 type NegamaxResult = {
-  moves: MaterialMove[]
   score: number
+  moves: MaterialMove[]
+  player: number
 }
 
 abstract class Negamax<R extends MaterialRules = MaterialRules> {
   abstract Rules: RulesCreator<MaterialGame>
-  private player!: number
 
   abstract isLeaf(rules: R, depth: number): boolean
 
@@ -35,30 +35,25 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     return legalMoves
   }
 
-  areTeammates(_rules: R, player1: number, player2 = this.player) {
+  areTeammates(_rules: R, player1: number, player2: number) {
     return player1 === player2
   }
 
-  private negamax(rules: R, player?: number, depth = 0, alpha = -Infinity, beta = Infinity): NegamaxResult {
-    if (player === undefined || this.isLeaf(rules, depth)) {
-      return { score: this.evaluate(rules, player ?? this.player), moves: [] }
+  private negamax(rules: R, player: number, depth = 0, alpha = -Infinity, beta = Infinity): NegamaxResult {
+    if (this.isLeaf(rules, depth)) {
+      return { score: this.evaluate(rules, player), moves: [], player }
     }
 
     const moves = this.getMovesOfInterest(rules, player, depth)
     if (moves.length === 0) throw new Error('You must return at least on move of interest for the active player')
-    if (depth === 0 && moves.length === 1) return { moves, score: 0 }
+    if (depth === 0 && moves.length === 1) return { score: 0, moves, player }
 
-    let best: NegamaxResult = { score: -Infinity, moves: [] }
+    let best: NegamaxResult = { score: -Infinity, moves: [], player }
     for (const move of moves) {
-      const childRules = new this.Rules(structuredClone(rules.game)) as R
-      playAction(childRules, move, player)
-      const nextPlayer = childRules.players.find((player) => childRules.isTurnToPlay(player))
-      const teammates = this.areTeammates(childRules, player, nextPlayer)
-      const result = this.negamax(childRules, nextPlayer, depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
-      const score = teammates ? result.score : -result.score
-      if (best.score < score || (best.score === score && Math.random() < 0.5)) {
-        best = { score, moves: player === nextPlayer ? [move, ...result.moves] : [move] }
-        alpha = Math.max(alpha, score)
+      const result = this.getNegamaxResult(rules, player, depth, alpha, beta, move)
+      if (best.score < result.score) {
+        best = { score: result.score, moves: player === result.player ? [move, ...result.moves] : [move], player }
+        alpha = Math.max(alpha, result.score)
         if (alpha >= beta) {
           break
         }
@@ -67,8 +62,22 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     return best
   }
 
+  private getNegamaxResult(rules: R, player: number, depth: number, alpha: number, beta: number, move: MaterialMove): NegamaxResult {
+    const childRules = new this.Rules(structuredClone(rules.game)) as R
+    playAction(childRules, move, player)
+    const nextPlayer = childRules.players.find((player) => childRules.isTurnToPlay(player))
+    if (nextPlayer === undefined) {
+      return { score: this.evaluate(rules, player), moves: [], player }
+    }
+    const teammates = this.areTeammates(childRules, player, nextPlayer)
+    const result = this.negamax(childRules, nextPlayer, player === nextPlayer ? depth : depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
+    if (!teammates) {
+      result.score = -result.score
+    }
+    return result
+  }
+
   getBestMoves(rules: R, player: number) {
-    this.player = player
     return this.negamax(rules, player).moves
   }
 }

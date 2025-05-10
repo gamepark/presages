@@ -47,7 +47,7 @@ const PlayerName: FC<{ id: PlayerId }> = ({ id }) => {
 }
 
 const Team: FC<{ team: number }> = ({ team }) => {
-  // @ts-ignore
+  // @ts-expect-error the picture css is not exposed in the component
   return <Picture css={[iconCss, pictureCss]} picture={{ css: pictureTestCss }} src={getBackgroundImage(team, true)}></Picture>
 }
 

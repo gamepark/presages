@@ -14,7 +14,6 @@ export class RoundResolutionRule extends MaterialRulesPart {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const cards = this.table
-    this.forget(Memory.CurrentPlayer)
 
     this.memorize(Memory.Table, this.table.getItems())
 

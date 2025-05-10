@@ -7,21 +7,28 @@ import { RuleId } from './RuleId'
 
 export class BasePlayerTurnRule extends PlayerTurnRule {
   get nextRuleMove() {
-    const nextPlayer = this.nextPlayer
-    const someoneHasNotPlayed = this.game.players.some((p) => !this.hasCardOnTable(p))
-    if (!someoneHasNotPlayed) return [this.startRule(RuleId.RoundResolution)]
-    this.memorize(Memory.CurrentPlayer, nextPlayer)
+    const nextPlayer = this.computeNextPlayer()
+    const players = this.orderedPlayers.some((p) => !this.hasCardOnTable(p))
+    if (!players || !nextPlayer) return [this.startRule(RuleId.RoundResolution)]
     return [this.startPlayerTurn(RuleId.Place, nextPlayer)]
   }
 
-  get currentPlayer() {
-    return this.remind<PlayerId | undefined>(Memory.CurrentPlayer)
+  get firstPlayer(): PlayerId {
+    return this.remind<PlayerId>(Memory.FirstPlayer)
   }
 
-  get nextPlayer(): PlayerId {
-    const currentPlayer = this.currentPlayer ?? this.player
-    const players = this.game.players.filter((p) => !this.hasCardOnTable(p) || p === currentPlayer)
-    return players[(players.indexOf(currentPlayer) + 1) % players.length]
+  computeNextPlayer(): PlayerId | undefined {
+    return this.orderedPlayers.find((p) => !this.hasCardOnTable(p))
+  }
+
+  get orderedPlayers(): PlayerId[] {
+    const orderedPlayers: PlayerId[] = [this.firstPlayer]
+    for (let i = 0; i < this.game.players.length - 1; i++) {
+      const lastPlayer = orderedPlayers[orderedPlayers.length - 1]
+      orderedPlayers.push(this.game.players[(this.game.players.indexOf(lastPlayer) + 1) % this.game.players.length])
+    }
+
+    return orderedPlayers
   }
 
   hasCardOnTable(player: PlayerId) {

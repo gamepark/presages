@@ -14,7 +14,7 @@ import { CardNameLink } from './CardNameLink'
 export const PlaceCardLog: FC<MoveComponentProps> = (props) => {
   const move = props.move as MoveItem
   const context: MoveComponentContext<MaterialMove, PlayerId, MaterialGame> = props.context
-  const rule = new PresagesRules(JSON.parse(JSON.stringify(context.game)))
+  const rule = new PresagesRules(JSON.parse(JSON.stringify(context.game)) as MaterialGame)
   rule.play(move)
   const item = rule.material(MaterialType.Arcane).getItem<ArcaneCard>(move.itemIndex)
   const id: ArcaneCard = (move.reveal?.id ?? item.id) as ArcaneCard

@@ -1,13 +1,15 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { ArcaneCard } from '../../../material/ArcaneCard'
 import { Memory } from '../../../Memory'
+import { PlayerId } from '../../../PlayerId'
 import { RuleId } from '../../RuleId'
 import { ArcaneEffect } from '../ArcaneEffect'
 
 export class TheLawDescription extends ArcaneEffect {
-  onPlaceTo(): MaterialMove[] {
+  onPlaceTo(_cardId: ArcaneCard, target: PlayerId): MaterialMove[] {
     if (this.table.length === this.game.players.length) return []
-    return [this.startRule(RuleId.TheLaw)]
+    if (this.getActivePlayer() === target) return [this.startRule(RuleId.TheLaw)]
+    return [this.startPlayerTurn(RuleId.TheLaw, target)]
   }
 
   canBePlayed(card: ArcaneCard) {

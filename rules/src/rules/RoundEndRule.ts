@@ -21,7 +21,6 @@ export class RoundEndRule extends MaterialRulesPart {
       .player((p) => players.includes(p!))
     if (cards.rotation(true).length > 0) {
       this.memorize(Memory.Winners, players)
-      this.memorize(Memory.CurrentPlayer, players[0])
       return [this.customMove(CustomMoveType.TempoDiscard), this.endGame()]
     }
     const moves: MaterialMove[] = []

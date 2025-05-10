@@ -3,7 +3,6 @@ export enum Memory {
   ForcedFirstPlayer,
   FirstPlayer,
   TheLaw,
-  CurrentPlayer,
   EffectPlayer,
   ShowCardTo,
   BlockedCard,

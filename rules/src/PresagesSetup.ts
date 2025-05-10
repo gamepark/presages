@@ -99,7 +99,6 @@ export class PresagesSetup extends MaterialGameSetup<PlayerId, MaterialType, Loc
 
   start() {
     const firstPlayer = this.playerWithMaxAbsolute
-    this.memorize(Memory.CurrentPlayer, firstPlayer)
     this.memorize(Memory.FirstPlayer, firstPlayer)
     this.startRule(RuleId.Deal)
   }

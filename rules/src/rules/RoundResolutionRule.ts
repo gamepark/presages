@@ -27,10 +27,9 @@ export class RoundResolutionRule extends MaterialRulesPart {
 
     this.memorize(Memory.FirstPlayer, cardWinningTheTrick.getItem()!.location.player)
 
-    moves.push(this.customMove(CustomMoveType.TempoDiscard))
-
     const discardedCards = this.discardedCards.filter((_, index) => index !== cardWinningTheTrick.getIndex())
     moves.push(...discardedCards.getItems().map((item) => this.customMove(CustomMoveType.CardResolutionLog, item.location.player)))
+    moves.push(this.customMove(CustomMoveType.TempoDiscard))
     moves.push(
       cardWinningTheTrick.moveItem({
         type: LocationType.Discard

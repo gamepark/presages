@@ -18,7 +18,7 @@ export const ShowStarterHeader = () => {
         defaults="header.show-starter.me"
         components={{
           ...TransComponents,
-          confirm: <PlayMoveButton move={confirm} auto={2 * rules.game.players.length} />
+          confirm: <PlayMoveButton move={confirm} auto={rules.game.tutorial?.step !== 3 ? 2 * rules.game.players.length : undefined} />
         }}
       />
     )

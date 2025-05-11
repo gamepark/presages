@@ -19,15 +19,17 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
   return (
     <>
       <h2>{t(isAbsolute(id) ? `card.absolute` : `card.${id}`)}</h2>
-      <div css={minWidthCss}>
-        <div css={item.id !== ArcaneCard.TheMischief ? getTitleBackground(id) : mischiefTitleBackgroundCss}>{t('help.arcane.effect')}</div>
-        <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief ? borderedCss(getColors(id)[0]) : allColorBorderedCss]}>
-          <span>
-            <Trans defaults={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={TransComponents} />
-          </span>
-        </p>
+      <div css={minSizeCss}>
+        <div css={specificPartCss}>
+          <div css={item.id !== ArcaneCard.TheMischief ? getTitleBackground(id) : mischiefTitleBackgroundCss}>{t('help.arcane.effect')}</div>
+          <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief ? borderedCss(getColors(id)[0]) : allColorBorderedCss]}>
+            <span>
+              <Trans defaults={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={ArcaneComponents} />
+            </span>
+          </p>
+        </div>
 
-        <div css={[precisionsCss, littleCss]}>
+        <div css={[commonPartCss, littleCss]}>
           <div
             css={css`
               width: 100%;
@@ -96,7 +98,6 @@ const importantCss = css`
   flex-direction: row;
   border: 0.2em solid #cf3745;
   padding: 0.5em;
-  margin-right: 1.5em;
   border-radius: 0.5em;
   white-space: pre-wrap;
 `
@@ -109,13 +110,17 @@ const importantImageCss = css`
 const helpImageCss = css`
   height: 2.7em;
   border-radius: 0.5em;
-  margin-right: 1.7em;
   transform: translateY(25%);
 `
 
-const precisionsCss = css`
-  position: absolute;
-  bottom: 1.5em;
+const commonPartCss = css`
+  flex: 1;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+`
+const specificPartCss = css`
+  flex: 1;
 `
 
 const littleCss = css`
@@ -150,6 +155,7 @@ const effectCss = css`
     height: 100%;
     width: 100%;
     background-color: #f0fbfc;
+    white-space: pre-wrap;
   }
 `
 
@@ -169,7 +175,21 @@ const mischiefTitleBackgroundCss = css`
   background-image: ${rainbowGradiant};
 `
 
-const minWidthCss = css`
-  min-width: 48.5dvw;
+const minSizeCss = css`
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  min-height: 70dvh;
   min-width: 48.5vw;
+  min-width: 48.5dvw;
 `
+
+const cardPrecisionCss = css`
+  font-style: italic;
+  font-size: 0.8em;
+  color: gray;
+`
+const ArcaneComponents = {
+  ...TransComponents,
+  precision: <span css={cardPrecisionCss}></span>
+}

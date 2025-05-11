@@ -5,11 +5,13 @@ import { PresagesSetup } from '@gamepark/presages/PresagesSetup'
 import shuffle from 'lodash/shuffle'
 
 export const me = 2
-export const myHand = [ArcaneCard.TheWinter, ArcaneCard.TheSpring, ArcaneCard.TheMischief, ArcaneCard.TheHarmony]
+export const myHand = [ArcaneCard.TheTruth, ArcaneCard.TheEnigma, ArcaneCard.TheFeast, ArcaneCard.TheLove]
 export const lisa = 1
-export const lisaHand = [ArcaneCard.TheNight, ArcaneCard.TheDay, ArcaneCard.TheJalousie, ArcaneCard.TheFriendship]
+export const lisaHand = [ArcaneCard.TheNight, ArcaneCard.TheDay, ArcaneCard.TheDeath, ArcaneCard.TheFriendship]
 export const jakob = 3
+export const jakobHand = [ArcaneCard.TheLife, ArcaneCard.TheLie, ArcaneCard.TheHarmony, ArcaneCard.TheWinter]
 export const jane = 4
+export const janeHand = [ArcaneCard.TheFear, ArcaneCard.TheHope, ArcaneCard.TheSpring, ArcaneCard.TheSecret]
 
 export class TutorialSetup extends PresagesSetup {
   setupTeamsWithAbsolutes() {
@@ -25,7 +27,7 @@ export class TutorialSetup extends PresagesSetup {
   }
 
   setupCards() {
-    const other = shuffle(arcanes.filter((a) => !myHand.includes(a) && !lisaHand.includes(a) && a < 30))
+    const other = shuffle(arcanes.filter((a) => !myHand.includes(a) && !lisaHand.includes(a) && !janeHand.includes(a) && !jakobHand.includes(a) && a < 30))
 
     this.material(MaterialType.Arcane).createItems(
       other.map((a) => ({
@@ -36,17 +38,14 @@ export class TutorialSetup extends PresagesSetup {
       }))
     )
 
-    this.material(MaterialType.Arcane)
-      .location(LocationType.Deck)
-      .sort((item) => item.location.x!)
-      .id((id: ArcaneCard) => !lisaHand.includes(id) && !myHand.includes(id) && id !== ArcaneCard.TheDeath && id !== ArcaneCard.TheLife)
-      .limit(3)
-      .moveItems({
-        type: LocationType.Deck
-      })
-
-    // Just to be sure jane has the life (for tuto explanation)
-    this.material(MaterialType.Arcane).location(LocationType.Deck).id(ArcaneCard.TheDeath).moveItem({ type: LocationType.Deck })
+    this.material(MaterialType.Arcane).createItems(
+      shuffle(janeHand).map((a) => ({
+        id: a,
+        location: {
+          type: LocationType.Deck
+        }
+      }))
+    )
 
     this.material(MaterialType.Arcane).createItems(
       shuffle(lisaHand).map((a) => ({
@@ -57,17 +56,14 @@ export class TutorialSetup extends PresagesSetup {
       }))
     )
 
-    this.material(MaterialType.Arcane)
-      .location(LocationType.Deck)
-      .sort((item) => item.location.x!)
-      .id((id: ArcaneCard) => !lisaHand.includes(id) && !myHand.includes(id) && id !== ArcaneCard.TheDeath && id !== ArcaneCard.TheLife)
-      .limit(3)
-      .moveItems({
-        type: LocationType.Deck
-      })
-
-    // Just to be sure jakob has the life (for tuto explanation)
-    this.material(MaterialType.Arcane).location(LocationType.Deck).id(ArcaneCard.TheLife).moveItem({ type: LocationType.Deck })
+    this.material(MaterialType.Arcane).createItems(
+      shuffle(jakobHand).map((a) => ({
+        id: a,
+        location: {
+          type: LocationType.Deck
+        }
+      }))
+    )
 
     this.material(MaterialType.Arcane).createItems(
       shuffle(myHand).map((a) => ({

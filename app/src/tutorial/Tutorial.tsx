@@ -94,7 +94,7 @@ export class Tutorial extends MaterialTutorial {
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.Arcane).location(LocationType.Table).player(me),
-          this.material(game, MaterialType.Arcane).location(LocationType.Hand).id(ArcaneCard.TheMischief)
+          this.material(game, MaterialType.Arcane).location(LocationType.Hand).id(ArcaneCard.TheTruth)
         ],
         locations: [{ type: LocationType.Hand, player: lisa, rotation: Visibility.HIDDEN_FOR_EVERYONE }],
         margin: {
@@ -105,14 +105,14 @@ export class Tutorial extends MaterialTutorial {
       }),
       move: {
         filter: (move, game) =>
-          isMoveItemType(MaterialType.Arcane)(move) && move.location.player === lisa && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheMischief
+          isMoveItemType(MaterialType.Arcane)(move) && move.location.player === lisa && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheTruth
       }
     },
     {
       move: {
         player: lisa,
         filter: (move, game) =>
-          isMoveItemType(MaterialType.Arcane)(move) && move.location.player === me && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheNight
+          isMoveItemType(MaterialType.Arcane)(move) && move.location.player === me && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheDay
       }
     },
     {
@@ -121,7 +121,7 @@ export class Tutorial extends MaterialTutorial {
         position: { x: 30, y: -15 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.Arcane).location(LocationType.Hand).id(ArcaneCard.TheNight)],
+        materials: [this.material(game, MaterialType.Arcane).location(LocationType.Hand).id(ArcaneCard.TheDay)],
         margin: {
           top: 10,
           bottom: 10,
@@ -150,13 +150,13 @@ export class Tutorial extends MaterialTutorial {
     {
       move: {
         player: lisa,
-        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheFriendship
+        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheDeath
       }
     },
     {
       move: {
         player: jane,
-        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheDeath,
+        filter: (move, game) => isMoveItemType(MaterialType.Arcane)(move) && game.items[move.itemType]![move.itemIndex].id === ArcaneCard.TheFear,
         interrupt: (move) => isStartRule(move) && move.id === RuleId.RoundResolution
       }
     },
@@ -180,10 +180,10 @@ export class Tutorial extends MaterialTutorial {
             .id((id: ArcaneCard) => [ArcaneCard.TheLife, ArcaneCard.TheDeath].includes(id))
         ],
         margin: {
-          top: 10,
+          top: 5,
           bottom: 25,
-          right: 5,
-          left: 5
+          right: 18,
+          left: 0
         }
       }),
       move: {
@@ -193,7 +193,7 @@ export class Tutorial extends MaterialTutorial {
     {
       popup: { text: () => <Trans defaults="tuto.take.inhand" components={TransComponents} />, position: { y: 20 } },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.Arcane).id(ArcaneCard.TheFriendship)],
+        materials: [this.material(game, MaterialType.Arcane).id(ArcaneCard.TheFear)],
         margin: {
           top: 10,
           bottom: 25

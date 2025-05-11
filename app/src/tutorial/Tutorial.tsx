@@ -11,7 +11,7 @@ import { TransComponents } from '../utils/trans.components'
 import { jakob, jane, lisa, me, TutorialSetup } from './TutorialSetup'
 
 export class Tutorial extends MaterialTutorial {
-  version = 1
+  version = 2
   options = {
     players: [{ id: me }, { id: jakob }, { id: lisa }, { id: jane }]
   }

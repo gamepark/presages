@@ -55,12 +55,12 @@ export class RoundResolutionRule extends MaterialRulesPart {
     this.afterResolution()
     if (!onDiscardMoves.length && this.willTriggerEndOfRound(discardedIndexes)) return [this.startRule(RuleId.RoundEnd)]
 
-    this.updateFirstPlayer()
+    const firstPlayer = this.updateFirstPlayer()
     if (onDiscardMoves.length) {
       return onDiscardMoves
     }
 
-    return [this.startPlayerTurn(RuleId.Place, this.firstPlayer)]
+    return [this.startPlayerTurn(RuleId.Place, firstPlayer)]
   }
 
   updateFirstPlayer() {

@@ -7,7 +7,7 @@ import { ArcaneEffect } from '../ArcaneEffect'
 export class TheBetrayalDescription extends ArcaneEffect {
   onPlaceTo(_cardId: ArcaneCard, target: PlayerId): MaterialMove[] {
     if (this.table.length === 1) return []
-    if (this.getActivePlayer() === target) return [this.startRule(RuleId.TheBetrayal)]
+    if (this.game.rule?.player === target) return [this.startRule(RuleId.TheBetrayal)]
     return [this.startPlayerTurn(RuleId.TheBetrayal, target)]
   }
 }

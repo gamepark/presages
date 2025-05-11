@@ -173,7 +173,6 @@ export class PresagesLogs implements LogDescription {
       }
     }
 
-    console.log(isCustomMoveType(CustomMoveType.CardResolutionLog)(move))
     if (context.game.rule?.id === RuleId.RoundResolution && isCustomMoveType(CustomMoveType.CardResolutionLog)(move)) {
       const rule = new RoundResolutionRule(context.game)
       const index = rule

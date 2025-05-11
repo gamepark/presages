@@ -10,7 +10,7 @@ export class TheDreamDescription extends ArcaneEffect {
   onPlaceTo(_card: ArcaneCard, target: PlayerId): MaterialMove[] {
     if (this.game.rule?.id === RuleId.TheBetrayal) return []
     if (this.table.length === this.game.players.length) return []
-    if (this.getActivePlayer() !== target) return [this.startPlayerTurn(RuleId.TheDream, target)]
-    return []
+    if (this.game.rule?.player === target) return []
+    return [this.startPlayerTurn(RuleId.TheDream, target)]
   }
 }

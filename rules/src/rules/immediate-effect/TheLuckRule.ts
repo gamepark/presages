@@ -1,4 +1,5 @@
 import { isMoveItemType, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { ArcaneCard } from '../../material/ArcaneCard'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../../Memory'
@@ -6,6 +7,11 @@ import { PlayerId } from '../../PlayerId'
 import { RuleId } from '../RuleId'
 
 export class TheLuckRule extends PlayerTurnRule {
+  onRuleStart() {
+    if (!this.hand.length) return this.goToNextRule()
+    return []
+  }
+
   getPlayerMoves() {
     return this.hand.moveItems({
       type: LocationType.Discard
@@ -24,6 +30,10 @@ export class TheLuckRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Arcane)(move)) return []
+    return this.goToNextRule()
+  }
+
+  goToNextRule() {
     if (this.triggersEndOfRound) return [this.startRule(RuleId.RoundEnd)]
 
     const firstPlayer = this.firstPlayer
@@ -36,6 +46,9 @@ export class TheLuckRule extends PlayerTurnRule {
   }
 
   get hand() {
-    return this.material(MaterialType.Arcane).location(LocationType.Hand).player(this.player)
+    return this.material(MaterialType.Arcane)
+      .location(LocationType.Hand)
+      .player(this.player)
+      .id((id: ArcaneCard) => id !== ArcaneCard.TheFear)
   }
 }

@@ -93,14 +93,17 @@ const isDiscardedBy = (
   table: MaterialItem<PlayerId, LocationType, ArcaneCard>[],
   game: MaterialGame
 ): ArcaneCard[] => {
+  if (arcane.id === ArcaneCard.TheFriendship) console.log('The table', table)
   const effects = table.map((item) => new RoundEffects[item.id](game))
   const discardedBy: ArcaneCard[] = []
   for (let i = 0; i < table.length; i++) {
     const id = table[i].id
     const thisEffect = effects[i]
+    if (arcane.id === ArcaneCard.TheFriendship) console.log(`Is ${arcane.id} discarded by`, id, thisEffect.canDiscard(arcane.id))
     const isDiscardedByThisOne = thisEffect.canDiscard(arcane.id)
     if (isDiscardedByThisOne) discardedBy.push(id)
   }
+  if (arcane.id === ArcaneCard.TheFriendship) console.log(discardedBy, table)
 
   return discardedBy
 }

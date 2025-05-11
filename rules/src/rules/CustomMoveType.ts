@@ -4,5 +4,6 @@ export enum CustomMoveType {
   Confirm,
   SeeCard,
   SeeEquality,
+  WinTurnLog,
   CardResolutionLog
 }

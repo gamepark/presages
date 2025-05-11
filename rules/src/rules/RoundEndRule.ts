@@ -15,7 +15,10 @@ export class RoundEndRule extends MaterialRulesPart {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemTypeAtOnce(MaterialType.Arcane)(move) || move.location.rotation !== Visibility.VISIBLE_FOR_EVERYONE) return []
     const players = this.winningPlayers
-    this.memorize(Memory.RoundWinner, players[0])
+
+    const winner = players[0]
+    this.memorize(Memory.RoundWinner, winner)
+    this.memorize(Memory.FirstPlayer, winner)
     const cards = this.material(MaterialType.Help)
       .location(LocationType.Help)
       .player((p) => players.includes(p!))

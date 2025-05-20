@@ -1,5 +1,6 @@
 import { MaterialGameSetup, MaterialItem } from '@gamepark/rules-api'
-import { partition, range } from 'lodash'
+import partition from 'lodash/partition'
+import range from 'lodash/range'
 import max from 'lodash/max'
 import min from 'lodash/min'
 import shuffle from 'lodash/shuffle'

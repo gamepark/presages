@@ -1,7 +1,7 @@
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { CardDescription, MaterialContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { ItemMoveType, MaterialItem } from '@gamepark/rules-api'
 import Back from '../images/arcane/back.jpg'
 import TheAbsolute30 from '../images/arcane/the-absolute-30.jpg'
 import TheAbsolute31 from '../images/arcane/the-absolute-31.jpg'
@@ -45,10 +45,11 @@ import Help from '../images/icons/help.jpg'
 import Hourglass from '../images/icons/hourglass.png'
 import Important from '../images/icons/important.png'
 import Lightning from '../images/icons/lightning.png'
-import Red from '../images/icons/red.png'
-import Yellow from '../images/icons/yellow.png'
 import Moon from '../images/icons/moon.jpg'
+import Red from '../images/icons/red.png'
 import Star from '../images/icons/star.jpg'
+import Yellow from '../images/icons/yellow.png'
+import PlayCard from '../sounds/play-card.wav'
 import { ArcaneHelp } from './help/ArcaneHelp'
 
 export class ArcaneDescription extends CardDescription {
@@ -92,6 +93,11 @@ export class ArcaneDescription extends CardDescription {
     [ArcaneCard.TheAbsolute33]: TheAbsolute33,
     [ArcaneCard.TheAbsolute34]: TheAbsolute34,
     [ArcaneCard.TheAbsolute35]: TheAbsolute35
+  }
+
+  sounds = {
+    [ItemMoveType.Move]: { sound: PlayCard, volume: 0.2 },
+    [ItemMoveType.MoveAtOnce]: { sound: PlayCard, volume: 0.2 }
   }
 
   getImages() {

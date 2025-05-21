@@ -1,7 +1,7 @@
 {
   "en": {
     "translation": {
-      "result.comp.tie.you": "You share victory with {tied, plural, one{#other player} other{#other players}}.",
+      "result.comp.tie.you": "You share victory with {tied, plural, one{# other player} other{# other players}}.",
       "result.comp.tie.other": "{tied} players share the victory.",
       "result.comp.tie.all": "The players share the victory.",
       "Menu": "Menu",

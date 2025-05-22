@@ -18,7 +18,7 @@ import { GameDisplay } from './GameDisplay'
 import { Headers } from './headers/Headers'
 import Ambiance from './sounds/ambiance.mp3'
 
-const ambiance: MaterialSoundConfig = { sound: Ambiance, volume: 0.02, startsAt: 60 }
+const ambiance: MaterialSoundConfig = { sound: Ambiance, volume: 0.1, startsAt: 60 }
 export default function App() {
   const game = useGame<MaterialGame>()
   const [isJustDisplayed, setJustDisplayed] = useState(true)

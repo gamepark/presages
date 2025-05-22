@@ -1,7 +1,15 @@
+import { faEye } from '@fortawesome/free-solid-svg-icons/faEye'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
-import { CardDescription, MaterialContext } from '@gamepark/react-game'
-import { ItemMoveType, MaterialItem } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { PlayerId } from '@gamepark/presages/PlayerId'
+import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
+import { RuleId } from '@gamepark/presages/rules/RuleId'
+import { CardDescription, ItemContext, ItemMenuButton, MaterialContext, pointerCursorCss, usePlayerName } from '@gamepark/react-game'
+import { CustomMove, isCustomMoveType, ItemMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import React, { FC } from 'react'
+import { Trans } from 'react-i18next'
 import Back from '../images/arcane/back.jpg'
 import TheAbsolute30 from '../images/arcane/the-absolute-30.jpg'
 import TheAbsolute31 from '../images/arcane/the-absolute-31.jpg'
@@ -49,6 +57,7 @@ import Moon from '../images/icons/moon.jpg'
 import Red from '../images/icons/red.png'
 import Star from '../images/icons/star.jpg'
 import Yellow from '../images/icons/yellow.png'
+import { playerHandLocator } from '../locators/PlayerHandLocator'
 import PlayCard from '../sounds/play-card.wav'
 import { ArcaneHelp } from './help/ArcaneHelp'
 
@@ -117,12 +126,49 @@ export class ArcaneDescription extends CardDescription {
     return images
   }
 
+  menuAlwaysVisible = true
+
+  getItemMenu(item: MaterialItem, _context: ItemContext, legalMoves: MaterialMove[]): React.ReactNode {
+    if (_context.rules.game.rule?.id === RuleId.TheSecretForMe && item.location.type === LocationType.Hand) {
+      const seeCard = legalMoves.find((move) => isCustomMoveType(CustomMoveType.SeeCard)(move) && item.location.player === move.data) as CustomMove | undefined
+      if (seeCard) {
+        const playerCards = _context.rules
+          .material(MaterialType.Arcane)
+          .location(LocationType.Hand)
+          .player(seeCard.data as PlayerId).length
+        if (Math.floor(playerCards / 2) !== item.location.x) return
+        const playerRotateZ = playerHandLocator.getRotateZ(item.location, _context)
+        return (
+          <>
+            <ItemMenuButton
+              key="save"
+              label={<SecretPlayer playerId={seeCard.data} />}
+              labelPosition="right"
+              move={seeCard}
+              radius={0}
+              angle={45 + playerRotateZ}
+            >
+              <FontAwesomeIcon icon={faEye} css={[pointerCursorCss]} />
+            </ItemMenuButton>
+          </>
+        )
+      }
+    }
+
+    return
+  }
+
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     if (item.location?.type === LocationType.Deck) return true
     return super.isFlippedOnTable(item, context)
   }
 
   help = ArcaneHelp
+}
+
+const SecretPlayer: FC<{ playerId: PlayerId }> = ({ playerId }) => {
+  const name = usePlayerName(playerId)
+  return <Trans defaults="move.see-card" values={{ player: name }} />
 }
 
 export const arcaneDescription = new ArcaneDescription()

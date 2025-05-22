@@ -1,7 +1,10 @@
 import { ArcaneCard, arcanes } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { Memory } from '@gamepark/presages/Memory'
 import { PresagesSetup } from '@gamepark/presages/PresagesSetup'
+import { RuleId } from '@gamepark/presages/rules/RuleId'
+import { Visibility } from '@gamepark/presages/rules/Visibility'
 import shuffle from 'lodash/shuffle'
 
 export const me = 2
@@ -42,7 +45,9 @@ export class TutorialSetup extends PresagesSetup {
       shuffle(janeHand).map((a) => ({
         id: a,
         location: {
-          type: LocationType.Deck
+          type: LocationType.Hand,
+          player: jane,
+          rotation: Visibility.VISIBLE_FOR_ME
         }
       }))
     )
@@ -51,7 +56,9 @@ export class TutorialSetup extends PresagesSetup {
       shuffle(lisaHand).map((a) => ({
         id: a,
         location: {
-          type: LocationType.Deck
+          type: LocationType.Hand,
+          player: lisa,
+          rotation: Visibility.VISIBLE_FOR_ME
         }
       }))
     )
@@ -60,18 +67,29 @@ export class TutorialSetup extends PresagesSetup {
       shuffle(jakobHand).map((a) => ({
         id: a,
         location: {
-          type: LocationType.Deck
+          type: LocationType.Hand,
+          player: jakob,
+          rotation: Visibility.VISIBLE_FOR_ME
         }
       }))
     )
 
+    console.log(shuffle(myHand))
     this.material(MaterialType.Arcane).createItems(
       shuffle(myHand).map((a) => ({
         id: a,
         location: {
-          type: LocationType.Deck
+          type: LocationType.Hand,
+          player: me,
+          rotation: Visibility.VISIBLE_FOR_ME
         }
       }))
     )
+  }
+
+  start() {
+    const firstPlayer = this.playerWithMaxAbsolute
+    this.memorize(Memory.FirstPlayer, firstPlayer)
+    this.startSimultaneousRule(RuleId.ShowStarter)
   }
 }

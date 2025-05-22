@@ -10,7 +10,7 @@ import GiveCard from '../sounds/give-card.wav'
 
 class PresageGameAnimation extends MaterialGameAnimations {
   getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
-    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return context.game.players.length
+    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 4
     if (isCustomMoveType(CustomMoveType.SeeEquality)(move)) return 3
     return super.getDuration(move, context)
   }
@@ -22,10 +22,7 @@ gameAnimations.when().move(isMoveItemType(MaterialType.Help)).none()
 
 gameAnimations
   .when()
-  .move(
-    (move, context) =>
-      context.rules.game.rule?.id === RuleId.Deal && isMoveItemTypeAtOnce(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand
-  )
+  .move((move, context) => context.rules.game.rule?.id === RuleId.Deal && isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand)
   .duration(0.2)
 
 gameAnimations

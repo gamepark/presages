@@ -96,8 +96,8 @@ export class ArcaneDescription extends CardDescription {
   }
 
   sounds = {
-    [ItemMoveType.Move]: { sound: PlayCard, volume: 0.2 },
-    [ItemMoveType.MoveAtOnce]: { sound: PlayCard, volume: 0.2 }
+    [ItemMoveType.Move]: { sound: PlayCard, volume: 0.2, delay: 0.7 },
+    [ItemMoveType.MoveAtOnce]: { sound: PlayCard, volume: 0.2, delay: 0.4 }
   }
 
   getImages() {

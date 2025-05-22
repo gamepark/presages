@@ -4,8 +4,7 @@ import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { MaterialGameAnimationContext, MaterialGameAnimations } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, isMoveItemTypeAtOnce, isStartRule, MaterialMove } from '@gamepark/rules-api'
-import PlayCard from '../sounds/play-card.wav'
+import { isCustomMoveType, isMoveItemType, isStartRule, MaterialMove } from '@gamepark/rules-api'
 import GiveCard from '../sounds/give-card.wav'
 
 class PresageGameAnimation extends MaterialGameAnimations {
@@ -33,13 +32,16 @@ gameAnimations
       move.location.rotation === Visibility.VISIBLE_FOR_ME &&
       context.rules.material(MaterialType.Arcane).getItem(move.itemIndex).location.rotation === Visibility.HIDDEN_FOR_EVERYONE
   )
-  .sound(false)
+  .sound({ sound: GiveCard, volume: 0.2 })
   .duration(0.5)
 
 gameAnimations
   .when()
-  .move((move) => isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand)
-  .sound({ sound: GiveCard, volume: 0.4 })
+  .move((move) => {
+    console.log('move', move, isMoveItemType(MaterialType.Arcane)(move))
+    return isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand
+  })
+  .sound({ sound: GiveCard, volume: 0.2 })
 
 gameAnimations
   .when()
@@ -50,9 +52,3 @@ gameAnimations
   .when()
   .move((move) => isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Table)
   .duration(0.8)
-  .sound({ sound: PlayCard, volume: 0.2 })
-
-gameAnimations
-  .when()
-  .move((move) => isMoveItemTypeAtOnce(MaterialType.Arcane)(move) && move.location.rotation === Visibility.VISIBLE_FOR_EVERYONE)
-  .duration(0.2)

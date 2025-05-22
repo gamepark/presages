@@ -2,7 +2,12 @@
 import { css } from '@emotion/react'
 import { ArcaneCard, getColors, isAbsolute } from '@gamepark/presages/material/ArcaneCard'
 import { Color } from '@gamepark/presages/material/Color'
-import { MaterialHelpProps, Picture } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/presages/material/LocationType'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
+import { PlayerId } from '@gamepark/presages/PlayerId'
+import { RuleId } from '@gamepark/presages/rules/RuleId'
+import { MaterialHelpProps, Picture, PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { isMoveItemType, MaterialRules, MoveItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import Help from '../../images/icons/help.jpg'
@@ -12,13 +17,27 @@ import { getHtmlColor } from '../../utils/color'
 import { TransComponents } from '../../utils/trans.components'
 
 export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
-  const { item } = props
+  const { item, itemIndex, closeDialog } = props
   const { t } = useTranslation()
+  const playerId = usePlayerId()
+  const rules = useRules<MaterialRules>()!
+  const legalMoves = useLegalMoves<MoveItem>((move) => itemIndex !== undefined && isMoveItemType(MaterialType.Arcane)(move))
+  const place = legalMoves.filter((move) => move.location.type === LocationType.Table && rules.game.rule?.id === RuleId.Place && itemIndex === move.itemIndex)
+  const anger = legalMoves.find((move) => move.location.type === LocationType.Hand && rules.game.rule?.id === RuleId.TheAnger && itemIndex === move.itemIndex)
+  const jalousie = legalMoves.find(
+    (move) =>
+      move.location.type === LocationType.Table &&
+      rules.game.rule?.id === RuleId.TheJalousie &&
+      itemIndex === rules.material(MaterialType.Arcane).location(LocationType.Table).player(move.location.player).getIndex()
+  )
   if (!item.id) return null
   const id = item.id as ArcaneCard
   return (
     <>
       <h2>{t(isAbsolute(id) ? `card.absolute` : `card.${id}`)}</h2>
+      {place.length > 0 && place.map((p) => <PlaceInFrontOfMove playerId={playerId} move={p} closeDialog={closeDialog} target={p.location.player!} />)}
+      {anger && <AngerMove move={anger} closeDialog={closeDialog} target={anger.location.player!} />}
+      {jalousie && <JalousieMove move={jalousie} closeDialog={closeDialog} />}
       <div css={minSizeCss}>
         <div css={specificPartCss}>
           <div css={item.id !== ArcaneCard.TheMischief ? getTitleBackground(id) : mischiefTitleBackgroundCss}>{t('help.arcane.effect')}</div>
@@ -73,10 +92,44 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
   )
 }
 
+const PlaceInFrontOfMove: FC<{ move: MoveItem; playerId?: PlayerId; target: PlayerId; closeDialog: () => void }> = (props) => {
+  const { move, playerId, target, closeDialog } = props
+  const name = usePlayerName(target)
+  return (
+    <PlayMoveButton move={move} onPlay={closeDialog} css={marginCss}>
+      <Trans defaults={playerId === target ? 'move.place' : 'move.place.other'} values={{ player: name }} />
+    </PlayMoveButton>
+  )
+}
+
+const AngerMove: FC<{ move: MoveItem; target: PlayerId; closeDialog: () => void }> = (props) => {
+  const { move, target, closeDialog } = props
+  const name = usePlayerName(target)
+  return (
+    <PlayMoveButton move={move} onPlay={closeDialog} css={marginCss}>
+      <Trans defaults="move.betrayal" values={{ player: name }} />
+    </PlayMoveButton>
+  )
+}
+
+const JalousieMove: FC<{ move: MoveItem; closeDialog: () => void }> = (props) => {
+  const { move, closeDialog } = props
+  return (
+    <PlayMoveButton move={move} onPlay={closeDialog} css={marginCss}>
+      <Trans defaults="move.jalousie" />
+    </PlayMoveButton>
+  )
+}
+
 const borderedCss = (color: Color) => css`
   border: 0.2em solid ${getHtmlColor(color)};
   border-radius: 0 0 0.5em 0.5em;
   padding: 0.5em;
+`
+
+const marginCss = css`
+  margin-top: 0.5em;
+  margin-right: 0.5em;
 `
 
 const allColorBorderedCss = css`

@@ -74,7 +74,6 @@ export class TutorialSetup extends PresagesSetup {
       }))
     )
 
-    console.log(shuffle(myHand))
     this.material(MaterialType.Arcane).createItems(
       shuffle(myHand).map((a) => ({
         id: a,

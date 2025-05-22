@@ -38,7 +38,6 @@ gameAnimations
 gameAnimations
   .when()
   .move((move) => {
-    console.log('move', move, isMoveItemType(MaterialType.Arcane)(move))
     return isMoveItemType(MaterialType.Arcane)(move) && move.location.type === LocationType.Hand
   })
   .sound({ sound: GiveCard, volume: 0.2 })

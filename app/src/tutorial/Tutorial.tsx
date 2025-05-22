@@ -1,8 +1,14 @@
+import { AccessoriesType, ClotheType, FacialHairType, TopType } from '@gamepark/avataaars'
+import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColorName'
+import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
+import FacialHairColorName from '@gamepark/avataaars/dist/avatar/top/facialHair/FacialHairColorName'
+import HatColorName from '@gamepark/avataaars/dist/avatar/top/HatColorName'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
+import { Player } from '@gamepark/react-client'
 import { MaterialTutorial } from '@gamepark/react-game'
 import { TutorialStep } from '@gamepark/react-game/dist/components/tutorial/MaterialTutorial'
 import { isEndPlayerTurn, isMoveItemType, isStartRule } from '@gamepark/rules-api'
@@ -11,12 +17,49 @@ import { TransComponents } from '../utils/trans.components'
 import { jakob, jane, lisa, me, TutorialSetup } from './TutorialSetup'
 
 export class Tutorial extends MaterialTutorial {
-  version = 2
+  version = 3
   options = {
     players: [{ id: me }, { id: jakob }, { id: lisa }, { id: jane }]
   }
 
-  players = [{ id: me }, { id: jakob }, { id: lisa }, { id: jane }]
+  players: Player[] = [
+    { id: me },
+    {
+      id: jakob,
+      avatar: {
+        topType: TopType.Turban,
+        accessoriesType: AccessoriesType.Prescription02,
+        hatColor: HatColorName.Blue03,
+        facialHairType: FacialHairType.BeardMedium,
+        facialHairColor: FacialHairColorName.BrownDark,
+        clotheType: ClotheType.Overall,
+        clotheColor: ClotheColorName.Blue03,
+        skinColor: SkinColor.Light
+      }
+    },
+    {
+      id: lisa,
+      avatar: {
+        topType: TopType.Turban,
+        accessoriesType: AccessoriesType.Kurt,
+        hatColor: HatColorName.Gray02,
+        clotheType: ClotheType.CollarSweater,
+        clotheColor: ClotheColorName.Gray02,
+        skinColor: SkinColor.Light
+      }
+    },
+    {
+      id: jane,
+      avatar: {
+        topType: TopType.Turban,
+        accessoriesType: AccessoriesType.Round,
+        hatColor: HatColorName.Pink,
+        clotheType: ClotheType.ShirtCrewNeck,
+        clotheColor: ClotheColorName.Pink,
+        skinColor: SkinColor.Light
+      }
+    }
+  ]
 
   setup = new TutorialSetup()
 

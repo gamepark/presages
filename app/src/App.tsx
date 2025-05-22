@@ -30,7 +30,7 @@ export default function App() {
   return (
     <>
       {!!game && <GameDisplay players={game.players.length} />}
-      <LoadingScreen display={loading} author="Maxime Rambourg" artist="Ben Renaut" publisher="Spiral Editions" developer="Game Park" />
+      <LoadingScreen display={loading} author="Maxime Rambourg" artist="Ben Renaut" publisher="Spiral Editions" developer="Game Park" musician="Alice Truet" />
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
       <MaterialGameSounds ambiance={ambiance} />

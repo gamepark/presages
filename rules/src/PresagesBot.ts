@@ -74,7 +74,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
       return { score: this.evaluate(rules, player), moves: [], player }
     }
     const teammates = this.areTeammates(childRules, player, nextPlayer)
-    const result = this.negamax(childRules, nextPlayer, player === nextPlayer ? depth : depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
+    const result = this.negamax(childRules, nextPlayer, depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha)
     if (!teammates) {
       result.score = -result.score
     }
@@ -107,7 +107,7 @@ class PresagesNegamax extends Negamax {
       return [sample(legalMoves)!]
     }
     if (ruleId === RuleId.TheAbsolute) {
-      if (depth !== 0) {
+      if (depth > 1) {
         const giveToPartner = legalMoves.find((move) => isMoveItem(move) && this.areTeammates(rules, player, move.location.player!))
         if (giveToPartner) return [giveToPartner]
       }

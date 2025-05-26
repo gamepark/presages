@@ -3,21 +3,23 @@ import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
-import { MaterialGameAnimationContext, MaterialGameAnimations } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, isStartRule, MaterialMove } from '@gamepark/rules-api'
+import { MaterialGameAnimations } from '@gamepark/react-game'
+import { isCustomMoveType, isMoveItemType, isStartRule } from '@gamepark/rules-api'
 import GiveCard from '../sounds/give-card.wav'
 
-class PresageGameAnimation extends MaterialGameAnimations {
-  getDuration(move: MaterialMove, context: MaterialGameAnimationContext): number {
-    if (isCustomMoveType(CustomMoveType.TempoDiscard)(move)) return 4
-    if (isCustomMoveType(CustomMoveType.SeeEquality)(move)) return 3
-    return super.getDuration(move, context)
-  }
-}
-
-export const gameAnimations = new PresageGameAnimation()
+export const gameAnimations = new MaterialGameAnimations()
 
 gameAnimations.when().move(isMoveItemType(MaterialType.Help)).none()
+
+gameAnimations
+  .when()
+  .move((move) => isCustomMoveType(CustomMoveType.TempoDiscard)(move))
+  .duration(5)
+
+gameAnimations
+  .when()
+  .move((move) => isCustomMoveType(CustomMoveType.SeeEquality)(move))
+  .duration(4)
 
 gameAnimations
   .when()

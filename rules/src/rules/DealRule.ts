@@ -53,7 +53,7 @@ export class DealRule extends MaterialRulesPart {
   }
 
   getCardCountForPlayer(player: PlayerId) {
-    if (!this.remind(Memory.RoundWinner) && this.game.players.length === 5 && this.remind(Memory.Team, player) === 1) return 4
+    if (this.game.players.length === 5 && this.remind(Memory.Team, player) === 1) return 4
     if (this.game.players.length < 6) return 5
     return 4
   }

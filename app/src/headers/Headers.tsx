@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { ComponentType } from 'react'
 import { DealHeader } from './DealHeader'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
@@ -28,7 +27,7 @@ export const PlaceCardLog: FC<MoveComponentProps> = (props) => {
     <>
       <span css={textCss}>
         <Trans
-          defaults={activePlayer === move.location.player ? 'log.place' : 'log.place.other'}
+          i18nKey={activePlayer === move.location.player ? 'log.place' : 'log.place.other'}
           values={{ player: player, target: target }}
           components={{
             arcane: <CardNameLink id={id} />
@@ -40,7 +39,7 @@ export const PlaceCardLog: FC<MoveComponentProps> = (props) => {
             <br />
             <span>
               <Trans
-                defaults="log.the-pride"
+                i18nKey="log.the-pride"
                 values={{ player: thePridePlayer }}
                 components={{
                   italic: <i />

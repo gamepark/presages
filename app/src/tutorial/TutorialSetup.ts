@@ -5,7 +5,7 @@ import { Memory } from '@gamepark/presages/Memory'
 import { PresagesSetup } from '@gamepark/presages/PresagesSetup'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
-import shuffle from 'lodash/shuffle'
+import { shuffle } from 'es-toolkit'
 
 export const me = 2
 export const myHand = [ArcaneCard.TheTruth, ArcaneCard.TheEnigma, ArcaneCard.TheFeast, ArcaneCard.TheLove]

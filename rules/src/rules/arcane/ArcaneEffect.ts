@@ -15,7 +15,7 @@ export abstract class ArcaneEffect extends MaterialRulesPart {
     return this.game.rule?.player
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   afterResolution(_card: ArcaneCard): void {}
 
   canDiscard(_card: ArcaneCard): boolean {

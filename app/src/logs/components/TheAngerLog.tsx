@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
@@ -17,7 +16,7 @@ export const TheAngerLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults="log.the-anger" values={{ player: name, target: targetName }} />
+        <Trans i18nKey="log.the-anger" values={{ player: name, target: targetName }} />
       </span>
     </>
   )

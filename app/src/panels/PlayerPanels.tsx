@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { createPortal } from 'react-dom'

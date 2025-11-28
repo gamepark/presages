@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PlayerId } from '@gamepark/presages/PlayerId'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
@@ -19,7 +18,7 @@ export const TheSecretForMeHeader = () => {
   if (itsMe) {
     return (
       <div css={fontSizeCss(0.8)}>
-        <Trans defaults="header.the-secret-me.me" components={TransComponents} />
+        <Trans i18nKey="header.the-secret-me.me" components={TransComponents} />
         {seeCards.length > 0 &&
           seeCards.map((c) => (
             <>
@@ -32,7 +31,7 @@ export const TheSecretForMeHeader = () => {
   }
   return (
     <>
-      <Trans defaults="header.the-secret-me.player" values={{ player: name }} components={TransComponents} />
+      <Trans i18nKey="header.the-secret-me.player" values={{ player: name }} components={TransComponents} />
     </>
   )
 }

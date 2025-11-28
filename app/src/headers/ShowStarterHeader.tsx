@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PlayerId } from '@gamepark/presages/PlayerId'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { PlayMoveButton, useLegalMove, usePlayerId, useRules } from '@gamepark/react-game'
@@ -15,7 +14,7 @@ export const ShowStarterHeader = () => {
   if (itsMe) {
     return (
       <Trans
-        defaults="header.show-starter.me"
+        i18nKey="header.show-starter.me"
         components={{
           ...TransComponents,
           confirm: <PlayMoveButton move={confirm} auto={rules.game.tutorial?.step !== 3 ? 2 * rules.game.players.length : undefined} />
@@ -23,5 +22,5 @@ export const ShowStarterHeader = () => {
       />
     )
   }
-  return <Trans defaults="header.show-starter.players" components={TransComponents} />
+  return <Trans i18nKey="header.show-starter.players" components={TransComponents} />
 }

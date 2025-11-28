@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Memory } from '@gamepark/presages/Memory'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, useRules, usePlayerName } from '@gamepark/react-game'
@@ -16,12 +15,12 @@ export const TheSecretForOtherHeader = () => {
   const effectPlayerName = usePlayerName(effectPlayer)
 
   if (imTheEffectPlayer) {
-    return <Trans defaults="header.the-secret-other.for-me" values={{ player: name }} components={TransComponents} />
+    return <Trans i18nKey="header.the-secret-other.for-me" values={{ player: name }} components={TransComponents} />
   }
 
   if (itsMe) {
-    return <Trans defaults="header.the-secret-other.me" values={{ effectPlayer: effectPlayerName }} components={TransComponents} />
+    return <Trans i18nKey="header.the-secret-other.me" values={{ effectPlayer: effectPlayerName }} components={TransComponents} />
   }
 
-  return <Trans defaults="header.the-secret-other.player" values={{ player: name, effectPlayer: effectPlayerName }} components={TransComponents} />
+  return <Trans i18nKey="header.the-secret-other.player" values={{ player: name, effectPlayer: effectPlayerName }} components={TransComponents} />
 }

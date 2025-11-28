@@ -15,19 +15,19 @@
     "access": "public"
   },
   "scripts": {
+    "test": "vitest",
     "build": "tsc",
     "prepublishOnly": "tsc",
     "publish": "lerna publish",
     "lint": "eslint --fix"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=6.34",
-    "lodash": ">=4.17"
+    "@gamepark/rules-api": ">=7",
+    "es-toolkit": "^1.39.10"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~6.37.1",
-    "@types/lodash": "^4.17.7",
-    "i18next": "^22.0.3",
-    "lodash": "^4.17.21"
+    "@gamepark/rules-api": "~7.2.0",
+    "es-toolkit": "^1.42.0",
+    "vitest": "^4.0.14"
   }
 }

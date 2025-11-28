@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
@@ -34,7 +33,7 @@ export const RoundResolutionLog: FC<MoveComponentProps> = (props) => {
       <>
         <span css={textCss}>
           <Trans
-            defaults="log.win.turn"
+            i18nKey="log.win.turn"
             values={{ player: name, cardName: t(`arcane.${arcane.id}`) }}
             components={{
               arcane: <CardNameLink id={arcane.id} />
@@ -46,7 +45,7 @@ export const RoundResolutionLog: FC<MoveComponentProps> = (props) => {
               <br />
               <span css={greyCss}>
                 <Trans
-                  defaults="log.change-win-trick"
+                  i18nKey="log.change-win-trick"
                   values={{ player: changeTrickPlayer }}
                   components={{
                     italic: <i />,
@@ -64,7 +63,7 @@ export const RoundResolutionLog: FC<MoveComponentProps> = (props) => {
     <>
       <span css={textCss}>
         <Trans
-          defaults="log.discard"
+          i18nKey="log.discard"
           values={{ player: name, cardName: t(`arcane.${arcane.id}`) }}
           components={{
             arcane: <CardNameLink id={arcane.id} />

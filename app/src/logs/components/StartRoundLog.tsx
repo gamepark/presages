@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Memory } from '@gamepark/presages/Memory'
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
@@ -13,7 +12,7 @@ export const StartRoundLog: FC<MoveComponentProps> = (props) => {
   const name = usePlayerName(rule.remind(Memory.FirstPlayer))
   return (
     <span css={[underlineCss, centeredCss]}>
-      <Trans defaults="log.start.round" values={{ player: name }} />
+      <Trans i18nKey="log.start.round" values={{ player: name }} />
     </span>
   )
 }

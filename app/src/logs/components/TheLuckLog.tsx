@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
@@ -21,7 +20,7 @@ export const TheLuck: FC<MoveComponentProps> = (props) => {
     <>
       <span css={textCss}>
         <Trans
-          defaults="log.the-luck"
+          i18nKey="log.the-luck"
           values={{ player: name }}
           components={{ arcane: <CardNameLink id={id} />, luck: <CardNameLink id={ArcaneCard.TheLuck} /> }}
         />

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, useRules, usePlayerName } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
@@ -12,7 +11,7 @@ export const TheJalousieHeader = () => {
   const name = usePlayerName(activePlayer)
 
   if (itsMe) {
-    return <Trans defaults="header.the-jalousie.me" components={TransComponents} />
+    return <Trans i18nKey="header.the-jalousie.me" components={TransComponents} />
   }
-  return <Trans defaults="header.the-jalousie.player" values={{ player: name }} components={TransComponents} />
+  return <Trans i18nKey="header.the-jalousie.player" values={{ player: name }} components={TransComponents} />
 }

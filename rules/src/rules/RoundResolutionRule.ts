@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, Material, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import maxBy from 'lodash/maxBy'
+import { maxBy } from 'es-toolkit'
 import { ArcaneCard } from '../material/ArcaneCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'

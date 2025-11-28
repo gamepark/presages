@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Memory } from '@gamepark/presages/Memory'
 import { PlayerId } from '@gamepark/presages/PlayerId'
@@ -19,7 +18,7 @@ export const RoundEndLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults="log.round-end" values={{ player: name }} />
+        <Trans i18nKey="log.round-end" values={{ player: name }} />
       </span>
     </>
   )

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { Memory } from '@gamepark/presages/Memory'

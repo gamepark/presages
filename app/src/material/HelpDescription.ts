@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { CardDescription } from '@gamepark/react-game'
 import MoonFront from '../images/team-marker/moon-front.jpg'

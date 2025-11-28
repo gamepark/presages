@@ -168,7 +168,7 @@ export class ArcaneDescription extends CardDescription {
 
 const SecretPlayer: FC<{ playerId: PlayerId }> = ({ playerId }) => {
   const name = usePlayerName(playerId)
-  return <Trans defaults="move.see-card" values={{ player: name }} />
+  return <Trans i18nKey="move.see-card" values={{ player: name }} />
 }
 
 export const arcaneDescription = new ArcaneDescription()

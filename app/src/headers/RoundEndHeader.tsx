@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Memory } from '@gamepark/presages/Memory'
 import { PlayerId } from '@gamepark/presages/PlayerId'
@@ -16,7 +15,7 @@ export const RoundEndHeader = () => {
   const name = usePlayerName(roundWinner)
   return (
     <Trans
-      defaults="header.round.end"
+      i18nKey="header.round.end"
       values={{ player: name }}
       components={{
         ...TransComponents,

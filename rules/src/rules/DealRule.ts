@@ -1,6 +1,6 @@
 import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import mapValues from 'lodash/mapValues'
-import keyBy from 'lodash/keyBy'
+import { mapValues } from 'es-toolkit'
+import { keyBy } from 'es-toolkit/compat'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'

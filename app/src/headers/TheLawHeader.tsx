@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
@@ -18,7 +17,7 @@ export const TheLawHeader = () => {
   if (itsMe) {
     return (
       <Trans
-        defaults="header.the-law.me"
+        i18nKey="header.the-law.me"
         components={{
           ...TransComponents,
           less: <PlayMoveButton move={minus15} />,
@@ -27,5 +26,5 @@ export const TheLawHeader = () => {
       />
     )
   }
-  return <Trans defaults="header.the-law.player" components={TransComponents} values={{ player: name }} />
+  return <Trans i18nKey="header.the-law.player" components={TransComponents} values={{ player: name }} />
 }

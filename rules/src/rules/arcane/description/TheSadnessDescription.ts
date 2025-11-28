@@ -1,4 +1,4 @@
-import maxBy from 'lodash/maxBy'
+import { maxBy } from 'es-toolkit'
 import { ArcaneCard } from '../../../material/ArcaneCard'
 import { ArcaneEffect, WinTheTrickCondition } from '../ArcaneEffect'
 

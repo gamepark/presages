@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Color } from '@gamepark/presages/material/Color'
 import { getBackgroundImage } from '../../panels/PresagesPlayerPanel'

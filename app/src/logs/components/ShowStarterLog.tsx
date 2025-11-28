@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
@@ -19,7 +18,7 @@ export const ShowStarterLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults="log.show.starter" values={{ player: name }} components={{ arcane: <CardNameLink id={item.id} /> }} />
+        <Trans i18nKey="log.show.starter" values={{ player: name }} components={{ arcane: <CardNameLink id={item.id} /> }} />
       </span>
     </>
   )

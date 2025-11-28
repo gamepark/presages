@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
@@ -20,7 +19,7 @@ export const TheAbsoluteLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults="log.the-absolute" values={{ player: name, target: targetName }} components={{ arcane: <CardNameLink id={item.id} /> }} />
+        <Trans i18nKey="log.the-absolute" values={{ player: name, target: targetName }} components={{ arcane: <CardNameLink id={item.id} /> }} />
       </span>
     </>
   )

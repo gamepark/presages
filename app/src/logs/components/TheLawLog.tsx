@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MoveComponentProps } from '@gamepark/react-game'
 import { CustomMove } from '@gamepark/rules-api'
@@ -11,7 +10,7 @@ export const TheLawLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults={move.data > 0 ? 'log.the-law.more' : 'log.the-law.less'} components={{ bold: <strong /> }} />
+        <Trans i18nKey={move.data > 0 ? 'log.the-law.more' : 'log.the-law.less'} components={{ bold: <strong /> }} />
       </span>
     </>
   )

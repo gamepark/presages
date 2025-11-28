@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import {
   FailuresDialog,
@@ -19,7 +18,7 @@ import { Headers } from './headers/Headers'
 import Ambiance from './sounds/ambiance.mp3'
 
 const ambiance: MaterialSoundConfig = { sound: Ambiance, volume: 0.06, startsAt: 60 }
-export default function App() {
+export function App() {
   const game = useGame<MaterialGame>()
   const [isJustDisplayed, setJustDisplayed] = useState(true)
   const [isImagesLoading, setImagesLoading] = useState(true)

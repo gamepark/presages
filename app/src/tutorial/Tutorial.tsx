@@ -64,12 +64,12 @@ export class Tutorial extends MaterialTutorial {
   setup = new TutorialSetup()
 
   steps: TutorialStep[] = [
-    { popup: { text: () => <Trans defaults="tuto.welcome" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.goal" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.start" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.welcome" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.goal" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.start" components={TransComponents} /> } },
     {
       popup: {
-        text: () => <Trans defaults="tuto.mate" components={TransComponents} />
+        text: () => <Trans i18nKey="tuto.mate" components={TransComponents} />
       },
       move: {
         player: me,
@@ -87,7 +87,7 @@ export class Tutorial extends MaterialTutorial {
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.hand" components={TransComponents} />,
+        text: () => <Trans i18nKey="tuto.hand" components={TransComponents} />,
         position: { y: -17, x: 0 }
       },
       focus: (game) => ({
@@ -100,7 +100,7 @@ export class Tutorial extends MaterialTutorial {
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.absolute" components={TransComponents} />,
+        text: () => <Trans i18nKey="tuto.absolute" components={TransComponents} />,
         position: { y: -17, x: 0 }
       },
       focus: (game) => ({
@@ -118,7 +118,7 @@ export class Tutorial extends MaterialTutorial {
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.immediate" components={TransComponents} />,
+        text: () => <Trans i18nKey="tuto.immediate" components={TransComponents} />,
         position: { y: -17, x: 0 }
       },
       focus: (game) => ({
@@ -132,7 +132,7 @@ export class Tutorial extends MaterialTutorial {
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.absolute.effect" components={TransComponents} />
+        text: () => <Trans i18nKey="tuto.absolute.effect" components={TransComponents} />
       },
       focus: (game) => ({
         materials: [
@@ -160,7 +160,7 @@ export class Tutorial extends MaterialTutorial {
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.absolute.effect.opponent" components={TransComponents} />,
+        text: () => <Trans i18nKey="tuto.absolute.effect.opponent" components={TransComponents} />,
         position: { x: 30, y: -15 }
       },
       focus: (game) => ({
@@ -179,7 +179,7 @@ export class Tutorial extends MaterialTutorial {
       }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.life" components={TransComponents} />, position: { x: 30, y: -15 } },
+      popup: { text: () => <Trans i18nKey="tuto.life" components={TransComponents} />, position: { x: 30, y: -15 } },
       focus: (game) => ({
         materials: [this.material(game, MaterialType.Arcane).location(LocationType.Table).id(ArcaneCard.TheLife)],
         margin: {
@@ -189,7 +189,7 @@ export class Tutorial extends MaterialTutorial {
         }
       })
     },
-    { popup: { text: () => <Trans defaults="tuto.trigger.end" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.trigger.end" components={TransComponents} /> } },
     {
       move: {
         player: lisa,
@@ -204,7 +204,7 @@ export class Tutorial extends MaterialTutorial {
       }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.win.turn" components={TransComponents} />, position: { x: 35, y: 30 }, size: { width: 70 } },
+      popup: { text: () => <Trans i18nKey="tuto.win.turn" components={TransComponents} />, position: { x: 35, y: 30 }, size: { width: 70 } },
       focus: (game) => ({
         materials: [this.material(game, MaterialType.Arcane).location(LocationType.Table)],
         margin: {
@@ -215,7 +215,7 @@ export class Tutorial extends MaterialTutorial {
       })
     },
     {
-      popup: { text: () => <Trans defaults="tuto.death" components={TransComponents} />, position: { x: 0, y: 25 }, size: { width: 100 } },
+      popup: { text: () => <Trans i18nKey="tuto.death" components={TransComponents} />, position: { x: 0, y: 25 }, size: { width: 100 } },
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.Arcane)
@@ -234,7 +234,7 @@ export class Tutorial extends MaterialTutorial {
       }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.take.inhand" components={TransComponents} />, position: { y: 20 } },
+      popup: { text: () => <Trans i18nKey="tuto.take.inhand" components={TransComponents} />, position: { y: 20 } },
       focus: (game) => ({
         materials: [this.material(game, MaterialType.Arcane).id(ArcaneCard.TheFear)],
         margin: {
@@ -244,9 +244,9 @@ export class Tutorial extends MaterialTutorial {
       }),
       move: {}
     },
-    { popup: { text: () => <Trans defaults="tuto.new.round" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.help" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.win.round" components={TransComponents} /> } },
-    { popup: { text: () => <Trans defaults="tuto.2winround" components={TransComponents} /> } }
+    { popup: { text: () => <Trans i18nKey="tuto.new.round" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.help" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.win.round" components={TransComponents} /> } },
+    { popup: { text: () => <Trans i18nKey="tuto.2winround" components={TransComponents} /> } }
   ]
 }

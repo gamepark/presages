@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
@@ -19,7 +18,7 @@ export const TheBetrayalLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults="log.the-betrayal" values={{ player: name, target: targetName }} />
+        <Trans i18nKey="log.the-betrayal" values={{ player: name, target: targetName }} />
       </span>
     </>
   )

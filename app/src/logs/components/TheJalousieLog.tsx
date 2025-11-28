@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
@@ -23,7 +22,7 @@ export const TheJalousieLog: FC<MoveComponentProps> = (props) => {
     <>
       <span css={textCss}>
         <Trans
-          defaults="log.the-jalousie"
+          i18nKey="log.the-jalousie"
           values={{ player: name }}
           components={{ givenArcane: <CardNameLink id={given.id} />, obtainedArcane: <CardNameLink id={obtain.id} /> }}
         />

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Memory } from '@gamepark/presages/Memory'
 import { PlayerId } from '@gamepark/presages/PlayerId'
@@ -20,7 +19,7 @@ export const GameEndLog: FC<MoveComponentProps> = (props) => {
   return (
     <>
       <span css={textCss}>
-        <Trans defaults="log.end-game" values={{ player: name }} components={{ team: <Team team={team} />, players: <Players ids={roundWinner} /> }} />
+        <Trans i18nKey="log.end-game" values={{ player: name }} components={{ team: <Team team={team} />, players: <Players ids={roundWinner} /> }} />
       </span>
     </>
   )

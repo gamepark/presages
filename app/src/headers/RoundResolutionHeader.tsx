@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard, getColors } from '@gamepark/presages/material/ArcaneCard'
 import { Color } from '@gamepark/presages/material/Color'
@@ -22,7 +21,7 @@ export const RoundResolutionHeader = () => {
   if (itsMe) {
     return (
       <Trans
-        defaults="header.round-resolution.me"
+        i18nKey="header.round-resolution.me"
         values={{ card }}
         components={{
           ...TransComponents,
@@ -34,7 +33,7 @@ export const RoundResolutionHeader = () => {
 
   return (
     <Trans
-      defaults="header.round-resolution.player"
+      i18nKey="header.round-resolution.player"
       values={{ player: name, card }}
       components={{
         ...TransComponents,

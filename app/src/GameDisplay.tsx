@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { pointerWithin } from '@dnd-kit/core'
 import { css } from '@emotion/react'
 import { GameTable } from '@gamepark/react-game'

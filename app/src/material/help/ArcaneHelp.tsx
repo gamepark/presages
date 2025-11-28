@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ArcaneCard, getColors, isAbsolute } from '@gamepark/presages/material/ArcaneCard'
 import { Color } from '@gamepark/presages/material/Color'
@@ -43,7 +42,7 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
           <div css={item.id !== ArcaneCard.TheMischief ? getTitleBackground(id) : mischiefTitleBackgroundCss}>{t('help.arcane.effect')}</div>
           <p css={[littleCss, effectCss, item.id !== ArcaneCard.TheMischief ? borderedCss(getColors(id)[0]) : allColorBorderedCss]}>
             <span>
-              <Trans defaults={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={ArcaneComponents} />
+              <Trans i18nKey={isAbsolute(id) ? `card.absolute.desc` : `card.${item.id}.desc`} components={ArcaneComponents} />
             </span>
           </p>
         </div>
@@ -57,25 +56,25 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
             `}
           >
             <span css={blueCss}>
-              <Trans defaults="help.arcane.precision" components={TransComponents} />
+              <Trans i18nKey="help.arcane.precision" components={TransComponents} />
             </span>
             <Picture src={Help} css={helpImageCss} />
           </div>
           <ul css={listCss}>
             <li>
-              <Trans defaults="help.arcane.precision.1" components={TransComponents} />
+              <Trans i18nKey="help.arcane.precision.1" components={TransComponents} />
             </li>
             <li>
-              <Trans defaults="help.arcane.precision.2" components={TransComponents} />
+              <Trans i18nKey="help.arcane.precision.2" components={TransComponents} />
             </li>
             <li>
-              <Trans defaults="help.arcane.precision.3" components={TransComponents} />
+              <Trans i18nKey="help.arcane.precision.3" components={TransComponents} />
             </li>
             <li>
-              <Trans defaults="help.arcane.precision.4" components={TransComponents} />
+              <Trans i18nKey="help.arcane.precision.4" components={TransComponents} />
             </li>
             <li>
-              <Trans defaults="help.arcane.precision.5" components={TransComponents} />
+              <Trans i18nKey="help.arcane.precision.5" components={TransComponents} />
             </li>
           </ul>
           <div css={importantCss}>
@@ -83,7 +82,7 @@ export const ArcaneHelp: FC<MaterialHelpProps> = (props) => {
               <Picture src={Important} css={importantImageCss} />
             </span>
             <div>
-              <Trans defaults="help.arcane.important" components={TransComponents} />
+              <Trans i18nKey="help.arcane.important" components={TransComponents} />
             </div>
           </div>
         </div>
@@ -97,7 +96,7 @@ const PlaceInFrontOfMove: FC<{ move: MoveItem; playerId?: PlayerId; target: Play
   const name = usePlayerName(target)
   return (
     <PlayMoveButton move={move} onPlay={closeDialog} css={marginCss}>
-      <Trans defaults={playerId === target ? 'move.place' : 'move.place.other'} values={{ player: name }} />
+      <Trans i18nKey={playerId === target ? 'move.place' : 'move.place.other'} values={{ player: name }} />
     </PlayMoveButton>
   )
 }
@@ -107,7 +106,7 @@ const AngerMove: FC<{ move: MoveItem; target: PlayerId; closeDialog: () => void 
   const name = usePlayerName(target)
   return (
     <PlayMoveButton move={move} onPlay={closeDialog} css={marginCss}>
-      <Trans defaults="move.betrayal" values={{ player: name }} />
+      <Trans i18nKey="move.betrayal" values={{ player: name }} />
     </PlayMoveButton>
   )
 }
@@ -116,7 +115,7 @@ const JalousieMove: FC<{ move: MoveItem; closeDialog: () => void }> = (props) =>
   const { move, closeDialog } = props
   return (
     <PlayMoveButton move={move} onPlay={closeDialog} css={marginCss}>
-      <Trans defaults="move.jalousie" />
+      <Trans i18nKey="move.jalousie" />
     </PlayMoveButton>
   )
 }

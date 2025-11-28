@@ -2,63 +2,48 @@
   "name": "@gamepark/presages-app",
   "version": "1.1.0",
   "private": true,
+  "type": "module",
   "description": "The user interface of Présages adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "test": "vitest",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "deploy": "yarn build && rclone sync dist presages:presages.game-park.com --progress --s3-acl=public-read"
+  },
   "dependencies": {
-    "@dnd-kit/core": "~6.1.0",
-    "@emotion/react": "^11.11.1",
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "@gamepark/avataaars": "~2.2.0",
-    "@gamepark/react-game": "~6.37.4",
-    "@gamepark/rules-api": "~6.37.1",
-    "@types/react": "^17.0.68",
-    "@types/react-dom": "^17.0.9",
-    "@types/react-redux": "^7.1.18",
-    "customize-cra": "^1.0.0",
-    "i18next": "^22.0.3",
-    "intl-messageformat": "^9.9.1",
-    "react": "^17.0.2",
-    "react-app-rewire-alias": "^1.0.3",
-    "react-app-rewired": "^2.1.8",
-    "react-dom": "^17.0.2",
-    "react-i18next": "^12.2.2",
-    "react-redux": "^8.0.5",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.0"
+    "@dnd-kit/core": "~6.3.1",
+    "@emotion/react": "^11.14.0",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-regular-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
+    "@gamepark/react-game": "~7.2.0",
+    "@gamepark/rules-api": "~7.2.0",
+    "es-toolkit": "^1.42.0",
+    "i18next": "^25.6.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-i18next": "^15.7.4",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.7",
-    "eslint-plugin-react": "^7.37.4",
-    "image-minimizer-webpack-plugin": "^3.8.3",
-    "imagemin": "^8.0.1",
-    "imagemin-webp": "^8.0.0",
-    "lodash": "^4.17.21"
-  },
-  "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject",
-    "deploy": "yarn build && rclone sync build presages:presages.game-park.com --progress --s3-acl=public-read",
-    "lint": "eslint --fix"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^@gamepark/presages/(.*)$": "<rootDir>/../rules/src/$1"
-    }
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vite": "^7.2.4",
+    "vite-imagetools": "^9.0.2",
+    "vitest": "^4.0.14"
   }
 }

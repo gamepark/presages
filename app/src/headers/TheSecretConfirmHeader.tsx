@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
@@ -17,7 +16,7 @@ export const TheSecretConfirmHeader = () => {
   if (itsMe) {
     return (
       <Trans
-        defaults="header.the-secret-confirm.me"
+        i18nKey="header.the-secret-confirm.me"
         components={{
           ...TransComponents,
           confirm: <PlayMoveButton move={confirm} auto={10} />
@@ -28,7 +27,7 @@ export const TheSecretConfirmHeader = () => {
 
   return (
     <Trans
-      defaults="header.the-secret-confirm.player"
+      i18nKey="header.the-secret-confirm.player"
       values={{ player: name }}
       components={{
         ...TransComponents

@@ -53,7 +53,7 @@ Search and replace in **every file**:
 
 - `Game Template` => `Name of your Game`
 - `GameTemplate` => `NameOfYourGame`
-- `presages` => `name-of-your-game`
+- `game-template` => `name-of-your-game`
 
 ### 3.1 The Material
 

@@ -1,4 +1,4 @@
-import minBy from 'lodash/minBy'
+import { minBy } from 'es-toolkit'
 import { ArcaneCard } from '../../../material/ArcaneCard'
 import { ArcaneEffect, WinTheTrickCondition } from '../ArcaneEffect'
 

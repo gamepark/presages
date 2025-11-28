@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PresagesRules } from '@gamepark/presages/PresagesRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
@@ -11,8 +10,8 @@ export const PlaceHeader = () => {
   const name = usePlayerName(activePlayer)
 
   if (itsMe) {
-    return <Trans defaults="header.place.me" />
+    return <Trans i18nKey="header.place.me" />
   }
 
-  return <Trans defaults="header.place.player" values={{ player: name }} />
+  return <Trans i18nKey="header.place.player" values={{ player: name }} />
 }

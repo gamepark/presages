@@ -7,16 +7,15 @@
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "eslint": "^9.39.1",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "globals": "^16.5.0",
-    "lerna": "^9.0.3",
-    "prettier": "3.7.1",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0",
-    "vitest": "^4.0.14"
+    "typescript-eslint": "^8.63.0",
+    "vitest": "^4.1.10"
   },
   "scripts": {
     "dev": "yarn workspace @gamepark/presages-app run dev",
@@ -24,10 +23,10 @@
     "preview": "yarn workspace @gamepark/presages-app run preview",
     "build": "yarn workspace @gamepark/presages-app run build",
     "deploy": "yarn workspace @gamepark/presages-app run deploy",
-    "publish": "lerna publish",
+    "publish": "yarn workspace @gamepark/presages run publish",
     "lint": "yarn workspace @gamepark/presages run lint && yarn workspace @gamepark/presages-app run lint",
-    "linkgp": "yarn link ../rules-api ../react-client ../react-game -r",
-    "unlinkgp": "yarn unlink ../react-game ../react-client ../rules-api"
+    "linkgp": "yarn link ../rules-api ../react-client ../react-game -r && git update-index --skip-worktree package.json yarn.lock",
+    "unlinkgp": "git update-index --no-skip-worktree package.json yarn.lock && yarn unlink ../react-game ../react-client ../rules-api"
   },
   "packageManager": "yarn@4.9.4"
 }

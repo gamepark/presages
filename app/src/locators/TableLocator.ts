@@ -1,9 +1,20 @@
+import { LocationType } from '@gamepark/presages/material/LocationType'
+import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { arcaneDescription } from '../material/ArcaneDescription'
 import { playerHandLocator } from './PlayerHandLocator'
 
 export class TableLocator extends Locator {
+  // The cards played on the table move up when they are selected: the framework must know when to reposition them.
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    return context.rules
+      .material(MaterialType.Arcane)
+      .location(LocationType.Table)
+      .getItems()
+      .map((item) => !!item.selected)
+  }
+
   getCoordinates(location: Location, context: ItemContext) {
     const { rules, type, index } = context
     const item = rules.material(type).index(index).getItem()

@@ -14,6 +14,18 @@ export class PlayerHandLocator extends HandLocator {
     borderRadius: arcaneDescription.borderRadius
   })
 
+  // My own cards are sorted by id (see getItemIndex), so their position depends on the ids I hold, not only on their count.
+  getPositionDependencies(location: Location, context: MaterialContext) {
+    if (location.player !== context.player) return super.getPositionDependencies(location, context)
+    return context.rules
+      .material(MaterialType.Arcane)
+      .location(LocationType.Hand)
+      .player(context.player)
+      .getItems<ArcaneCard>()
+      .map((item) => item.id)
+      .sort((a, b) => a - b)
+  }
+
   getCoordinates(location: Location, context: ItemContext) {
     let highlight = false
     if (isItemContext(context)) {

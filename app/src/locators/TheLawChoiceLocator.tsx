@@ -3,8 +3,8 @@ import { ArcaneCard } from '@gamepark/presages/material/ArcaneCard'
 import { LocationType } from '@gamepark/presages/material/LocationType'
 import { MaterialType } from '@gamepark/presages/material/MaterialType'
 import { Memory } from '@gamepark/presages/Memory'
-import { LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { PresagesRules } from '@gamepark/presages/PresagesRules'
+import { LocationDescription, Locator, MaterialContext, useRules } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
 
 class TheLawChoiceLocator extends Locator {
@@ -25,6 +25,19 @@ class TheLawChoiceLocator extends Locator {
   locationDescription = new TheLawChoiceDescription()
 }
 
+const TheLawChoiceContent = () => {
+  const { t } = useTranslation()
+  const rules = useRules<PresagesRules>()
+  const choice = rules?.remind<number>(Memory.TheLaw) ?? 0
+  return <span css={textCss}>{choice < 0 ? t('the-law.minus') : t('the-law.plus')}</span>
+}
+
+const textCss = css`
+  line-height: 1.3;
+  white-space: pre-line;
+  text-align: center;
+`
+
 class TheLawChoiceDescription extends LocationDescription {
   constructor() {
     super({
@@ -33,30 +46,17 @@ class TheLawChoiceDescription extends LocationDescription {
     })
   }
 
-  getExtraCss(_location: Location, context: MaterialContext) {
-    const { rules } = context
-    const { t } = useTranslation()
-    const choice = rules.remind(Memory.TheLaw)
-    return css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0.15em solid #df9a20;
-      border-radius: 0.5em;
-      background-color: #1c2242;
-      box-sizing: content-box;
-      &:after {
-        position: absolute;
-        content: '${choice < 0 ? t('the-law.minus') : t('the-law.plus')}';
-        line-height: 1.3;
-        white-space: pre;
-        width: 100%;
-        text-align: center;
-        transform: translateX(-50%);
-        left: 50%;
-      }
-    `
-  }
+  content = TheLawChoiceContent
+
+  extraCss = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.15em solid #df9a20;
+    border-radius: 0.5em;
+    background-color: #1c2242;
+    box-sizing: content-box;
+  `
 }
 
 export const theLawChoiceLocator = new TheLawChoiceLocator()

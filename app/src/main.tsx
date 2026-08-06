@@ -1,5 +1,5 @@
 import { PresagesBot } from '@gamepark/presages/PresagesBot.ts'
-import { PresagesOptionsSpec } from '@gamepark/presages/PresagesOptions.ts'
+import { PresagesOptionsSpecV2 } from '@gamepark/presages/PresagesOptions.ts'
 import { PresagesRules } from '@gamepark/presages/PresagesRules.ts'
 import { PresagesSetup } from '@gamepark/presages/PresagesSetup.ts'
 import { GameAI, GameProvider } from '@gamepark/react-game'
@@ -20,7 +20,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="presages"
       Rules={PresagesRules}
-      optionsSpec={PresagesOptionsSpec}
+      optionsSpec={PresagesOptionsSpecV2}
       GameSetup={PresagesSetup}
       material={Material}
       locators={Locators}

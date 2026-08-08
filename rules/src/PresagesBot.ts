@@ -28,11 +28,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
   abstract evaluate(rules: R, player: number): number
 
   getMovesOfInterest(rules: R, player: number, _depth: number): MaterialMove[] {
-    const legalMoves = rules.getLegalMoves(player)
-    if (!legalMoves.length) {
-      console.error(`Player ${player} is active but has no legal moves!`)
-    }
-    return legalMoves
+    return rules.getLegalMoves(player)
   }
 
   areTeammates(_rules: R, player1: number, player2: number) {

@@ -1,5 +1,5 @@
 import { isMoveItem, MaterialGame, MaterialItem, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
-import { maxBy, minBy, sample, sumBy, uniq } from 'es-toolkit'
+import { cloneDeep, maxBy, minBy, sample, sumBy, uniq } from 'es-toolkit'
 import { ArcaneCard, getColors, hasColor } from './material/ArcaneCard'
 import { Color } from './material/Color'
 import { LocationType } from './material/LocationType'
@@ -9,7 +9,7 @@ import { PresagesRules } from './PresagesRules'
 import { RuleId } from './rules/RuleId'
 
 export const PresagesBot = (game: MaterialGame, player: number): MaterialMove[] => {
-  const rules = new PresagesRules(structuredClone(game))
+  const rules = new PresagesRules(cloneDeep(game))
   rules.forget(Memory.Bot) // Bots must be ignored when executing a bot to prevent infinite loops
   return new PresagesNegamax().getBestMoves(rules, player)
 }
@@ -59,7 +59,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
   }
 
   private getNegamaxResult(rules: R, player: number, depth: number, alpha: number, beta: number, move: MaterialMove): NegamaxResult {
-    const childRules = new this.Rules(structuredClone(rules.game)) as R
+    const childRules = new this.Rules(cloneDeep(rules.game)) as R
     playAction(childRules, move, player)
     const nextPlayer = childRules.players.find((player) => childRules.isTurnToPlay(player))
     if (nextPlayer === undefined) {

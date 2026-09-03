@@ -4,10 +4,14 @@ import { CustomMoveType } from '@gamepark/presages/rules/CustomMoveType'
 import { RuleId } from '@gamepark/presages/rules/RuleId'
 import { Visibility } from '@gamepark/presages/rules/Visibility'
 import { and, AnimationPredicate, MaterialGameAnimations, not } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, isStartRule } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, isShuffle, isStartRule } from '@gamepark/rules-api'
 import GiveCard from '../sounds/give-card.wav'
 
 export const gameAnimations = new MaterialGameAnimations()
+
+// Hands are shuffled after every arcana that changed hands so that nobody can keep track of a card.
+// Pure protection, nothing for the players to watch: no animation, and no shuffle sound either.
+gameAnimations.configure(isShuffle).skip()
 
 /**
  * Dealing the arcanas at the start of a round. It gets its own short duration below, and deliberately no

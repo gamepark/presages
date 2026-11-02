@@ -14,12 +14,11 @@ export const GameEndLog: FC<MoveComponentProps> = (props) => {
   const rules = new PresagesRules(JSON.parse(JSON.stringify(context.game)) as MaterialGame)
   const roundWinner = rules.remind<PlayerId[]>(Memory.Winners)
   const team = rules.remind<number>(Memory.Team, roundWinner[0])
-  const name = usePlayerName(roundWinner)
 
   return (
     <>
       <span css={textCss}>
-        <Trans i18nKey="log.end-game" values={{ player: name }} components={{ team: <Team team={team} />, players: <Players ids={roundWinner} /> }} />
+        <Trans i18nKey="log.end-game" components={{ team: <Team team={team} />, players: <Players ids={roundWinner} /> }} />
       </span>
     </>
   )

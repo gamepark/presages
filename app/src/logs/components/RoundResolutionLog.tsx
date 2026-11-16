@@ -9,14 +9,13 @@ import { RoundEffects } from '@gamepark/presages/rules/arcane/RoundEffects'
 import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepark/react-game'
 import { CustomMove, MaterialGame, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { FC, Fragment } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { CardNameLink } from './CardNameLink'
 import { greyCss } from './styles'
 
 export const RoundResolutionLog: FC<MoveComponentProps> = (props) => {
   const move = props.move as CustomMove
   const player: PlayerId = move.data
-  const { t } = useTranslation()
   const context: MoveComponentContext<MaterialMove, PlayerId, MaterialGame> = props.context
   const name = usePlayerName(player)
   const rule = new PresagesRules(JSON.parse(JSON.stringify(context.game)) as MaterialGame)
@@ -34,7 +33,7 @@ export const RoundResolutionLog: FC<MoveComponentProps> = (props) => {
         <span css={textCss}>
           <Trans
             i18nKey="log.win.turn"
-            values={{ player: name, cardName: t(`arcane.${arcane.id}`) }}
+            values={{ player: name }}
             components={{
               arcane: <CardNameLink id={arcane.id} />
             }}
@@ -64,7 +63,7 @@ export const RoundResolutionLog: FC<MoveComponentProps> = (props) => {
       <span css={textCss}>
         <Trans
           i18nKey="log.discard"
-          values={{ player: name, cardName: t(`arcane.${arcane.id}`) }}
+          values={{ player: name }}
           components={{
             arcane: <CardNameLink id={arcane.id} />
           }}

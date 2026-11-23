@@ -1,5 +1,5 @@
 import { isMoveItem, MaterialGame, MaterialItem, MaterialMove, MaterialRules, playAction, RulesCreator } from '@gamepark/rules-api'
-import { cloneDeep, maxBy, minBy, sample, sumBy, uniq } from 'es-toolkit'
+import { cloneDeep, maxBy, minBy, orderBy, sample, sumBy, uniq } from 'es-toolkit'
 import { ArcaneCard, getColors, hasColor } from './material/ArcaneCard'
 import { Color } from './material/Color'
 import { LocationType } from './material/LocationType'
@@ -62,6 +62,11 @@ const cloneGame = (game: MaterialGame): MaterialGame => {
  * {@link maxNodes} positions is not exceeded, it starts again one step further, up to {@link maxSteps}. The best move of the deepest
  * complete search is played.
  *
+ * Each search tries the moves of the player in the order of the scores they got in the previous, shallower search. As a move only replaces
+ * the best one when it is strictly better, moves that are equal in the deepest search are decided by the shallower ones. It matters when
+ * several moves look like a forced win: the search is not exhaustive (see {@link getMovesOfInterest}) and the teammates do not see the
+ * hidden cards, so the move that is also the best in the short term is the most robust.
+ *
  * When even the first step exceeds the budget, an iterative deepening search is done instead, with half the budget: the moves are
  * searched at depth 1, then 2, etc., until the budget is exceeded. In the worst case, 1.5 times {@link maxNodes} positions are explored.
  */
@@ -72,6 +77,8 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
   private maxDepth = Infinity
   private steps = 1
   private limitReached = false
+  /** Scores of the moves of the player in the last complete search */
+  private rootScores = new Map<string, number>()
 
   constructor(
     private readonly maxNodes = Infinity,
@@ -111,13 +118,16 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
       return { score: this.evaluate(rules, player) }
     }
 
-    const moves = this.getMovesOfInterest(rules, player, depth)
+    let moves = this.getMovesOfInterest(rules, player, depth)
     if (moves.length === 0) throw new Error('You must return at least on move of interest for the active player')
     if (depth === 0 && moves.length === 1) return { score: 0, move: moves[0] }
+    const scores = depth === 0 ? new Map<string, number>() : undefined
+    if (depth === 0) moves = orderBy(moves, [(move) => this.rootScores.get(JSON.stringify(move)) ?? -Infinity], ['desc'])
 
     let best: NegamaxResult = { score: -Infinity, move: moves[0] } // Default to the first move when they all lead to a lost game
     for (const move of moves) {
       const score = this.getScore(rules, player, depth, steps, alpha, beta, move)
+      scores?.set(JSON.stringify(move), score)
       if (best.score < score) {
         best = { score, move }
         alpha = Math.max(alpha, score)
@@ -126,6 +136,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
         }
       }
     }
+    if (scores) this.rootScores = scores // Only reached when the search is complete: an exceeded budget throws
     return best
   }
 

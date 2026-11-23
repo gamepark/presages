@@ -11,8 +11,9 @@ import { RuleId } from './rules/RuleId'
 /**
  * AI used to play the bots of the 2 and 3 players games (they play the empty seats) and the tutorial opponents.
  *
- * It searches all the possible moves until the beginning of the next trick (see {@link PresagesNegamax.isLeaf}), then evaluates the
- * resulting positions with a heuristic. It knows every card, including the ones hidden in the other players' hands.
+ * It searches all the possible moves until the beginning of the next trick (see {@link PresagesNegamax.isStepEnd}), then evaluates the
+ * resulting positions with a heuristic. When the hands are small enough, it searches up to {@link MAX_TRICKS} tricks ahead: a round is
+ * decided by the players who have 2 or 3 cards left. It knows every card, including the ones hidden in the other players' hands.
  *
  * It only returns the best move: the bot is called again for each of its next moves, because a planned sequence of moves may become
  * invalid in between (hands are shuffled after each card exchange, so an item index no longer designates the same card).
@@ -20,7 +21,7 @@ import { RuleId } from './rules/RuleId'
 export const PresagesBot = (game: MaterialGame, player: number, maxNodes = MAX_NODES): MaterialMove[] => {
   const rules = new PresagesRules(cloneDeep(game))
   rules.forget(Memory.Bot) // Bots must be ignored when executing a bot to prevent infinite loops
-  return [new PresagesNegamax(maxNodes).getBestMove(rules, player)]
+  return [new PresagesNegamax(maxNodes, MAX_TRICKS).getBestMove(rules, player)]
 }
 
 /**
@@ -28,6 +29,12 @@ export const PresagesBot = (game: MaterialGame, player: number, maxNodes = MAX_N
  * positions, so the search is limited to keep the bots playing in a few seconds.
  */
 const MAX_NODES = 3000
+
+/**
+ * Maximum number of tricks searched ahead. Measured over 392 games with 4 players, a team searching 3 tricks ahead won 64% of its games
+ * against a team searching 1 trick ahead.
+ */
+const MAX_TRICKS = 3
 
 type NegamaxResult = {
   /** Score of the position, from the point of view of the player who searched it */
@@ -38,25 +45,44 @@ type NegamaxResult = {
 
 class NodesBudgetExceeded extends Error {}
 
+/** Much faster than a generic deep clone, and the search spends a quarter of its time copying the game */
+const cloneGame = (game: MaterialGame): MaterialGame => {
+  const items: MaterialGame['items'] = {}
+  for (const type in game.items) {
+    items[type] = game.items[type]!.map((item) => ({ ...item, location: { ...item.location } }))
+  }
+  return { ...game, items, memory: cloneDeep(game.memory), rule: cloneDeep(game.rule) }
+}
+
 /**
  * Negamax algorithm with alpha-beta pruning, adapted to team games: the score is negated only when the next player to act is not a
  * teammate. With more than 2 teams, all the other teams are considered as allied against the player ("paranoid" search).
  *
- * The search explores at most {@link maxNodes} positions. When the complete search exceeds it, an iterative deepening search is done
- * instead, with half the budget: the moves are searched at depth 1, then 2, etc., until the budget is exceeded, and the best move of the
- * deepest complete search is played. In the worst case, 1.5 times {@link maxNodes} positions are explored.
+ * The search is split in steps (see {@link isStepEnd}). It first goes to the end of the current step, then, as long as the budget of
+ * {@link maxNodes} positions is not exceeded, it starts again one step further, up to {@link maxSteps}. The best move of the deepest
+ * complete search is played.
+ *
+ * When even the first step exceeds the budget, an iterative deepening search is done instead, with half the budget: the moves are
+ * searched at depth 1, then 2, etc., until the budget is exceeded. In the worst case, 1.5 times {@link maxNodes} positions are explored.
  */
 abstract class Negamax<R extends MaterialRules = MaterialRules> {
   abstract Rules: RulesCreator<MaterialGame>
 
   private nodes = 0
   private maxDepth = Infinity
-  private depthLimitReached = false
+  private steps = 1
+  private limitReached = false
 
-  constructor(private readonly maxNodes = Infinity) {}
+  constructor(
+    private readonly maxNodes = Infinity,
+    private readonly maxSteps = 1
+  ) {}
 
-  /** The search stops on leaves, where the position is evaluated */
-  abstract isLeaf(rules: R, depth: number): boolean
+  /** The search always stops on leaves, where the position is evaluated */
+  abstract isLeaf(rules: R): boolean
+
+  /** The search stops on the positions that end a step once it has gone through the number of steps it is looking ahead */
+  abstract isStepEnd(rules: R): boolean
 
   /** Score of the position for the player: the higher, the better. Must be the opposite for the opponents. */
   abstract evaluate(rules: R, player: number): number
@@ -70,12 +96,18 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     return player1 === player2
   }
 
-  private negamax(rules: R, player: number, depth = 0, alpha = -Infinity, beta = Infinity): NegamaxResult {
-    if (this.isLeaf(rules, depth)) {
-      return { score: this.evaluate(rules, player) }
+  private negamax(rules: R, player: number, depth = 0, steps = 0, alpha = -Infinity, beta = Infinity): NegamaxResult {
+    if (depth !== 0) {
+      if (this.isLeaf(rules)) {
+        return { score: this.evaluate(rules, player) }
+      }
+      if (this.isStepEnd(rules) && ++steps >= this.steps) {
+        this.limitReached = true
+        return { score: this.evaluate(rules, player) }
+      }
     }
     if (depth >= this.maxDepth) {
-      this.depthLimitReached = true
+      this.limitReached = true
       return { score: this.evaluate(rules, player) }
     }
 
@@ -85,7 +117,7 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
 
     let best: NegamaxResult = { score: -Infinity, move: moves[0] } // Default to the first move when they all lead to a lost game
     for (const move of moves) {
-      const score = this.getScore(rules, player, depth, alpha, beta, move)
+      const score = this.getScore(rules, player, depth, steps, alpha, beta, move)
       if (best.score < score) {
         best = { score, move }
         alpha = Math.max(alpha, score)
@@ -97,39 +129,48 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
     return best
   }
 
-  private getScore(rules: R, player: number, depth: number, alpha: number, beta: number, move: MaterialMove): number {
+  private getScore(rules: R, player: number, depth: number, steps: number, alpha: number, beta: number, move: MaterialMove): number {
     if (++this.nodes > this.maxNodes) throw new NodesBudgetExceeded()
-    const childRules = new this.Rules(cloneDeep(rules.game)) as R
+    const childRules = new this.Rules(cloneGame(rules.game)) as R
     playAction(childRules, move, player)
     const nextPlayer = childRules.players.find((player) => childRules.isTurnToPlay(player))
     if (nextPlayer === undefined) {
       return this.evaluate(childRules, player) // Nobody has to play: the game is over
     }
     const teammates = this.areTeammates(childRules, player, nextPlayer)
-    const score = this.negamax(childRules, nextPlayer, depth + 1, teammates ? alpha : -beta, teammates ? beta : -alpha).score
+    const score = this.negamax(childRules, nextPlayer, depth + 1, steps, teammates ? alpha : -beta, teammates ? beta : -alpha).score
     return teammates ? score : -score
   }
 
   getBestMove(rules: R, player: number): MaterialMove {
-    const completeSearchMove = this.search(rules, player, Infinity)
-    if (completeSearchMove) return completeSearchMove
+    let bestMove = this.search(rules, player, 1, Infinity)
+    if (bestMove) {
+      // The search continues one step further as long as there is something left to search and the budget is not exceeded
+      for (let steps = 2; steps <= this.maxSteps && this.limitReached; steps++) {
+        const move = this.search(rules, player, steps, Infinity)
+        if (!move) break
+        bestMove = move
+      }
+      return bestMove
+    }
 
     this.nodes = this.maxNodes / 2 // The iterative deepening search shares half the budget between all its depths
-    let bestMove = this.getMovesOfInterest(rules, player, 0)[0]
+    bestMove = this.getMovesOfInterest(rules, player, 0)[0]
     for (let maxDepth = 1; ; maxDepth++) {
-      const move = this.search(rules, player, maxDepth)
+      const move = this.search(rules, player, 1, maxDepth)
       if (!move) return bestMove
       bestMove = move
-      if (!this.depthLimitReached) return bestMove
+      if (!this.limitReached) return bestMove
     }
   }
 
   /**
-   * @returns the best move found within the depth limit, or undefined if the nodes budget is exceeded
+   * @returns the best move found within the steps and depth limits, or undefined if the nodes budget is exceeded
    */
-  private search(rules: R, player: number, maxDepth: number): MaterialMove | undefined {
+  private search(rules: R, player: number, steps: number, maxDepth: number): MaterialMove | undefined {
+    this.steps = steps
     this.maxDepth = maxDepth
-    this.depthLimitReached = false
+    this.limitReached = false
     try {
       return this.negamax(rules, player).move
     } catch (error) {
@@ -142,9 +183,26 @@ abstract class Negamax<R extends MaterialRules = MaterialRules> {
 class PresagesNegamax extends Negamax {
   Rules = PresagesRules
 
-  /** Search until the beginning of the next trick */
-  isLeaf(rules: PresagesRules, depth: number): boolean {
-    return depth !== 0 && rules.game.rule?.id === RuleId.Place && rules.material(MaterialType.Arcane).location(LocationType.Table).length === 0
+  /** Number of rounds already won when the search started */
+  private roundsWon = 0
+
+  getBestMove(rules: PresagesRules, player: number): MaterialMove {
+    this.roundsWon = this.countRoundsWon(rules)
+    return super.getBestMove(rules, player)
+  }
+
+  countRoundsWon(rules: PresagesRules) {
+    return rules.material(MaterialType.Help).location(LocationType.Help).rotation(true).length
+  }
+
+  /** The search never goes beyond the end of the round: the next hands are dealt at random */
+  isLeaf(rules: PresagesRules): boolean {
+    return this.countRoundsWon(rules) !== this.roundsWon
+  }
+
+  /** A step of the search is a trick */
+  isStepEnd(rules: PresagesRules): boolean {
+    return rules.game.rule?.id === RuleId.Place && rules.material(MaterialType.Arcane).location(LocationType.Table).length === 0
   }
 
   areTeammates(rules: PresagesRules, player1: number, player2: number) {
@@ -196,10 +254,15 @@ class PresagesNegamax extends Negamax {
    *
    * When the search is cut in the middle of a trick, the cards on the table are counted as if they were still in the hands of their
    * owners, so that the players who have already played are not favored.
+   *
+   * Once the round is over, only the rounds won count: the new hands are random, they say nothing about the moves that led there.
    */
   evaluate(rules: PresagesRules, player: number): number {
     if (rules.isOver()) {
       return rules.remind<number[]>(Memory.Winners).includes(player) ? Infinity : -Infinity
+    }
+    if (this.isLeaf(rules)) {
+      return this.evaluateWinRounds(rules, player) * 1000
     }
     return (
       this.evaluateWinRounds(rules, player) * 1000 +
